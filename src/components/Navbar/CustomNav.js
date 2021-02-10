@@ -1,6 +1,7 @@
 import React, {useReducer, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import Headroom from "headroom.js";
+import './CustomNav.css';
 
 import {
     UncontrolledCollapse,
@@ -26,7 +27,7 @@ const CustomNav = () => {
     }, []);
 
     return(
-        <Navbar className="navbar-dark bg-default navbar-transparent navbar-light headroom"
+        <Navbar className="navbar-dark bg-info navbar-transparent navbar-light headroom"
                 expand="lg"
                 id="navbar-main">
             <Container>
@@ -60,33 +61,44 @@ const CustomNav = () => {
                     <Nav className="ml-lg-auto" navbar>
                         <NavItem>
                             <NavLink
+                                tag={Link}
                                 className="nav-link-icon"
-                                href="#pablo"
-                                onClick={e => e.preventDefault()}
+                                to="/"
                             >
-                                <i className="ni ni-shop center" />
+                                <i className="ni ni-shop center d-none d-lg-inline-block" />
                                 <p className="m-0">Home</p>
                                 <span className="nav-link-inner--text d-lg-none"/>
                             </NavLink>
                         </NavItem>
                         <NavItem>
                             <NavLink
+                                tag={Link}
                                 className="nav-link-icon"
-                                href="#pablo"
-                                onClick={e => e.preventDefault()}
+                                to="/menu"
                             >
-                                <i className="ni ni-cart center" />
+                                <i className="ni ni-books center d-none d-lg-inline-block" />
+                                <p className="m-0">Menu</p>
+                                <span className="nav-link-inner--text d-lg-none"/>
+                            </NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink
+                                tag={Link}
+                                className="nav-link-icon"
+                                to="/shoppingCart"
+                            >
+                                <i className="ni ni-cart center d-none d-lg-inline-block" />
                                 <p className="m-0">Cart</p>
                                 <span className="nav-link-inner--text d-lg-none"/>
                             </NavLink>
                         </NavItem>
                         <NavItem>
                             <NavLink
+                                tag={Link}
                                 className="nav-link-icon"
-                                href="#pablo"
-                                onClick={e => e.preventDefault()}
+                                to=""
                             >
-                                <i className="ni ni-single-02 center" />
+                                <i className="ni ni-single-02 center d-none d-lg-inline-block" />
                                 <p className="m-0">Login/Register</p>
                                 <span className="nav-link-inner--text d-lg-none"/>
                             </NavLink>

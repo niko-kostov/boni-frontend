@@ -1,10 +1,13 @@
 import Layout from '../components/Layout/Layout';
+import {BrowserRouter} from "react-router-dom";
 
 function App() {
   return (
-    <div>
-        <p>Test Application</p>
-    </div>
+    <BrowserRouter>
+        <Layout>
+
+        </Layout>
+    </BrowserRouter>
   );
 }
 

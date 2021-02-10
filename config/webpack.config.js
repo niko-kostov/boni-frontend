@@ -478,7 +478,7 @@ module.exports = function (webpackEnv) {
               }),
               // Don't consider CSS imports dead code even if the
               // containing package claims to have no side effects.
-              // Remove this when webpack adds a warning or an error for this.
+              // Remove this when webpack adds a warning or an error for
               // See https://github.com/webpack/webpack/issues/6571
               sideEffects: true,
             },
@@ -513,7 +513,7 @@ module.exports = function (webpackEnv) {
               ),
               // Don't consider CSS imports dead code even if the
               // containing package claims to have no side effects.
-              // Remove this when webpack adds a warning or an error for this.
+              // Remove this when webpack adds a warning or an error for
               // See https://github.com/webpack/webpack/issues/6571
               sideEffects: true,
             },
@@ -622,7 +622,7 @@ module.exports = function (webpackEnv) {
           },
         }),
       // Watcher doesn't work well if you mistype casing in a path so we use
-      // a plugin that prints an error when you attempt to do this.
+      // a plugin that prints an error when you attempt to do
       // See https://github.com/facebook/create-react-app/issues/240
       isEnvDevelopment && new CaseSensitivePathsPlugin(),
       // If you require a missing module and then `npm install` it, you still have
