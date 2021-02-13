@@ -64,9 +64,11 @@ const Category = () => {
                                     <span className="fa fa-plus"/>
                                 </Button>
                                 <ItemForm click={(event) => toggleModal(event)} defaultModal={defaultModal}/>
-                                <Button className="btn btn-neutral">
+                                <Button className="btn btn-neutral"
+                                        onClick={(event) => toggleModal(event)}>
                                     <span className="fa fa-edit"/>
                                 </Button>
+                                <ItemForm click={(event) => toggleModal(event)} defaultModal={defaultModal}/>
                                 <Button className="btn btn-danger">
                                     <span className="ni ni-fat-delete"/>
                                 </Button>
@@ -75,7 +77,7 @@ const Category = () => {
                     </CustomToggle>
                     <Accordion.Collapse eventKey={category.id}>
                         <Card.Body>
-                            <Item/>
+                            <Item />
                         </Card.Body>
                     </Accordion.Collapse>
                 </Card>
