@@ -1,40 +1,113 @@
 import React from "react";
-import {Col} from "reactstrap";
+import {Button, Col} from "reactstrap";
+import {Card} from "react-bootstrap";
+import ReadMoreReact from 'read-more-react';
 
 const Item = () => {
+    const text = "Some quick example text to build on the card title and make up the bulk of\n" +
+        "                                        the card's content.ome quick example text to build on the card title and make up the bulk of\n" +
+        "                                        the card's contentome quick example text to build on the card title and make up the bulk of\n" +
+        "                                        the card's contentome quick example text to build on the card title and make up the bulk of\n" +
+        "                                        the card's contentome quick example text to build on the card title and make up the bulk of\n" +
+        "                                        the card's contentome quick example text to build on the card title and make up the bulk of\n" +
+        "                                        the card's contentome quick example text to build on the card title and make up the bulk of\n" +
+        "                                        the card's content"
+
+    let showText = (text) => {
+        if(text.length < 200){
+            return text.substring(0, text.length);
+        }else{
+            return text.substring(0, 150).concat("...");
+        }
+    }
+
     return(
         <div>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
-            <h3>Adsadadada</h3>
+                <Card style={{ width: '19rem',margin: 5 }} className="d-inline-flex shadow--hover">
+                        <Card.Img variant="top" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/RedDot_Burger.jpg/1200px-RedDot_Burger.jpg" />
+                        <Card.Body>
+                                <Card.Title>Card Title</Card.Title>
+                                <Card.Text>
+                                    {showText(text)}
+                                </Card.Text>
+                            <Button
+                                className="text-default float-right"
+                                color="link"
+                                href="#pablo"
+                                onClick={e => e.preventDefault()}
+                            >
+                                Details
+                            </Button>
+                        </Card.Body>
+                </Card>
+                <Card style={{ width: '19rem' ,margin: 5}} className="d-inline-flex shadow--hover">
+                        <Card.Img variant="top" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/RedDot_Burger.jpg/1200px-RedDot_Burger.jpg" />
+                        <Card.Body>
+                                <Card.Title>Card Title</Card.Title>
+                                <Card.Text>
+                                    {showText(text)}
+                                </Card.Text>
+                            <Button
+                                className="text-default float-right"
+                                color="link"
+                                href="#pablo"
+                                onClick={e => e.preventDefault()}
+                            >
+                                Details
+                            </Button>
+                        </Card.Body>
+                </Card>
+                <Card style={{ width: '19rem' ,margin: 5 }} className="d-inline-flex shadow--hover">
+                        <Card.Img variant="top" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/RedDot_Burger.jpg/1200px-RedDot_Burger.jpg" />
+                        <Card.Body>
+                                <Card.Title>Card Title</Card.Title>
+                                <Card.Text>
+                                    {showText(text)}
+                                </Card.Text>
+                            <Button
+                                className="text-default float-right"
+                                color="link"
+                                href="#pablo"
+                                onClick={e => e.preventDefault()}
+                            >
+                                Details
+                            </Button>
+                        </Card.Body>
+                </Card>
+                <Card style={{ width: '19rem' ,margin: 5}} className="d-inline-flex shadow--hover">
+                        <Card.Img variant="top" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/RedDot_Burger.jpg/1200px-RedDot_Burger.jpg" />
+                        <Card.Body>
+                                <Card.Title>Card Title</Card.Title>
+                                <Card.Text>
+                                    {showText(text)}
+                                </Card.Text>
+                            <Button
+                                className="text-default float-right"
+                                color="link"
+                                href="#pablo"
+                                onClick={e => e.preventDefault()}
+                            >
+                                Details
+                            </Button>
+                        </Card.Body>
+                </Card>
+                <Card style={{ width: '19rem',margin: 5 }} className="d-inline-flex shadow--hover">
+                        <Card.Img variant="top" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/RedDot_Burger.jpg/1200px-RedDot_Burger.jpg" />
+                        <Card.Body>
+                                <Card.Title>Card Title</Card.Title>
+                                <Card.Text>
+                                    {showText(text)}
+                                </Card.Text>
+                            <Button
+                                className="text-default float-right"
+                                color="link"
+                                href="#pablo"
+                                onClick={e => e.preventDefault()}
+                            >
+                                Details
+                            </Button>
+                        </Card.Body>
+                </Card>
         </div>
     );
 }

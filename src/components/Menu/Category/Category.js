@@ -1,120 +1,88 @@
 import React, {useState} from "react";
-import classnames from "classnames";
+import {Accordion, Card} from "react-bootstrap";
+import './Category.css';
+import { useAccordionToggle } from "react-bootstrap/AccordionToggle";
+import AccordionContext from "react-bootstrap/AccordionContext";
 
 // reactstrap components
 import {
-    Card,
-    CardBody,
-    NavItem,
-    NavLink,
-    Nav,
-    TabContent,
-    TabPane,
-    Row,
-    Col
+    Button
 } from "reactstrap";
 import Item from "../Item/Item";
-const Category = () => {
-    let [plainTabs, setPlainTabs] = useState(1);
+import ItemForm from "../Item/ItemForm/ItemForm";
 
-    let toggleNavs = (e, state, index) => {
-        setPlainTabs(index);
-    };
+function CustomToggle({ children, eventKey, callback }) {
+    const currentEventKey = React.useContext(AccordionContext);
+    const decoratedOnClick = useAccordionToggle(
+        eventKey,
+        () => callback && callback(eventKey)
+    );
+    const isCurrentEventKey = currentEventKey === eventKey;
+    return (
+        <Button
+            type="button"
+            style={{
+                backgroundColor: isCurrentEventKey ?  "#d5d8de" : "#e6e9f0",
+                color: isCurrentEventKey ? "white" : "white"}}
+            onClick={decoratedOnClick}
+        >
+            {children}
+        </Button>
+    );
+}
+
+const Category = () => {
+    let [defaultModal, setDefaultModal] = useState(false);
+
+    let toggleModal = (event) => {
+        event.stopPropagation();
+        setDefaultModal(!defaultModal);
+    }
+
+    const categories = [
+        { id: 1, categoryName: "Burgers"},
+        { id: 2, categoryName: "Pizza"},
+        { id: 3, categoryName: "Drinks"}
+    ];
 
     return(
-        <Row className="justify-content-center">
-            <Col className="mt-5 mt-lg-0" lg="8">
-                {/* Menu */}
-                <div className="nav-wrapper">
-                    <Nav
-                        className="nav-fill flex-column flex-md-row"
-                        id="tabs-icons-text"
-                        pills
-                        role="tablist"
-                    >
-                        <NavItem>
-                            <NavLink
-                                aria-selected={plainTabs === 1}
-                                className={classnames("mb-sm-3 mb-md-0", {
-                                    active: plainTabs === 1
-                                })}
-                                onClick={e => toggleNavs(e, "plainTabs", 1)}
-                                href="#pablo"
-                                role="tab"
-                            >
-                                Home
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink
-                                aria-selected={plainTabs === 2}
-                                className={classnames("mb-sm-3 mb-md-0", {
-                                    active: plainTabs === 2
-                                })}
-                                onClick={e => toggleNavs(e, "plainTabs", 2)}
-                                href="#pablo"
-                                role="tab"
-                            >
-                                Profile
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink
-                                aria-selected={plainTabs === 3}
-                                className={classnames("mb-sm-3 mb-md-0", {
-                                    active: plainTabs === 3
-                                })}
-                                onClick={e => toggleNavs(e, "plainTabs", 3)}
-                                href="#pablo"
-                                role="tab"
-                            >
-                                Messages
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink
-                                aria-selected={plainTabs === 4}
-                                className={classnames("mb-sm-3 mb-md-0", {
-                                    active: plainTabs === 4
-                                })}
-                                onClick={e => toggleNavs(e, "plainTabs", 4)}
-                                href="#pablo"
-                                role="tab"
-                            >
-                                Messages
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink
-                                aria-selected={plainTabs === 5}
-                                className={classnames("mb-sm-3 mb-md-0", {
-                                    active: plainTabs === 5
-                                })}
-                                onClick={e => toggleNavs(e, "plainTabs", 5)}
-                                href="#pablo"
-                                role="tab"
-                            >
-                                Messages
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink
-                                aria-selected={plainTabs === 6}
-                                className={classnames("mb-sm-3 mb-md-0", {
-                                    active: plainTabs === 6
-                                })}
-                                onClick={e => toggleNavs(e, "plainTabs", 6)}
-                                href="#pablo"
-                                role="tab"
-                            >
-                                Messages
-                            </NavLink>
-                        </NavItem>
-                    </Nav>
-                </div>
-                <Item/>
-            </Col>
-        </Row>
+        <>
+            {categories.map(category => (
+            <Accordion className="container shadow-sm p-0 mb-2 bg-white rounded"
+                       key={category.id}
+                       defaultActiveKey={category.id}>
+                <Card>
+                    <CustomToggle
+                        eventKey={category.id}>
+                        <div>
+                            <div className="float-left">
+                                <h5 style={{paddingTop: 5}}>{category.categoryName}</h5>
+                            </div>
+                            <div className="float-right">
+                                <Button className="btn btn-info"
+                                        onClick={(event) => toggleModal(event)}>
+                                    <span className="fa fa-plus"/>
+                                </Button>
+                                <ItemForm click={(event) => toggleModal(event)} defaultModal={defaultModal}/>
+                                <Button className="btn btn-neutral">
+                                    <span className="fa fa-edit"/>
+                                </Button>
+                                <Button className="btn btn-danger">
+                                    <span className="ni ni-fat-delete"/>
+                                </Button>
+                            </div>
+                        </div>
+                    </CustomToggle>
+                    <Accordion.Collapse eventKey={category.id}>
+                        <Card.Body>
+                            <Item/>
+                        </Card.Body>
+                    </Accordion.Collapse>
+                </Card>
+            </Accordion>
+            ))}
+        </>
+
     );
 }
 
