@@ -39,7 +39,7 @@ const ItemDetails = (props) => {
             <div className="modal-body">
                 <Card.Img
                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/RedDot_Burger.jpg/1200px-RedDot_Burger.jpg"/>
-                <p>
+                <p className="pt-3">
                     Item details and ingredients.
                 </p>
                 <ItemPrice/>

@@ -1,14 +1,27 @@
 import React from 'react';
-import {Button, Modal} from "reactstrap";
+import {
+    Button, CustomInput,
+    Form,
+    FormGroup,
+    Input,
+    InputGroup,
+    InputGroupAddon,
+    InputGroupButtonDropdown,
+    InputGroupText,
+    Label,
+    Modal
+} from "reactstrap";
+import FormFileInput from "react-bootstrap/FormFileInput";
+import FormCheckInput from "react-bootstrap/FormCheckInput";
 
 const ItemForm = (props) => {
     return(
         <Modal className="modal-dialog-centered"
-               isOpen={props.defaultModal}
+               isOpen={props.itemFormModal}
                toggle={props.click}>
             <div className="modal-header">
                 <h6 className="modal-title" id="modal-title-default">
-                    Type your modal title
+                    {props.type ? "Edit item" : "Add item"}
                 </h6>
                 <button
                     aria-label="Close"
@@ -21,21 +34,39 @@ const ItemForm = (props) => {
                 </button>
             </div>
             <div className="modal-body">
-                <p>
-                    Far far away, behind the word mountains, far from the
-                    countries Vokalia and Consonantia, there live the blind texts.
-                    Separated they live in Bookmarksgrove right at the coast of
-                    the Semantics, a large language ocean.
-                </p>
-                <p>
-                    A small river named Duden flows by their place and supplies it
-                    with the necessary regelialia. It is a paradisematic country,
-                    in which roasted parts of sentences fly into your mouth.
-                </p>
+                <Form>
+                    <FormGroup>
+                        <Label for="itemNameInput">Item Name</Label>
+                        <Input
+                            id="itemNameInput"
+                            className="form-control"
+                            placeholder="Item Name"
+                            type="text"
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="itemDescriptionInput">Item Description</Label>
+                        <textarea
+                            id="itemDescriptionInput"
+                            className="form-control"
+                            placeholder="Item Description"
+                            type="text"
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="itemImageInput">Item Image Link</Label>
+                        <Input
+                            id="itemImageInput"
+                            className="form-control"
+                            placeholder="Item Image Link"
+                            type="text"
+                        />
+                    </FormGroup>
+                </Form>
             </div>
             <div className="modal-footer">
                 <Button color="primary" type="button">
-                    Save changes
+                    {props.type ? "Save changes" : "Add item"}
                 </Button>
                 <Button
                     className="ml-auto"

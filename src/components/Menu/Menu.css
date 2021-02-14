@@ -6,3 +6,17 @@
     width: 100%;
     height: 115px;
 }
+
+@media (max-width: 991px) {
+    .custom-style{
+        height: 80px !important;
+    }
+    .section {
+        padding-bottom: 30px !important;
+    }
+}
+
+.middle-screen{
+    margin: 0 auto 15px auto !important;
+    display:block !important;
+}

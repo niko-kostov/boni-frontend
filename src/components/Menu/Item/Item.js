@@ -1,26 +1,25 @@
 import React, {useState} from "react";
 import {Button, Col} from "reactstrap";
-import {Card} from "react-bootstrap";
-import ReadMoreReact from 'read-more-react';
+import {Card, Image} from "react-bootstrap";
 import ItemForm from "./ItemForm/ItemForm";
+import './Item.css';
+
 import ItemDetails from "./ItemDetails/ItemDetails";
 
-const Item = () => {
+const Item = (props) => {
+    let [itemFormModal, setItemFormModal] = useState(false);
     let [defaultModal, setDefaultModal] = useState(false);
+
+
+    let toggleItemForm = (event) => {
+        event.stopPropagation();
+        setItemFormModal(!itemFormModal);
+    }
 
     let toggleModal = (event) => {
         event.stopPropagation();
         setDefaultModal(!defaultModal);
     }
-
-    const text = "Some quick example text to build on the card title and make up the bulk of\n" +
-        "                                        the card's content.ome quick example text to build on the card title and make up the bulk of\n" +
-        "                                        the card's contentome quick example text to build on the card title and make up the bulk of\n" +
-        "                                        the card's contentome quick example text to build on the card title and make up the bulk of\n" +
-        "                                        the card's contentome quick example text to build on the card title and make up the bulk of\n" +
-        "                                        the card's contentome quick example text to build on the card title and make up the bulk of\n" +
-        "                                        the card's contentome quick example text to build on the card title and make up the bulk of\n" +
-        "                                        the card's content"
 
     let showText = (text) => {
         if (text.length < 200) {
@@ -32,24 +31,35 @@ const Item = () => {
 
     return (
         <div>
-            <Card style={{width: '19rem', margin: 5}} className="d-inline-flex shadow--hover">
-                <Card.Img variant="top"
-                          src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/RedDot_Burger.jpg/1200px-RedDot_Burger.jpg"/>
-                <Card.Body>
-                    <Card.Title>Card Title</Card.Title>
-                    <Card.Text>
-                        {showText(text)}
-                    </Card.Text>
-                    <Button
-                        className="text-default float-right"
-                        color="link"
-                        onClick={(event) => toggleModal(event)}
-                    >
-                        Details
+                <Card style={{width: '20rem', margin: 5}}
+                      id="itemCard"
+                      className="d-inline-flex shadow--hover"
+                      >
+                    <Image className="card-image"
+                        variant="top"
+                              src={props.item.itemImage}/>
+                    <Button id="editItemButton"
+                            onClick={(event) => toggleItemForm(event)}>
+                        <span className="fa fa-edit"/>
                     </Button>
-                    <ItemDetails click={(event) => toggleModal(event)} defaultModal={defaultModal}/>
-                </Card.Body>
-            </Card>
+                    <ItemForm type={true}
+                              click={(event) => toggleItemForm(event)}
+                              itemFormModal={itemFormModal}/>
+                    <Card.Body>
+                        <Card.Title>{props.item.itemName}</Card.Title>
+                        <Card.Text>
+                            {showText(props.item.itemDescription)}
+                        </Card.Text>
+                        <Button
+                            className="text-default float-right"
+                            color="link"
+                            onClick={(event) => toggleModal(event)}
+                        >
+                            Details
+                        </Button>
+                        <ItemDetails click={(event) => toggleModal(event)} defaultModal={defaultModal}/>
+                    </Card.Body>
+                </Card>
         </div>
     );
 }

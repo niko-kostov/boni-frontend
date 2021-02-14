@@ -1,0 +1,24 @@
+.card-image {
+    height: 280px;
+    width: 100%;
+}
+
+#itemCard > #editItemButton{
+    visibility: hidden;
+    opacity: 0;
+    border: none;
+    position: absolute;
+    right: 0;
+    margin: 5px !important;
+}
+
+#itemCard:hover > #editItemButton{
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s, opacity 0.3s linear !important;
+    background-color: whitesmoke;
+    border: none;
+    position: absolute;
+    right: 0;
+    margin: 5px !important;
+}

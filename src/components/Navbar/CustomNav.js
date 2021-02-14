@@ -2,6 +2,8 @@ import React, {useReducer, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import Headroom from "headroom.js";
 import './CustomNav.css';
+import logo from '../../assets/img/boni-logo.png';
+
 
 import {
     UncontrolledCollapse,
@@ -18,6 +20,7 @@ import {
     Row,
     Col
 } from "reactstrap";
+import {Image} from "react-bootstrap";
 
 
 const CustomNav = () => {
@@ -31,8 +34,8 @@ const CustomNav = () => {
                 expand="lg"
                 id="navbar-main">
             <Container>
-                <NavbarBrand href="#pablo" onClick={e => e.preventDefault()}>
-                    Default Color
+                <NavbarBrand href="/">
+                    <Image id="brandImage" src={logo} style={{ width: "80px", height: "80px" }}/>
                 </NavbarBrand>
                 <button className="navbar-toggler" id="navbar-default">
                     <span className="navbar-toggler-icon" />
@@ -44,10 +47,7 @@ const CustomNav = () => {
                         <Row>
                             <Col className="collapse-brand" xs="6">
                                 <Link to="/">
-                                    <img
-                                        alt="..."
-                                        src=""
-                                    />
+                                    <Image src={logo} style={{ width: "50px", height: "50px" }}/>
                                 </Link>
                             </Col>
                             <Col className="collapse-close" xs="6">

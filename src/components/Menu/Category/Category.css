@@ -1,2 +1,16 @@
-.customHeading{
+@media (min-width: 800px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1200px) {
+    .cards {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.cards {
+    display: grid;
+    justify-items: center;
 }
