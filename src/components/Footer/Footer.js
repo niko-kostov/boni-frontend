@@ -89,10 +89,11 @@ const Footer = () => {
                         <div className=" copyright">
                             © {new Date().getFullYear()}{" "}
                             <a
-                                href="https://www.creative-tim.com?ref=adsr-footer"
+                                href="https://finki.ukim.mk/"
                                 target="_blank"
                             >
-                                Creative Tim
+
+                                Finki
                             </a>
                             .
                         </div>
@@ -101,10 +102,10 @@ const Footer = () => {
                         <Nav className=" nav-footer justify-content-end">
                             <NavItem>
                                 <NavLink
-                                    href="https://www.creative-tim.com?ref=adsr-footer"
+                                    href="https://finki.ukim.mk/"
                                     target="_blank"
                                 >
-                                    Creative Tim
+                                    Finki
                                 </NavLink>
                             </NavItem>
                             <NavItem>
@@ -113,22 +114,6 @@ const Footer = () => {
                                     target="_blank"
                                 >
                                     About Us
-                                </NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink
-                                    href="http://blog.creative-tim.com?ref=adsr-footer"
-                                    target="_blank"
-                                >
-                                    Blog
-                                </NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink
-                                    href="https://github.com/creativetimofficial/argon-design-system-react/blob/master/LICENSE.md"
-                                    target="_blank"
-                                >
-                                    MIT License
                                 </NavLink>
                             </NavItem>
                         </Nav>

@@ -8,3 +8,10 @@
         height: 50px !important;
     }
 }
+
+@media (min-width: 992px) {
+    .navbar-nav .dropdown-menu-right:before {
+        right: 40px !important;
+        left: auto !important;
+    }
+}

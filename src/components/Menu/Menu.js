@@ -25,7 +25,7 @@ const Menu = () => {
             </section>
             <div className="w-100">
                 <Button
-                    className="btn btn-outline-success middle-screen"
+                    className="btn btn-outline-info container middle-screen-menu"
                     onClick={(event) => toggleCategoryForm(event)}
                 >
                     Add category

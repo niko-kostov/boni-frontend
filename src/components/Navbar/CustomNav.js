@@ -1,8 +1,9 @@
-import React, {useReducer, useEffect} from 'react';
+import React, {useReducer, useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import Headroom from "headroom.js";
 import './CustomNav.css';
 import logo from '../../assets/img/boni-logo.png';
+import restaurantImage from '../../assets/img/restaurantImage.jpg'
 
 
 import {
@@ -24,6 +25,8 @@ import {Image} from "react-bootstrap";
 
 
 const CustomNav = () => {
+    let [isAuthenticated, setIsAuthenticated] = useState(true);
+
     useEffect(() => {
         let headroom = new Headroom(document.getElementById("navbar-main"));
         headroom.init();
@@ -92,17 +95,39 @@ const CustomNav = () => {
                                 <span className="nav-link-inner--text d-lg-none"/>
                             </NavLink>
                         </NavItem>
-                        <NavItem>
-                            <NavLink
-                                tag={Link}
-                                className="nav-link-icon"
-                                to=""
-                            >
-                                <i className="ni ni-single-02 center d-none d-lg-inline-block" />
-                                <p className="m-0">Login/Register</p>
-                                <span className="nav-link-inner--text d-lg-none"/>
-                            </NavLink>
-                        </NavItem>
+                        {isAuthenticated ?
+                            <UncontrolledDropdown nav inNavbar>
+                                <DropdownToggle nav style={{padding: 8}}>
+                                    <img src={restaurantImage} style={{width: 60, height: 60, padding: 0}} className="rounded-circle"/>
+                                    <span className="nav-link-inner--text d-lg-none"/>
+                                </DropdownToggle>
+                                <DropdownMenu
+                                    aria-labelledby="nav-inner-primary_dropdown_1"
+                                    right
+                                >
+                                    <DropdownItem
+                                        tag={Link}
+                                        to="/profile"
+                                    >
+                                        Profile
+                                    </DropdownItem>
+                                    <DropdownItem>
+                                        Cart history
+                                    </DropdownItem>
+                                </DropdownMenu>
+                            </UncontrolledDropdown> :
+                            <NavItem>
+                                <NavLink
+                                    tag={Link}
+                                    className="nav-link-icon"
+                                    to="/login"
+                                >
+                                    <i className="ni ni-single-02 center d-none d-lg-inline-block" />
+                                    <p className="m-0">Login/Register</p>
+                                    <span className="nav-link-inner--text d-lg-none"/>
+                                </NavLink>
+                            </NavItem>
+                        }
                     </Nav>
                 </UncontrolledCollapse>
             </Container>
