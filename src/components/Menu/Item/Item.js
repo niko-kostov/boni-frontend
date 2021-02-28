@@ -31,35 +31,38 @@ const Item = (props) => {
 
     return (
         <div>
-                <Card style={{width: '20rem', margin: 5}}
-                      id="itemCard"
-                      className="d-inline-flex shadow--hover"
-                      >
-                    <Image className="card-image"
-                        variant="top"
-                              src={props.item.itemImage}/>
-                    <Button id="editItemButton"
-                            onClick={(event) => toggleItemForm(event)}>
-                        <span className="fa fa-edit"/>
+            <Card style={{width: '20rem', margin: 5}}
+                  id="itemCard"
+                  className="d-inline-flex shadow--hover"
+            >
+                <Image className="card-image"
+                       variant="top"
+                       src={props.item.itemImage}/>
+                <Button id="editItemButton"
+                        onClick={(event) => toggleItemForm(event)}>
+                    <span className="fa fa-edit"/>
+                </Button>
+                <ItemForm type={true}
+                          click={(event) => toggleItemForm(event)}
+                          itemFormModal={itemFormModal}/>
+                <Card.Body>
+                    <Card.Title>{props.item.name}</Card.Title>
+                    <Card.Text>
+                        {showText(props.item.description)}
+                    </Card.Text>
+                    <Button
+                        className="text-default float-right"
+                        color="link"
+                        onClick={(event) => toggleModal(event)}
+                    >
+                        Details
                     </Button>
-                    <ItemForm type={true}
-                              click={(event) => toggleItemForm(event)}
-                              itemFormModal={itemFormModal}/>
-                    <Card.Body>
-                        <Card.Title>{props.item.itemName}</Card.Title>
-                        <Card.Text>
-                            {showText(props.item.itemDescription)}
-                        </Card.Text>
-                        <Button
-                            className="text-default float-right"
-                            color="link"
-                            onClick={(event) => toggleModal(event)}
-                        >
-                            Details
-                        </Button>
-                        <ItemDetails click={(event) => toggleModal(event)} defaultModal={defaultModal}/>
-                    </Card.Body>
-                </Card>
+                    <ItemDetails click={(event) => toggleModal(event)}
+                                 defaultModal={defaultModal}
+                                 item={props.item}
+                    />
+                </Card.Body>
+            </Card>
         </div>
     );
 }

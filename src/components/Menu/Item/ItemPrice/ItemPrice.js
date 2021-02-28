@@ -1,16 +1,16 @@
 import React from 'react';
 
-const ItemPrice = () => {
+const ItemPrice = (props) => {
     return(
         <div className="custom-control custom-radio mb-3">
             <input
                 className="custom-control-input"
-                id="customRadio1"
-                name="custom-radio-1"
+                id={props.itemPrice.id}
+                name="itemPrices"
                 type="radio"
             />
-            <label className="custom-control-label font-weight-600" htmlFor="customRadio1">
-                <span>250 ден</span>
+            <label className="custom-control-label font-weight-600" htmlFor={props.itemPrice.id}>
+                <span>{props.itemPrice.size} {props.itemPrice.price} ден</span>
             </label>
         </div>
     );

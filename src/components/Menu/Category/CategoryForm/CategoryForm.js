@@ -1,9 +1,29 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Card} from "react-bootstrap";
 import ItemPrice from "../../Item/ItemPrice/ItemPrice";
 import {Button, FormGroup, Input, Label, Modal} from "reactstrap";
+import * as actions from "../../../../store/actions";
+import {connect} from "react-redux";
 
 const CategoryForm = (props) =>{
+    const [categoryName, setCategoryName] = useState("");
+    useEffect(() => {
+        if(props.type){
+            setCategoryName(props.currentCategory.name);
+        }else{
+            setCategoryName("");
+        }
+    }, [props]);
+
+    const handleSubmitCategory = (event) => {
+        if(props.type){
+            props.editCategory(categoryName, props.currentCategory.id);
+        }else{
+            props.createCategory(categoryName);
+        }
+        props.click(event);
+    }
+
     return(
         <Modal className="modal-dialog-centered"
                isOpen={props.editCategoryModal}
@@ -29,12 +49,18 @@ const CategoryForm = (props) =>{
                         id="catNameInput"
                         className="form-control"
                         placeholder="Category Name"
+                        value={categoryName}
+                        onChange={(event) => setCategoryName(event.target.value)}
                         type="text"
                     />
                 </FormGroup>
             </div>
             <div className="modal-footer d-inline-block">
-                <Button color="primary" type="button">
+                <Button
+                    color="primary"
+                    type="button"
+                    onClick={(event) => handleSubmitCategory(event)}
+                >
                     {props.type ? "Save changes" : "Add category"}
                 </Button>
                 <Button
@@ -52,4 +78,17 @@ const CategoryForm = (props) =>{
 
 }
 
-export default CategoryForm;
+const mapStateToProps = (state) => {
+    return {
+        currentCategory: state.menuReducer.currentCategory
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        createCategory: (categoryName) => dispatch(actions.createCategory(categoryName)),
+        editCategory: (categoryName, categoryId) => dispatch(actions.editCategory(categoryName, categoryId)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryForm);

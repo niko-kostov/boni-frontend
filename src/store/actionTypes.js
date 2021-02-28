@@ -1,0 +1,23 @@
+export const AUTH_SUCCESS = 'AUTH_SUCCESS';
+export const AUTH_FAIL = 'AUTH_FAIL';
+export const AUTH_LOGOUT = 'AUTH_LOGOUT';
+export const AUTH_START = 'AUTH_START';
+
+export const GET_MENU_SUCCESS = 'GET_MENU_SUCCESS'
+export const GET_MENU_ERROR = 'GET_MENU_ERROR'
+
+export const SET_CURRENT_CATEGORY = 'SET_CURRENT_CATEGORY';
+export const GET_CATEGORIES = 'GET_CATEGORIES';
+export const CREATE_CATEGORY = 'CREATE_CATEGORY';
+export const DELETE_CATEGORY = 'DELETE_CATEGORY';
+export const EDIT_CATEGORY = 'EDIT_CATEGORY';
+
+export const GET_ITEMS = 'GET_ITEMS';
+export const EDIT_ITEM = 'EDIT_ITEM';
+export const DELETE_ITEM = 'DELETE_ITEM';
+export const CREATE_ITEM = 'CREATE_ITEM';
+
+export const GET_ITEM_PRICES = 'GET_ITEM_PRICES';
+export const CREATE_ITEM_PRICE = 'CREATE_ITEM_PRICE';
+export const EDIT_ITEM_PRICE = 'EDIT_ITEM_PRICE';
+export const DELETE_ITEM_PRICE = 'DELETE_ITEM_PRICE';

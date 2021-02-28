@@ -11,10 +11,15 @@ import "./assets/css/argon-design-system-react.css";*/
 import "./assets/vendor/nucleo/css/nucleo.css";
 import "./assets/vendor/font-awesome/css/font-awesome.min.css";
 import "./assets/scss/argon-design-system-react.scss?v1.1.0";
+import {Provider} from "react-redux";
+import store from "./store/store";
+
 
 ReactDOM.render(
   <React.Fragment>
-    <App />
+      <Provider store={store}>
+          <App />
+      </Provider>
   </React.Fragment>,
   document.getElementById('root')
 );

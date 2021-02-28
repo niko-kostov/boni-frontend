@@ -24,7 +24,7 @@ const ItemDetails = (props) => {
                toggle={props.click}>
             <div className="modal-header">
                 <h4 className="modal-title" id="modal-title-default">
-                    Item name
+                    {props.item.name}
                 </h4>
                 <button
                     aria-label="Close"
@@ -38,11 +38,16 @@ const ItemDetails = (props) => {
             </div>
             <div className="modal-body">
                 <Card.Img
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/RedDot_Burger.jpg/1200px-RedDot_Burger.jpg"/>
+                    src={props.item.itemImage}/>
                 <p className="pt-3">
-                    Item details and ingredients.
+                    {props.item.description}
                 </p>
-                <ItemPrice/>
+                {props.item.itemPrices.sort((p1, p2) => p1.price - p2.price).map(itemPrice => {
+                    return <ItemPrice
+                        key={itemPrice.id}
+                        itemPrice={itemPrice}
+                    />
+                })}
             </div>
             <div className="modal-footer d-inline-block">
                     <Button className="btn btn-outline-info">
