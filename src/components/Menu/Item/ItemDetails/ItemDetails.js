@@ -2,23 +2,24 @@ import React, {useState} from 'react';
 import {Button, FormGroup, Input, Label, Modal} from "reactstrap";
 import {Card, Image} from "react-bootstrap";
 import ItemPrice from "../ItemPrice/ItemPrice";
+import './ItemDetails.css';
 
 const ItemDetails = (props) => {
     let [numberOfItems, setNumberOfItems] = useState(1);
 
     let increaseNumber = () => {
-        if(numberOfItems !== 10){
+        if (numberOfItems !== 10) {
             setNumberOfItems(numberOfItems + 1);
         }
     }
 
     let decreaseNumber = () => {
-        if(numberOfItems !== 1){
+        if (numberOfItems !== 1) {
             setNumberOfItems(numberOfItems - 1);
         }
     }
 
-    return(
+    return (
         <Modal className="modal-dialog-centered"
                isOpen={props.defaultModal}
                toggle={props.click}>
@@ -48,29 +49,50 @@ const ItemDetails = (props) => {
                         itemPrice={itemPrice}
                     />
                 })}
+                <div className="item-price-add-form">
+                    <div style={{display: "flex"}}>
+                        <Input type={"number"} bsSize={"sm"}
+                               className="input-style"
+                               placeholder="Item Price"
+                               id="numberOfItems"/>
+                        <div className="btn-group" style={{margin: "0 5px"}}>
+                            <select className="custom-select mr-sm-2" style={{height: "auto", padding: "0rem 1.75rem 0rem 0.75rem"}} id="inlineFormCustomSelect">
+                                <option selected>Size</option>
+                                <option value="1">SMALL</option>
+                                <option value="2">MEDIUM</option>
+                                <option value="3">LARGE</option>
+                            </select>
+                        </div>
+                    </div>
+                    <Button size="sm"
+                            className="btn btn-success add-item-price-button"
+                            type="button">
+                        <span className="fa fa-plus"/>
+                    </Button>
+                </div>
             </div>
             <div className="modal-footer d-inline-block">
-                    <Button className="btn btn-outline-info">
-                        <span className="fa fa-shopping-cart"/>
-                        Add to cart
+                <Button className="btn btn-outline-info">
+                    <span className="fa fa-shopping-cart"/>
+                    Add to cart
+                </Button>
+                <div className="d-inline-flex float-right">
+                    <Button className="btn btn-outline-danger"
+                            type="button"
+                            style={{margin: 0}}
+                            onClick={decreaseNumber}>
+                        <span className="fa fa-minus"/>
                     </Button>
-                    <div className="d-inline-flex float-right">
-                        <Button className="btn btn-outline-danger"
-                                type="button"
-                                style={{margin: 0}}
-                                onClick={decreaseNumber}>
-                            <span className="fa fa-minus"/>
-                        </Button>
-                        <Input size={1}
-                               id="numberOfItems"
-                               value={numberOfItems}
-                        />
-                        <Button className="btn btn-outline-success"
-                                type="button"
-                                onClick={increaseNumber}>
-                            <span className="fa fa-plus"/>
-                        </Button>
-                    </div>
+                    <Input size={1}
+                           id="numberOfItems"
+                           value={numberOfItems}
+                    />
+                    <Button className="btn btn-outline-success"
+                            type="button"
+                            onClick={increaseNumber}>
+                        <span className="fa fa-plus"/>
+                    </Button>
+                </div>
             </div>
         </Modal>
     );

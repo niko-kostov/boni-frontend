@@ -1,0 +1,8 @@
+.delete-item-price-button{
+    float: right !important;
+}
+
+.item-price-root{
+    display: flex !important;
+    justify-content: space-between !important;
+}

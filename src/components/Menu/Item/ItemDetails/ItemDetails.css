@@ -1,0 +1,19 @@
+.item-price-add-form{
+    border: 1px solid #AAAAAA;
+    display: flex;
+    justify-content: space-between !important;
+    padding: 5px 10px;
+    border-radius: 6px;
+}
+
+.dropdown-button {
+    box-shadow: none !important;
+}
+
+.input-style{
+    width: auto !important;
+}
+
+.add-item-price-button{
+    float: right !important;
+}
