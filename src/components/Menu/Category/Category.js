@@ -42,6 +42,7 @@ const Category = (props) => {
 
     let toggleItemForm = (event) => {
         event.stopPropagation();
+        dispatch({type: actionTypes.SET_CURRENT_CATEGORY, category: props.category});
         setItemFormModal(!itemFormModal);
     }
 
@@ -60,7 +61,7 @@ const Category = (props) => {
     const dispatch = useDispatch()
 
     return(
-        <>
+        <React.Fragment>
             <Accordion className="container shadow-sm p-0 mb-2 bg-white rounded"
                        key={props.category.id}
                        defaultActiveKey={props.category.id}>
@@ -99,14 +100,14 @@ const Category = (props) => {
                         <Card.Body className="cards">
                             {props.category.items.map(item => (
                                 <Item key={item.id}
-                                    item={item}/>
+                                    item={item}
+                                    category={props.category}/>
                             ))}
                         </Card.Body>
                     </Accordion.Collapse>
                 </Card>
             </Accordion>
-        </>
-
+        </React.Fragment>
     );
 }
 export default Category;

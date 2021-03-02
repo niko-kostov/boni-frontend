@@ -5,6 +5,7 @@ import {updateObject} from "../../shared/utility";
 const initialState = {
     menu: {},
     currentCategory: {},
+    currentItem: {},
     error: false
 };
 
@@ -22,6 +23,10 @@ const getMenuError = (state, action) => {
 
 const setCurrentCategory = (state, action) => {
     return updateObject(state, {currentCategory: action.category});
+}
+
+const setCurrentItem = (state, action) => {
+    return updateObject(state, {currentItem: action.item});
 }
 
 const createCategory = (state, action) => {
@@ -45,6 +50,33 @@ const deleteCategory = (state, action) => {
     return updateObject(state, {menu: tempMenu})
 }
 
+const addItemInsideCategoryWithId = (state, action) => {
+    const tempMenu = {...state.menu}
+    const tempCategory = tempMenu.categories.find(cat => cat.id === action.categoryId)
+    tempCategory.items.push(action.item)
+    //check
+    return updateObject(state, {menu: tempMenu})
+}
+
+const editItemInsideCategoryWithId = (state, action) => {
+    debugger;
+    const tempMenu = {...state.menu}
+    const tempCategory = tempMenu.categories.find(cat => cat.id === action.categoryId)
+    const tempItems = tempCategory.items.filter(item => item.id !== action.item.id)
+    tempItems.push(action.item);
+    tempCategory.items = tempItems;
+    return updateObject(state, {menu: tempMenu})
+}
+
+const deleteItemInsideCategoryWithId = (state, action) => {
+    debugger;
+    const tempMenu = {...state.menu}
+    const tempCategory = tempMenu.categories.find(cat => cat.id === action.categoryId)
+    const tempItems = tempCategory.items.filter(item => item.id !== action.item.id)
+    tempCategory.items = tempItems
+    return updateObject(state, {menu: tempMenu})
+}
+
 const menuReducer = ( state = initialState, action ) => {
     switch ( action.type ) {
         case actionTypes.GET_MENU_SUCCESS:
@@ -59,6 +91,14 @@ const menuReducer = ( state = initialState, action ) => {
             return editCategory(state, action);
         case actionTypes.DELETE_CATEGORY:
             return deleteCategory(state, action);
+        case actionTypes.SET_CURRENT_ITEM:
+            return setCurrentItem(state, action);
+        case actionTypes.ADD_ITEM_IN_CATEGORY:
+            return addItemInsideCategoryWithId(state, action);
+        case actionTypes.EDIT_ITEM_IN_CATEGORY:
+            return editItemInsideCategoryWithId(state, action);
+        case actionTypes.DELETE_ITEM_IN_CATEGORY:
+            return deleteItemInsideCategoryWithId(state, action);
         default: return state;
     }
 };

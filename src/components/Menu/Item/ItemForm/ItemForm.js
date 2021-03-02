@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Button, CustomInput,
     Form,
@@ -13,8 +13,37 @@ import {
 } from "reactstrap";
 import FormFileInput from "react-bootstrap/FormFileInput";
 import FormCheckInput from "react-bootstrap/FormCheckInput";
+import * as actions from "../../../../store/actions";
+import {connect} from "react-redux";
 
 const ItemForm = (props) => {
+    const [itemName, setItemName] = useState("");
+    const [itemDescription, setItemDescription] = useState("");
+    const [itemImage, setItemImage] = useState("");
+
+    useEffect(() => {
+        if(props.type){
+            setItemName(props.currentItem.name);
+            setItemDescription(props.currentItem.description);
+            setItemImage(props.currentItem.itemImage);
+        }else{
+            setItemName("");
+            setItemDescription("");
+            setItemDescription("");
+        }
+    }, [props]);
+
+    const handleSubmitCategory = (event) => {
+        if(props.type){
+            debugger;
+            props.editItemInsideCategoryWithId(itemName, itemDescription, itemImage, props.currentCategory.id, props.currentItem.id);
+        }else{
+            props.addItemInsideCategoryWithId(itemName, itemDescription, itemImage, props.currentCategory.id);
+        }
+        props.click(event);
+    }
+
+
     return(
         <Modal className="modal-dialog-centered"
                isOpen={props.itemFormModal}
@@ -41,6 +70,8 @@ const ItemForm = (props) => {
                             id="itemNameInput"
                             className="form-control"
                             placeholder="Item Name"
+                            value={itemName}
+                            onChange={(event) => setItemName(event.target.value)}
                             type="text"
                         />
                     </FormGroup>
@@ -50,6 +81,8 @@ const ItemForm = (props) => {
                             id="itemDescriptionInput"
                             className="form-control"
                             placeholder="Item Description"
+                            value={itemDescription}
+                            onChange={(event) => setItemDescription(event.target.value)}
                             type="text"
                         />
                     </FormGroup>
@@ -59,13 +92,16 @@ const ItemForm = (props) => {
                             id="itemImageInput"
                             className="form-control"
                             placeholder="Item Image Link"
+                            value={itemImage}
+                            onChange={(event) => setItemImage(event.target.value)}
                             type="text"
                         />
                     </FormGroup>
                 </Form>
             </div>
             <div className="modal-footer">
-                <Button color="primary" type="button">
+                <Button color="primary" type="button"
+                        onClick={(event) => handleSubmitCategory(event)}>
                     {props.type ? "Save changes" : "Add item"}
                 </Button>
                 <Button
@@ -82,4 +118,19 @@ const ItemForm = (props) => {
     );
 }
 
-export default ItemForm;
+const mapStateToProps = (state) => {
+    return {
+        currentCategory: state.menuReducer.currentCategory,
+        currentItem: state.menuReducer.currentItem
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addItemInsideCategoryWithId: (itemName, itemDescription, itemImage, categoryId) => dispatch(actions.addItemInsideCategoryWithId(itemName, itemDescription, itemImage, categoryId)),
+        editItemInsideCategoryWithId: (itemName, itemDescription, itemImage, categoryId, itemId) => dispatch(actions.editItemInsideCategoryWithId(itemName, itemDescription, itemImage, categoryId, itemId)),
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(ItemForm);

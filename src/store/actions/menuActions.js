@@ -56,3 +56,69 @@ export const deleteCategory = (categoryId) => {
     }
 };
 
+export const addItemInsideCategoryWithId = (itemName, itemDescription, itemImage, categoryId) => {
+    return dispatch => {
+        API_DRIVER.post("api/item/admin", {
+            name: itemName,
+            itemImage: itemImage,
+            description: itemDescription,
+            categoryId: categoryId,
+            saveItemPriceDtoSet: []
+        })
+            .then(response => {
+                dispatch(
+                    {
+                        type: actionTypes.ADD_ITEM_IN_CATEGORY,
+                        item: response.data,
+                        categoryId: categoryId
+                    }
+                )
+            })
+            .catch(error => {
+                dispatch({type: actionTypes.GET_MENU_ERROR})
+            });
+    }
+};
+
+export const editItemInsideCategoryWithId = (itemName, itemDescription, itemImage, categoryId, itemId) => {
+    return dispatch => {
+        API_DRIVER.patch("api/item/admin", {
+            id: itemId,
+            name: itemName,
+            description: itemDescription,
+            categoryId: categoryId,
+            itemImage: itemImage,
+            editItemPriceDtoSet: []
+        })
+            .then(response => {
+                dispatch(
+                    {
+                        type: actionTypes.EDIT_ITEM_IN_CATEGORY,
+                        item: response.data,
+                        categoryId: categoryId
+                    }
+                )
+            })
+            .catch(error => {
+                dispatch({type: actionTypes.GET_MENU_ERROR})
+            });
+    }
+};
+
+export const deleteItemInsideCategoryWithId = (itemId, categoryId) => {
+    debugger;
+    return dispatch => {
+        API_DRIVER.delete("api/item/admin/" + itemId)
+            .then(response => {
+                dispatch(
+                    {
+                        type: actionTypes.DELETE_ITEM_IN_CATEGORY,
+                        item: response.data,
+                        categoryId: categoryId
+                    })
+            })
+            .catch(error => {
+                dispatch({type: actionTypes.GET_MENU_ERROR})
+            });
+    }
+};

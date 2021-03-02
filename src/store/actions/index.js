@@ -2,5 +2,8 @@ export {
     getMenu,
     createCategory,
     editCategory,
-    deleteCategory
+    deleteCategory,
+    addItemInsideCategoryWithId,
+    editItemInsideCategoryWithId,
+    deleteItemInsideCategoryWithId
 } from './menuActions';

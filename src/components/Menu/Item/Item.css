@@ -3,7 +3,7 @@
     width: 100%;
 }
 
-#itemCard > #editItemButton{
+#itemCard > #itemButtons{
     visibility: hidden;
     opacity: 0;
     border: none;
@@ -12,7 +12,7 @@
     margin: 5px !important;
 }
 
-#itemCard:hover > #editItemButton{
+#itemCard:hover > #itemButtons{
     visibility: visible;
     opacity: 1;
     transition: visibility 0s, opacity 0.3s linear !important;
