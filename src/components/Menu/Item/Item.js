@@ -4,11 +4,12 @@ import {Card, Image} from "react-bootstrap";
 import ItemForm from "./ItemForm/ItemForm";
 import './Item.css';
 
+
 import ItemDetails from "./ItemDetails/ItemDetails";
 import * as actionTypes from "../../../store/actionTypes";
 import {useDispatch} from "react-redux";
 import DeleteItem from "./DeleteItem/DeleteItem";
-import DeleteCategory from "../Category/DeleteCategory/DeleteCategory";
+import {showText} from "../../../utils/utils";
 
 const Item = (props) => {
     let [itemFormModal, setItemFormModal] = useState(false);
@@ -34,14 +35,6 @@ const Item = (props) => {
         dispatch({type: actionTypes.SET_CURRENT_ITEM, item: props.item});
         dispatch({type: actionTypes.SET_CURRENT_CATEGORY, category: props.category});
         setDefaultModal(!defaultModal);
-    }
-
-    let showText = (text) => {
-        if (text.length < 200) {
-            return text.substring(0, text.length);
-        } else {
-            return text.substring(0, 150).concat("...");
-        }
     }
 
     const dispatch = useDispatch();
@@ -74,7 +67,7 @@ const Item = (props) => {
                 <Card.Body>
                     <Card.Title>{props.item.name}</Card.Title>
                     <Card.Text>
-                        {showText(props.item.description)}
+                        {showText(props.item.description, 150)}
                     </Card.Text>
                     <Button
                         className="text-default float-right"

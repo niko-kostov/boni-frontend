@@ -10,33 +10,74 @@ import {
 import * as actions from "../../../../store/actions";
 import {connect} from "react-redux";
 import './ItemForm.css';
+import { storage} from "../../../../firebase";
+import {showText} from "../../../../utils/utils";
 
 const ItemForm = (props) => {
     const [itemName, setItemName] = useState("");
     const [itemDescription, setItemDescription] = useState("");
-    const [itemImage, setItemImage] = useState("");
+    const [itemImage, setItemImage] = useState(null);
+    const [itemImageUrl, setItemImageUrl] = useState("");
+    const [imageIsUploading, setImageIsUploading] = useState(false);
 
     useEffect(() => {
         if(props.type){
             setItemName(props.currentItem.name);
             setItemDescription(props.currentItem.description);
-            setItemImage(props.currentItem.itemImage);
+            setItemImageUrl(props.currentItem.itemImage);
         }else{
             setItemName("");
             setItemDescription("");
-            setItemDescription("");
+            setItemImage(null);
+            setItemImageUrl("");
         }
     }, [props]);
 
-    const handleSubmitCategory = (event) => {
-        if(props.type){
-            debugger;
-            props.editItemInsideCategoryWithId(itemName, itemDescription, itemImage, props.currentCategory.id, props.currentItem.id);
-        }else{
-            props.addItemInsideCategoryWithId(itemName, itemDescription, itemImage, props.currentCategory.id);
+    const handleImageChange = (event) => {
+        if(event.target.files[0]){
+            setItemImage(event.target.files[0]);
+            setItemImageUrl(event.target.files[0].name);
         }
-        props.click(event);
     }
+
+    const handleSubmitItem = (event) => {
+        if(itemImage){
+            setImageIsUploading(true);
+            let uploadTask = storage.ref(`itemImages/${itemImage.name}`).put(itemImage);
+            uploadTask.on(
+                "state_changed",
+                snapshot => {
+
+                },
+                error => {
+                    console.log(error);
+                },
+                () => {
+                    storage
+                        .ref("itemImages")
+                        .child(itemImage.name)
+                        .getDownloadURL()
+                        .then(url => {
+                            // console.log(url);
+                            if(props.type){
+                                props.editItemInsideCategoryWithId(itemName, itemDescription, url, props.currentCategory.id, props.currentItem.id);
+                            }else{
+                                props.addItemInsideCategoryWithId(itemName, itemDescription, url, props.currentCategory.id);
+                            }
+                            setImageIsUploading(false);
+                            props.click(event);
+                        });
+                }
+            );
+        }else{
+            if(props.type){
+                props.editItemInsideCategoryWithId(itemName, itemDescription, itemImageUrl, props.currentCategory.id, props.currentItem.id);
+            }else{
+                props.addItemInsideCategoryWithId(itemName, itemDescription, itemImageUrl, props.currentCategory.id);
+            }
+            props.click(event);
+        }
+    };
 
 
     return(
@@ -83,20 +124,24 @@ const ItemForm = (props) => {
                     </FormGroup>
                     <FormGroup>
                         <Label for="itemImageInput">Item Image</Label>
-                        <label id="itemImageInput" className="custom-file-upload">
+                        <label id="itemImageInput" className="custom-file-upload"
+                               style={{wordWrap: "break-word"}}
+                            >
                             <input type="file"
-                                   value={itemImage}
-                                   onChange={(event) => setItemImage(event.target.value)}
+                                   onChange={handleImageChange}
                             />
-                            {itemImage ? itemImage : "Choose Item Image"}
+                            {itemImageUrl ? showText(itemImageUrl, 80) : "Choose Item Image"}
                         </label>
                     </FormGroup>
                 </Form>
             </div>
             <div className="modal-footer">
                 <Button color="primary" type="button"
-                        onClick={(event) => handleSubmitCategory(event)}>
+                        onClick={(event) => handleSubmitItem(event)}>
                     {props.type ? "Save changes" : "Add item"}
+                    {imageIsUploading ? <div className="spinner-border spinner-border-sm spinner-style" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div> : null}
                 </Button>
                 <Button
                     className="ml-auto"
