@@ -54,12 +54,10 @@ const addItemInsideCategoryWithId = (state, action) => {
     const tempMenu = {...state.menu}
     const tempCategory = tempMenu.categories.find(cat => cat.id === action.categoryId)
     tempCategory.items.push(action.item)
-    //check
     return updateObject(state, {menu: tempMenu})
 }
 
 const editItemInsideCategoryWithId = (state, action) => {
-    debugger;
     const tempMenu = {...state.menu}
     const tempCategory = tempMenu.categories.find(cat => cat.id === action.categoryId)
     const tempItems = tempCategory.items.filter(item => item.id !== action.item.id)
@@ -69,11 +67,27 @@ const editItemInsideCategoryWithId = (state, action) => {
 }
 
 const deleteItemInsideCategoryWithId = (state, action) => {
-    debugger;
     const tempMenu = {...state.menu}
     const tempCategory = tempMenu.categories.find(cat => cat.id === action.categoryId)
     const tempItems = tempCategory.items.filter(item => item.id !== action.item.id)
     tempCategory.items = tempItems
+    return updateObject(state, {menu: tempMenu})
+}
+
+const addItemPriceInsideItemWithId = (state, action) => {
+    const tempMenu = {...state.menu}
+    const tempCategory = tempMenu.categories.find(cat => cat.id === action.categoryId)
+    const tempItem = tempCategory.items.find(item => item.id === action.itemId)
+    tempItem.itemPrices.push(action.itemPrice)
+    return updateObject(state, {menu: tempMenu})
+}
+
+const deleteItemPriceInsideItemWithId = (state, action) => {
+    const tempMenu = {...state.menu}
+    const tempCategory = tempMenu.categories.find(cat => cat.id === action.categoryId)
+    const tempItem = tempCategory.items.find(item => item.id === action.itemId)
+    const tempItemPrices = tempItem.itemPrices.filter(itemPrice => itemPrice.id !== action.itemPrice.id)
+    tempItem.itemPrices = tempItemPrices
     return updateObject(state, {menu: tempMenu})
 }
 
@@ -99,6 +113,10 @@ const menuReducer = ( state = initialState, action ) => {
             return editItemInsideCategoryWithId(state, action);
         case actionTypes.DELETE_ITEM_IN_CATEGORY:
             return deleteItemInsideCategoryWithId(state, action);
+        case actionTypes.ADD_ITEM_PRICE_IN_ITEM:
+            return addItemPriceInsideItemWithId(state, action);
+        case actionTypes.DELETE_ITEM_PRICE_IN_ITEM:
+            return deleteItemPriceInsideItemWithId(state, action);
         default: return state;
     }
 };

@@ -62,8 +62,7 @@ export const addItemInsideCategoryWithId = (itemName, itemDescription, itemImage
             name: itemName,
             itemImage: itemImage,
             description: itemDescription,
-            categoryId: categoryId,
-            saveItemPriceDtoSet: []
+            categoryId: categoryId
         })
             .then(response => {
                 dispatch(
@@ -87,8 +86,7 @@ export const editItemInsideCategoryWithId = (itemName, itemDescription, itemImag
             name: itemName,
             description: itemDescription,
             categoryId: categoryId,
-            itemImage: itemImage,
-            editItemPriceDtoSet: []
+            itemImage: itemImage
         })
             .then(response => {
                 dispatch(
@@ -106,7 +104,6 @@ export const editItemInsideCategoryWithId = (itemName, itemDescription, itemImag
 };
 
 export const deleteItemInsideCategoryWithId = (itemId, categoryId) => {
-    debugger;
     return dispatch => {
         API_DRIVER.delete("api/item/admin/" + itemId)
             .then(response => {
@@ -120,5 +117,46 @@ export const deleteItemInsideCategoryWithId = (itemId, categoryId) => {
             .catch(error => {
                 dispatch({type: actionTypes.GET_MENU_ERROR})
             });
+    }
+};
+
+export const addItemPriceInsideItemWithId = (itemPrice, itemSize, itemId, categoryId) => {
+    return dispatch => {
+        API_DRIVER.post("api/itemPrice/admin",
+            {
+                itemId: itemId,
+                price: itemPrice,
+                size: itemSize
+            }
+        ).then(response => {
+            dispatch(
+                {
+                    type: actionTypes.ADD_ITEM_PRICE_IN_ITEM,
+                    itemPrice: response.data,
+                    itemId: itemId,
+                    categoryId: categoryId
+                }
+            )
+        }).catch(error => {
+            dispatch({type: actionTypes.GET_MENU_ERROR})
+        });
+    }
+};
+
+export const deleteItemPriceInsideItemWithId = (itemPriceId, itemId, categoryId) => {
+    return dispatch => {
+        API_DRIVER.delete("api/itemPrice/admin/" + itemPriceId)
+            .then(response => {
+                dispatch(
+                    {
+                        type: actionTypes.DELETE_ITEM_PRICE_IN_ITEM,
+                        itemPrice: response.data,
+                        itemId: itemId,
+                        categoryId: categoryId
+                    }
+                )
+            }).catch(error => {
+                dispatch({type: actionTypes.GET_MENU_ERROR})
+        });
     }
 };

@@ -5,5 +5,7 @@ export {
     deleteCategory,
     addItemInsideCategoryWithId,
     editItemInsideCategoryWithId,
-    deleteItemInsideCategoryWithId
+    deleteItemInsideCategoryWithId,
+    addItemPriceInsideItemWithId,
+    deleteItemPriceInsideItemWithId
 } from './menuActions';

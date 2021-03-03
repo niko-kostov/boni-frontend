@@ -1,20 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {
-    Button, CustomInput,
+    Button,
     Form,
     FormGroup,
-    Input,
-    InputGroup,
-    InputGroupAddon,
-    InputGroupButtonDropdown,
-    InputGroupText,
+    Input, InputGroupButtonDropdown,
     Label,
     Modal
 } from "reactstrap";
-import FormFileInput from "react-bootstrap/FormFileInput";
-import FormCheckInput from "react-bootstrap/FormCheckInput";
 import * as actions from "../../../../store/actions";
 import {connect} from "react-redux";
+import './ItemForm.css';
 
 const ItemForm = (props) => {
     const [itemName, setItemName] = useState("");
@@ -87,15 +82,14 @@ const ItemForm = (props) => {
                         />
                     </FormGroup>
                     <FormGroup>
-                        <Label for="itemImageInput">Item Image Link</Label>
-                        <Input
-                            id="itemImageInput"
-                            className="form-control"
-                            placeholder="Item Image Link"
-                            value={itemImage}
-                            onChange={(event) => setItemImage(event.target.value)}
-                            type="text"
-                        />
+                        <Label for="itemImageInput">Item Image</Label>
+                        <label id="itemImageInput" className="custom-file-upload">
+                            <input type="file"
+                                   value={itemImage}
+                                   onChange={(event) => setItemImage(event.target.value)}
+                            />
+                            {itemImage ? itemImage : "Choose Item Image"}
+                        </label>
                     </FormGroup>
                 </Form>
             </div>

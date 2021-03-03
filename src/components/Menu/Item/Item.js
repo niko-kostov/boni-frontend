@@ -29,8 +29,10 @@ const Item = (props) => {
         setItemDeleteModal(!itemDeleteModal);
     }
 
-    let toggleModal = (event) => {
+    let toggleModalDetails = (event) => {
         event.stopPropagation();
+        dispatch({type: actionTypes.SET_CURRENT_ITEM, item: props.item});
+        dispatch({type: actionTypes.SET_CURRENT_CATEGORY, category: props.category});
         setDefaultModal(!defaultModal);
     }
 
@@ -77,11 +79,11 @@ const Item = (props) => {
                     <Button
                         className="text-default float-right"
                         color="link"
-                        onClick={(event) => toggleModal(event)}
+                        onClick={(event) => toggleModalDetails(event)}
                     >
                         Details
                     </Button>
-                    <ItemDetails click={(event) => toggleModal(event)}
+                    <ItemDetails click={(event) => toggleModalDetails(event)}
                                  defaultModal={defaultModal}
                                  item={props.item}
                     />
