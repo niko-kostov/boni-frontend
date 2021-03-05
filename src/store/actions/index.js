@@ -7,5 +7,9 @@ export {
     editItemInsideCategoryWithId,
     deleteItemInsideCategoryWithId,
     addItemPriceInsideItemWithId,
-    deleteItemPriceInsideItemWithId
+    deleteItemPriceInsideItemWithId,
 } from './menuActions';
+
+export {
+    getShoppingCartHistory
+} from './shoppingCartActions';

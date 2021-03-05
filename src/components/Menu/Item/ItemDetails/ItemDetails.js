@@ -9,15 +9,11 @@ import Alert from "../../../UI/Alerts/Alert";
 
 const ItemDetails = (props) => {
     let [itemPrice, setItemPrice] = useState(0);
-    let [itemSize, setItemSize] = useState("");
+    let [itemSize, setItemSize] = useState("SIZE");
     let [numberOfItems, setNumberOfItems] = useState(1);
+    let [shouldShowError, setShouldShowError] = useState(false);
 
     const isItemPriceValid = itemPrice > 0 && true;
-
-    useEffect(() => {
-        setItemPrice(0);
-        setItemSize("");
-    }, [props]);
 
     let increaseNumber = () => {
         if (numberOfItems !== 10) {
@@ -33,10 +29,11 @@ const ItemDetails = (props) => {
 
     const handleSubmitItemPrice = () => {
         const hasItemPriceWithSize = props.item.itemPrices.find(itemPrice => itemPrice.size === itemSize);
-        if(!hasItemPriceWithSize){
+        if(!hasItemPriceWithSize && itemSize !== "SIZE"){
+            setShouldShowError(false);
             props.addItemPriceInsideItemWithId(itemPrice, itemSize, props.currentItem.id, props.currentCategory.id);
         }else{
-            //error notification
+            setShouldShowError(true);
         }
     }
 
@@ -85,7 +82,7 @@ const ItemDetails = (props) => {
                                     id="inlineFormCustomSelect"
                                     onChange={(event) => setItemSize(event.target.value)}
                                     value={itemSize}>
-                                <option>Size</option>
+                                <option value="SIZE">Size</option>
                                 <option value="SMALL">SMALL</option>
                                 <option value="MEDIUM">MEDIUM</option>
                                 <option value="LARGE">LARGE</option>
@@ -101,6 +98,9 @@ const ItemDetails = (props) => {
                     </Button>
                 </div>
             </div>
+            {shouldShowError ?
+                <Alert title="Warning!" message={`There is already item size ${itemSize}`} color="danger"/> : null
+            }
             <div className="modal-footer d-inline-block">
                 <Button className="btn btn-outline-info add-to-cart-button">
                     <span className="fa fa-shopping-cart"/>

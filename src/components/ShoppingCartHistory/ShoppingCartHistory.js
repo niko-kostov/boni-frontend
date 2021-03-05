@@ -1,18 +1,16 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './ShoppingCartHistory.css';
 import {Button, Table} from "reactstrap";
 import {withRouter} from "react-router-dom";
+import * as actions from "../../store/actions";
+import {connect} from "react-redux";
+import {getDate, getTime} from "../../utils/utils";
+import Moment from "react-moment";
 
-const ShoppingCartHistory = () => {
-    let [shoppingCartHistory, setShoppingCartHistory] = useState({
-        shoppingCarts: [
-            {shoppingCartId: 1, datePayed: "asd", totalPrice: 1000},
-            {shoppingCartId: 2, datePayed: "asd", totalPrice: 2000},
-            {shoppingCartId: 3, datePayed: "asd", totalPrice: 3000},
-            {shoppingCartId: 4, datePayed: "asd", totalPrice: 4000},
-            {shoppingCartId: 5, datePayed: "asd", totalPrice: 5000},
-        ]
-    })
+const ShoppingCartHistory = (props) => {
+    useEffect(() => {
+        props.getShoppingCartHistory();
+    }, []);
 
     return (
         <React.Fragment>
@@ -31,11 +29,13 @@ const ShoppingCartHistory = () => {
                     </tr>
                     </thead>
                     <tbody>
-                    {shoppingCartHistory.shoppingCarts.map(shoppingCart => (
-                        <tr key={shoppingCart.shoppingCartId}>
-                            <td>{shoppingCart.shoppingCartId}</td>
+                    {props.shoppingCartHistory.map(shoppingCart => (
+                        <tr key={shoppingCart.id}>
+                            <td>{shoppingCart.id}</td>
                             <td>
-                                <span>{shoppingCart.datePayed}</span>
+                                <Moment format="DD MMM YYYY HH:mm">
+                                    {shoppingCart.datePayed}
+                                </Moment>
                                 <div className="float-right">
                                     <Button onClick={e => e.preventDefault()}>
                                         Details
@@ -52,4 +52,17 @@ const ShoppingCartHistory = () => {
     );
 }
 
-export default withRouter(ShoppingCartHistory);
+const mapStateToProps = (state) => {
+    return {
+        shoppingCartHistory: state.shoppingCartReducer.shoppingCartHistory,
+        error: state.shoppingCartReducer.error
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getShoppingCartHistory: () => dispatch(actions.getShoppingCartHistory("nik"))
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ShoppingCartHistory));

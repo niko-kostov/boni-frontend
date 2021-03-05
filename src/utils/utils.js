@@ -5,3 +5,11 @@ export const showText = (text, textLength) => {
         return text.substring(0, textLength).concat("...");
     }
 }
+
+export const getDate = (fullDate) => {
+    return fullDate;
+}
+
+export const getTime = (fullDate) => {
+
+}
