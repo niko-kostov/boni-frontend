@@ -3,7 +3,12 @@
     width: 100%;
 }
 
-#itemCard > #itemButtons{
+.card-style {
+    width: 20rem;
+    margin: 5px;
+}
+
+#itemCard > #itemButtons {
     visibility: hidden;
     opacity: 0;
     border: none;
@@ -12,7 +17,7 @@
     margin: 5px !important;
 }
 
-#itemCard:hover > #itemButtons{
+#itemCard:hover > #itemButtons {
     visibility: visible;
     opacity: 1;
     transition: visibility 0s, opacity 0.3s linear !important;
@@ -21,4 +26,10 @@
     position: absolute;
     right: 0;
     margin: 5px !important;
+}
+
+@media (max-width: 400px) {
+    .card-style {
+        width: auto !important;
+    }
 }

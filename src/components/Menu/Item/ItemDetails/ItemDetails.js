@@ -5,11 +5,14 @@ import ItemPrice from "../ItemPrice/ItemPrice";
 import './ItemDetails.css';
 import * as actions from "../../../../store/actions";
 import {connect} from "react-redux";
+import Alert from "../../../UI/Alerts/Alert";
 
 const ItemDetails = (props) => {
     let [itemPrice, setItemPrice] = useState(0);
     let [itemSize, setItemSize] = useState("");
     let [numberOfItems, setNumberOfItems] = useState(1);
+
+    const isItemPriceValid = itemPrice > 0 && true;
 
     useEffect(() => {
         setItemPrice(0);
@@ -73,6 +76,7 @@ const ItemDetails = (props) => {
                                className="input-style"
                                placeholder="Item Price"
                                value={itemPrice}
+                               invalid={!isItemPriceValid}
                                onChange={(event) => setItemPrice(event.target.value)}
                                id="numberOfItems"/>
                         <div className="btn-group" style={{margin: "0 5px"}}>
@@ -91,13 +95,14 @@ const ItemDetails = (props) => {
                     <Button size="sm"
                             className="btn btn-success add-item-price-button"
                             onClick={handleSubmitItemPrice}
+                            disabled={!isItemPriceValid}
                             type="button">
                         <span className="fa fa-plus"/>
                     </Button>
                 </div>
             </div>
             <div className="modal-footer d-inline-block">
-                <Button className="btn btn-outline-info">
+                <Button className="btn btn-outline-info add-to-cart-button">
                     <span className="fa fa-shopping-cart"/>
                     Add to cart
                 </Button>
@@ -108,7 +113,7 @@ const ItemDetails = (props) => {
                             onClick={decreaseNumber}>
                         <span className="fa fa-minus"/>
                     </Button>
-                    <Input size={1}
+                    <Input size={5}
                            id="numberOfItems"
                            value={numberOfItems}
                            onChange={(event) => setNumberOfItems(event.target.value)}

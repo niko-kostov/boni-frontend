@@ -41,9 +41,9 @@ const Item = (props) => {
 
     return (
         <div>
-            <Card style={{width: '20rem', margin: 5}}
+            <Card
                   id="itemCard"
-                  className="d-inline-flex shadow--hover"
+                  className="d-inline-flex shadow--hover card-style"
             >
                 <Image className="card-image"
                        variant="top"

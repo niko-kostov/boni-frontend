@@ -1,6 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {Card} from "react-bootstrap";
-import ItemPrice from "../../Item/ItemPrice/ItemPrice";
 import {Button, FormGroup, Input, Label, Modal} from "reactstrap";
 import * as actions from "../../../../store/actions";
 import {connect} from "react-redux";
@@ -23,6 +21,8 @@ const CategoryForm = (props) =>{
         }
         props.click(event);
     }
+
+    const isFormValid = categoryName && true;
 
     return(
         <Modal className="modal-dialog-centered"
@@ -50,6 +50,7 @@ const CategoryForm = (props) =>{
                         className="form-control"
                         placeholder="Category Name"
                         value={categoryName}
+                        invalid={!isFormValid}
                         onChange={(event) => setCategoryName(event.target.value)}
                         type="text"
                     />
@@ -59,6 +60,7 @@ const CategoryForm = (props) =>{
                 <Button
                     color="primary"
                     type="button"
+                    disabled={!isFormValid}
                     onClick={(event) => handleSubmitCategory(event)}
                 >
                     {props.type ? "Save changes" : "Add category"}

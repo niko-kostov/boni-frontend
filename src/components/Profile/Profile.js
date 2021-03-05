@@ -1,5 +1,5 @@
 import React from 'react';
-import {withRouter} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import logo from '../../assets/img/boni-logo.png'
 import restaurantImage from '../../assets/img/restaurantImage.jpg'
 
@@ -63,9 +63,9 @@ const Profile = () => {
                                         <div className="card-profile-actions py-4 mt-lg-0">
                                             <Button
                                                 className="float-right"
+                                                tag={Link}
                                                 color="default"
-                                                href="#pablo"
-                                                onClick={e => e.preventDefault()}
+                                                to={"/shoppingCartHistory"}
                                                 size="sm"
                                             >
                                                 Cart History

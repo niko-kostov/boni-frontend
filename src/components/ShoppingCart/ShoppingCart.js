@@ -62,7 +62,7 @@ const ShoppingCart = () => {
                 {/* Background circles */}
                 <div className="custom-style"/>
             </section>
-            <div className="container shadow pb-1   ">
+            <div className="container shadow pb-1">
                 <h2>Shopping Cart #{shoppingCart.shoppingCartId}</h2>
                 <Table striped bordered hover>
                     <thead>

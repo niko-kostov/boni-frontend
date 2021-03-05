@@ -11,9 +11,27 @@
 }
 
 .input-style{
-    width: auto !important;
 }
 
 .add-item-price-button{
     float: right !important;
 }
+
+.alert-details{
+    margin-top: 15px;
+}
+
+.input-number-width{
+    width: 50px;
+}
+
+@media (max-width: 411px) {
+    .add-to-cart-button{
+        width: 100%;
+    }
+    .input-number-width{
+        width: 100%;
+    }
+}
+
+

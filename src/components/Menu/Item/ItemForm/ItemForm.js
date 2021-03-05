@@ -10,7 +10,7 @@ import {
 import * as actions from "../../../../store/actions";
 import {connect} from "react-redux";
 import './ItemForm.css';
-import { storage} from "../../../../firebase";
+import {storage} from "../../../../firebase";
 import {showText} from "../../../../utils/utils";
 
 const ItemForm = (props) => {
@@ -21,11 +21,11 @@ const ItemForm = (props) => {
     const [imageIsUploading, setImageIsUploading] = useState(false);
 
     useEffect(() => {
-        if(props.type){
+        if (props.type) {
             setItemName(props.currentItem.name);
             setItemDescription(props.currentItem.description);
             setItemImageUrl(props.currentItem.itemImage);
-        }else{
+        } else {
             setItemName("");
             setItemDescription("");
             setItemImage(null);
@@ -34,14 +34,16 @@ const ItemForm = (props) => {
     }, [props]);
 
     const handleImageChange = (event) => {
-        if(event.target.files[0]){
+        if (event.target.files[0]) {
             setItemImage(event.target.files[0]);
             setItemImageUrl(event.target.files[0].name);
         }
     }
 
+    const isFormValid = itemName && true;
+
     const handleSubmitItem = (event) => {
-        if(itemImage){
+        if (itemImage) {
             setImageIsUploading(true);
             let uploadTask = storage.ref(`itemImages/${itemImage.name}`).put(itemImage);
             uploadTask.on(
@@ -59,9 +61,9 @@ const ItemForm = (props) => {
                         .getDownloadURL()
                         .then(url => {
                             // console.log(url);
-                            if(props.type){
+                            if (props.type) {
                                 props.editItemInsideCategoryWithId(itemName, itemDescription, url, props.currentCategory.id, props.currentItem.id);
-                            }else{
+                            } else {
                                 props.addItemInsideCategoryWithId(itemName, itemDescription, url, props.currentCategory.id);
                             }
                             setImageIsUploading(false);
@@ -69,10 +71,10 @@ const ItemForm = (props) => {
                         });
                 }
             );
-        }else{
-            if(props.type){
+        } else {
+            if (props.type) {
                 props.editItemInsideCategoryWithId(itemName, itemDescription, itemImageUrl, props.currentCategory.id, props.currentItem.id);
-            }else{
+            } else {
                 props.addItemInsideCategoryWithId(itemName, itemDescription, itemImageUrl, props.currentCategory.id);
             }
             props.click(event);
@@ -80,7 +82,7 @@ const ItemForm = (props) => {
     };
 
 
-    return(
+    return (
         <Modal className="modal-dialog-centered"
                isOpen={props.itemFormModal}
                toggle={props.click}>
@@ -107,27 +109,28 @@ const ItemForm = (props) => {
                             className="form-control"
                             placeholder="Item Name"
                             value={itemName}
+                            invalid={!itemName}
                             onChange={(event) => setItemName(event.target.value)}
                             type="text"
                         />
                     </FormGroup>
                     <FormGroup>
                         <Label for="itemDescriptionInput">Item Description</Label>
-                        <textarea
+                        <Input
                             id="itemDescriptionInput"
                             className="form-control"
                             placeholder="Item Description"
                             value={itemDescription}
                             onChange={(event) => setItemDescription(event.target.value)}
-                            type="text"
+                            type="textarea"
                         />
                     </FormGroup>
                     <FormGroup>
                         <Label for="itemImageInput">Item Image</Label>
                         <label id="itemImageInput" className="custom-file-upload"
                                style={{wordWrap: "break-word"}}
-                            >
-                            <input type="file"
+                        >
+                            <Input type="file"
                                    onChange={handleImageChange}
                             />
                             {itemImageUrl ? showText(itemImageUrl, 80) : "Choose Item Image"}
@@ -137,6 +140,7 @@ const ItemForm = (props) => {
             </div>
             <div className="modal-footer">
                 <Button color="primary" type="button"
+                        disabled={!isFormValid}
                         onClick={(event) => handleSubmitItem(event)}>
                     {props.type ? "Save changes" : "Add item"}
                     {imageIsUploading ? <div className="spinner-border spinner-border-sm spinner-style" role="status">

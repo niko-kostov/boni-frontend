@@ -8,6 +8,7 @@ import ShoppingCart from "../ShoppingCart/ShoppingCart";
 import Login from "../Auth/Login/Login";
 import Register from "../Auth/Register/Register";
 import Profile from "../Profile/Profile";
+import ShoppingCartHistory from "../ShoppingCartHistory/ShoppingCartHistory";
 
 const Layout = () => {
 
@@ -20,6 +21,7 @@ const Layout = () => {
             <Route exact path="/login" render={() => <Login/>}/>
             <Route exact path="/register" render={() => <Register/>}/>
             <Route exact path="/profile" render={() => <Profile/>}/>
+            <Route exact path="/shoppingCartHistory" render={() => <ShoppingCartHistory/>} />
         </Switch>
     );
 

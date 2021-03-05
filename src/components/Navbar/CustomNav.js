@@ -111,8 +111,12 @@ const CustomNav = () => {
                                     >
                                         Profile
                                     </DropdownItem>
-                                    <DropdownItem>
+                                    <DropdownItem tag={Link} to="/shoppingCartHistory">
                                         Cart history
+                                    </DropdownItem>
+                                    <div className="dropdown-divider"/>
+                                    <DropdownItem to="">
+                                        Logout
                                     </DropdownItem>
                                 </DropdownMenu>
                             </UncontrolledDropdown> :
