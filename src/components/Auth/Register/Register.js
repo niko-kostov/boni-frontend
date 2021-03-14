@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link, withRouter} from "react-router-dom";
 import './Register.css';
 
@@ -17,11 +17,26 @@ import {
     Row,
     Col
 } from "reactstrap";
+import * as actions from "../../../store/actions";
+import {connect} from "react-redux";
 
 
-const Register = () => {
+const Register = (props) => {
+    const [email, setEmail] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [password, setPassword] = useState("");
+    const [repeatPassword, setRepeatPassword] = useState("");
+
+    const handleRegister = () => {
+        props.register(email, firstName, lastName, phoneNumber, password);
+    }
+
+    const isFormValid = email && password && repeatPassword && (repeatPassword === password) && phoneNumber && firstName && lastName;
+
     return (
-        <>
+        <React.Fragment>
             <main>
                 <section className="section section-shaped section-lg">
                     <div className="shape shape-style-1 bg-gradient-default">
@@ -66,7 +81,9 @@ const Register = () => {
                                                             <i className="ni ni-email-83"/>
                                                         </InputGroupText>
                                                     </InputGroupAddon>
-                                                    <Input placeholder="Email" type="email"/>
+                                                    <Input placeholder="Email" type="email"
+                                                        value={email}
+                                                        onChange={(event) => setEmail(event.target.value)}/>
                                                 </InputGroup>
                                             </FormGroup>
                                             <FormGroup>
@@ -76,7 +93,9 @@ const Register = () => {
                                                             <i className="ni ni-hat-3"/>
                                                         </InputGroupText>
                                                     </InputGroupAddon>
-                                                    <Input placeholder="First Name" type="text"/>
+                                                    <Input placeholder="First Name" type="text"
+                                                           value={firstName}
+                                                           onChange={(event) => setFirstName(event.target.value)}/>
                                                 </InputGroup>
                                             </FormGroup>
                                             <FormGroup>
@@ -86,7 +105,9 @@ const Register = () => {
                                                             <i className="ni ni-hat-3"/>
                                                         </InputGroupText>
                                                     </InputGroupAddon>
-                                                    <Input placeholder="Last Name" type="text"/>
+                                                    <Input placeholder="Last Name" type="text"
+                                                           value={lastName}
+                                                           onChange={(event) => setLastName(event.target.value)}/>
                                                 </InputGroup>
                                             </FormGroup>
                                             <FormGroup>
@@ -97,7 +118,9 @@ const Register = () => {
                                                         </InputGroupText>
                                                     </InputGroupAddon>
                                                     <Input placeholder="Phone Number"
-                                                           type="number"/>
+                                                           type="number"
+                                                           value={phoneNumber}
+                                                           onChange={(event) => setPhoneNumber(event.target.value)}/>
                                                 </InputGroup>
                                             </FormGroup>
                                             <FormGroup>
@@ -111,6 +134,8 @@ const Register = () => {
                                                         placeholder="Password"
                                                         type="password"
                                                         autoComplete="off"
+                                                        value={password}
+                                                        onChange={(event) => setPassword(event.target.value)}
                                                     />
                                                 </InputGroup>
                                             </FormGroup>
@@ -125,6 +150,8 @@ const Register = () => {
                                                         placeholder="Repeat Password"
                                                         type="password"
                                                         autoComplete="off"
+                                                        value={repeatPassword}
+                                                        onChange={(event) => setRepeatPassword(event.target.value)}
                                                     />
                                                 </InputGroup>
                                             </FormGroup>
@@ -133,6 +160,8 @@ const Register = () => {
                                                     className="mt-4"
                                                     color="primary"
                                                     type="button"
+                                                    disabled={!isFormValid}
+                                                    onClick={handleRegister}
                                                 >
                                                     Create account
                                                 </Button>
@@ -155,8 +184,18 @@ const Register = () => {
                     </Container>
                 </section>
             </main>
-        </>
+        </React.Fragment>
     );
 }
 
-export default withRouter(Register);
+const mapStateToProps = (state) => {
+    return { }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        register: (email, firstName, lastName, phoneNumber, password) => dispatch(actions.register(email, firstName, lastName, phoneNumber, password)),
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Register));

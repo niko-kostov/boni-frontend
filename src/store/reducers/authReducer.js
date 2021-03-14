@@ -1,13 +1,63 @@
+import * as actionTypes from '../actionTypes';
+import {updateObject} from "../../shared/utility";
+
 const initialState = {
     token: null,
-    username: null,
-    userRole: null,
+    email: null,
+    role: null,
+    fullName: null,
     loading: false,
-    error: false
+    error: false,
 };
+
+const authStart = (state, action) => {
+    return updateObject(state, {error: false, loading: true});
+}
+
+const authFail = (state, action) => {
+    return updateObject(state, {error: true, loading: false});
+}
+
+const authRegister = (state, action) => {
+    debugger;
+    updateObject(state, {error: false});
+}
+
+
+const authLogout = (state, action) => {
+    return updateObject(state, {
+        token: null,
+        email: null,
+        role: null,
+        fullName: null,
+        error: false,
+        loading: false
+    })
+}
+
+const authSuccess = (state, action) => {
+    return updateObject(state, {
+        token: action.token,
+        email: action.email,
+        role: action.role,
+        fullName: action.fullName,
+        loading: false,
+        error: false
+    });
+}
 
 const authReducer = (state = initialState, action) =>{
     switch(action.type) {
+        case actionTypes.AUTH_START:
+            return authStart(state, action);
+        case actionTypes.AUTH_SUCCESS:
+            return authSuccess(state, action);
+        case actionTypes.AUTH_FAIL:
+            return authFail(state, action);
+        case actionTypes.AUTH_LOGOUT:
+            return authLogout(state, action);
+        case actionTypes.AUTH_REGISTER:
+            return authRegister(state, action);
         default: return state;
     }
 }

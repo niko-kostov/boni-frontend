@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     Button,
     Card,
@@ -15,11 +15,23 @@ import {
     Col
 } from "reactstrap";
 import {Link, withRouter} from "react-router-dom";
+import * as actions from "../../../store/actions";
+import {connect} from "react-redux";
 
 
-const Login = () => {
+const Login = (props) => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [rememberMe, setRememberMe] = useState(false);
+
+    const handleLogin = (event) => {
+        props.login(email, password, rememberMe);
+    }
+
+    const isFormValid = email && password;
+
     return (
-        <>
+        <React.Fragment>
             <main>
                 <section className="section section-shaped section-lg">
                     <div className="shape shape-style-1 bg-gradient-default">
@@ -64,7 +76,11 @@ const Login = () => {
                                                             <i className="ni ni-email-83"/>
                                                         </InputGroupText>
                                                     </InputGroupAddon>
-                                                    <Input placeholder="Email" type="email"/>
+                                                    <Input placeholder="Email"
+                                                           type="email"
+                                                           value={email}
+                                                           onChange={(event) => setEmail(event.target.value)}
+                                                    />
                                                 </InputGroup>
                                             </FormGroup>
                                             <FormGroup>
@@ -78,6 +94,8 @@ const Login = () => {
                                                         placeholder="Password"
                                                         type="password"
                                                         autoComplete="off"
+                                                        value={password}
+                                                        onChange={(event) => setPassword(event.target.value)}
                                                     />
                                                 </InputGroup>
                                             </FormGroup>
@@ -86,6 +104,8 @@ const Login = () => {
                                                     className="custom-control-input"
                                                     id=" customCheckLogin"
                                                     type="checkbox"
+                                                    value={rememberMe}
+                                                    onChange={() => setRememberMe(!rememberMe)}
                                                 />
                                                 <label
                                                     className="custom-control-label"
@@ -99,6 +119,8 @@ const Login = () => {
                                                     className="my-4"
                                                     color="primary"
                                                     type="button"
+                                                    disabled={!isFormValid}
+                                                    onClick={(event) => handleLogin(event)}
                                                 >
                                                     Sign in
                                                 </Button>
@@ -121,8 +143,18 @@ const Login = () => {
                     </Container>
                 </section>
             </main>
-        </>
+        </React.Fragment>
     );
 }
 
-export default withRouter(Login);
+const mapStateToProps = (state) => {
+    return { }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        login: (email, password, rememberMe) => dispatch(actions.login(email, password, rememberMe)),
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

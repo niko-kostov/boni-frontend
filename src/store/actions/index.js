@@ -13,3 +13,10 @@ export {
 export {
     getShoppingCartHistory
 } from './shoppingCartActions';
+
+export {
+    login,
+    logout,
+    register,
+    authCheckState
+} from './authActions';
