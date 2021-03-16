@@ -16,7 +16,7 @@ const ItemDetails = (props) => {
     const isItemPriceValid = itemPrice > 0 && true;
 
     let increaseNumber = () => {
-        if (numberOfItems !== 10) {
+        if (numberOfItems !== 20) {
             setNumberOfItems(numberOfItems + 1);
         }
     }

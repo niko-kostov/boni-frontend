@@ -17,6 +17,7 @@ import {
 import {Link, withRouter} from "react-router-dom";
 import * as actions from "../../../store/actions";
 import {connect} from "react-redux";
+import {useForm} from "react-hook-form";
 
 
 const Login = (props) => {
@@ -24,11 +25,11 @@ const Login = (props) => {
     const [password, setPassword] = useState("");
     const [rememberMe, setRememberMe] = useState(false);
 
-    const handleLogin = (event) => {
-        props.login(email, password, rememberMe);
-    }
+    const {register, watch, errors, handleSubmit} = useForm();
 
-    const isFormValid = email && password;
+    const handleLogin = (data) => {
+        props.login(data.emailInput, data.passwordInput, rememberMe);
+    }
 
     return (
         <React.Fragment>
@@ -68,7 +69,7 @@ const Login = (props) => {
                                         <div className="text-center text-muted mb-4">
                                             <small>Or sign in with credentials</small>
                                         </div>
-                                        <Form role="form">
+                                        <Form role="form" onSubmit={handleSubmit(handleLogin)}>
                                             <FormGroup className="mb-3">
                                                 <InputGroup className="input-group-alternative">
                                                     <InputGroupAddon addonType="prepend">
@@ -77,11 +78,25 @@ const Login = (props) => {
                                                         </InputGroupText>
                                                     </InputGroupAddon>
                                                     <Input placeholder="Email"
-                                                           type="email"
-                                                           value={email}
-                                                           onChange={(event) => setEmail(event.target.value)}
-                                                    />
+                                                           name="emailInput"
+                                                           innerRef={register({
+                                                               required: true,
+                                                               pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
+                                                           })}
+                                        d           />
                                                 </InputGroup>
+                                                {
+                                                    errors.emailInput &&
+                                                    errors.emailInput?.type === "required" &&
+                                                    <span
+                                                        className="text-danger font-weight-500">Please enter email!</span>
+                                                }
+                                                {
+                                                    errors.emailInput &&
+                                                    errors.emailInput?.type === "pattern" &&
+                                                    <span
+                                                        className="text-danger font-weight-500">Enter valid email!</span>
+                                                }
                                             </FormGroup>
                                             <FormGroup>
                                                 <InputGroup className="input-group-alternative">
@@ -94,10 +109,18 @@ const Login = (props) => {
                                                         placeholder="Password"
                                                         type="password"
                                                         autoComplete="off"
-                                                        value={password}
-                                                        onChange={(event) => setPassword(event.target.value)}
+                                                        name="passwordInput"
+                                                        innerRef={register({
+                                                            required: true
+                                                        })}
                                                     />
                                                 </InputGroup>
+                                                {
+                                                    errors.passwordInput &&
+                                                    errors.passwordInput?.type === "required" &&
+                                                    <span
+                                                        className="text-danger font-weight-500">Please enter password!</span>
+                                                }
                                             </FormGroup>
                                             <div className="custom-control custom-control-alternative custom-checkbox">
                                                 <input
@@ -118,9 +141,7 @@ const Login = (props) => {
                                                 <Button
                                                     className="my-4"
                                                     color="primary"
-                                                    type="button"
-                                                    disabled={!isFormValid}
-                                                    onClick={(event) => handleLogin(event)}
+                                                    type="submit"
                                                 >
                                                     Sign in
                                                 </Button>
@@ -147,14 +168,10 @@ const Login = (props) => {
     );
 }
 
-const mapStateToProps = (state) => {
-    return { }
-}
-
 const mapDispatchToProps = (dispatch) => {
     return {
         login: (email, password, rememberMe) => dispatch(actions.login(email, password, rememberMe)),
     }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
+export default withRouter(connect(null, mapDispatchToProps)(Login));

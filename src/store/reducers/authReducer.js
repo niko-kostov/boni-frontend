@@ -8,6 +8,7 @@ const initialState = {
     fullName: null,
     loading: false,
     error: false,
+    errorMessage: ""
 };
 
 const authStart = (state, action) => {
@@ -19,8 +20,7 @@ const authFail = (state, action) => {
 }
 
 const authRegister = (state, action) => {
-    debugger;
-    updateObject(state, {error: false});
+    return updateObject(state, {error: false});
 }
 
 

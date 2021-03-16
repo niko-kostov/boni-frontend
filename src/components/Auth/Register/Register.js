@@ -19,21 +19,21 @@ import {
 } from "reactstrap";
 import * as actions from "../../../store/actions";
 import {connect} from "react-redux";
+import {useForm} from "react-hook-form";
 
 
 const Register = (props) => {
-    const [email, setEmail] = useState("");
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [password, setPassword] = useState("");
-    const [repeatPassword, setRepeatPassword] = useState("");
+    const {register, watch, errors, handleSubmit} = useForm();
 
-    const handleRegister = () => {
-        props.register(email, firstName, lastName, phoneNumber, password);
+    const handleRegister = (data) => {
+        props.register(
+            data.emailInput,
+            data.firstNameInput,
+            data.lastNameInput,
+            data.phoneNumberInput,
+            data.passwordInput
+        );
     }
-
-    const isFormValid = email && password && repeatPassword && (repeatPassword === password) && phoneNumber && firstName && lastName;
 
     return (
         <React.Fragment>
@@ -73,7 +73,7 @@ const Register = (props) => {
                                         <div className="text-center text-muted mb-4">
                                             <small>Or sign up with credentials</small>
                                         </div>
-                                        <Form role="form">
+                                        <Form role="form" onSubmit={handleSubmit(handleRegister)}>
                                             <FormGroup>
                                                 <InputGroup className="input-group-alternative mb-3">
                                                     <InputGroupAddon addonType="prepend">
@@ -81,10 +81,24 @@ const Register = (props) => {
                                                             <i className="ni ni-email-83"/>
                                                         </InputGroupText>
                                                     </InputGroupAddon>
-                                                    <Input placeholder="Email" type="email"
-                                                        value={email}
-                                                        onChange={(event) => setEmail(event.target.value)}/>
+                                                    <Input name="emailInput" placeholder="Email" type="text"
+                                                           innerRef={register({
+                                                               required: true,
+                                                               pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
+                                                           })}/>
                                                 </InputGroup>
+                                                {
+                                                    errors.emailInput &&
+                                                    errors.emailInput?.type === "required" &&
+                                                    <span
+                                                        className="text-danger font-weight-500">Email cannot be empty!</span>
+                                                }
+                                                {
+                                                    errors.emailInput &&
+                                                    errors.emailInput?.type === "pattern" &&
+                                                    <span
+                                                        className="text-danger font-weight-500">Enter valid email!</span>
+                                                }
                                             </FormGroup>
                                             <FormGroup>
                                                 <InputGroup className="input-group-alternative mb-3">
@@ -93,10 +107,16 @@ const Register = (props) => {
                                                             <i className="ni ni-hat-3"/>
                                                         </InputGroupText>
                                                     </InputGroupAddon>
-                                                    <Input placeholder="First Name" type="text"
-                                                           value={firstName}
-                                                           onChange={(event) => setFirstName(event.target.value)}/>
+                                                    <Input name="firstNameInput" placeholder="First Name" type="text"
+                                                           innerRef={register({
+                                                               required: true
+                                                           })}/>
                                                 </InputGroup>
+                                                {
+                                                    errors.firstNameInput &&
+                                                    errors.firstNameInput?.type === "required" &&
+                                                    <span className="text-danger font-weight-500">First name cannot be empty</span>
+                                                }
                                             </FormGroup>
                                             <FormGroup>
                                                 <InputGroup className="input-group-alternative mb-3">
@@ -105,10 +125,16 @@ const Register = (props) => {
                                                             <i className="ni ni-hat-3"/>
                                                         </InputGroupText>
                                                     </InputGroupAddon>
-                                                    <Input placeholder="Last Name" type="text"
-                                                           value={lastName}
-                                                           onChange={(event) => setLastName(event.target.value)}/>
+                                                    <Input name="lastNameInput" placeholder="Last Name" type="text"
+                                                           innerRef={register({
+                                                               required: true
+                                                           })}/>
                                                 </InputGroup>
+                                                {
+                                                    errors.lastNameInput &&
+                                                    errors.lastNameInput?.type === "required" &&
+                                                    <span className="text-danger font-weight-500">Last name cannot be empty</span>
+                                                }
                                             </FormGroup>
                                             <FormGroup>
                                                 <InputGroup className="input-group-alternative mb-3">
@@ -117,10 +143,11 @@ const Register = (props) => {
                                                             <i className="ni ni-hat-3"/>
                                                         </InputGroupText>
                                                     </InputGroupAddon>
-                                                    <Input placeholder="Phone Number"
+                                                    <Input name="phoneNumberInput" placeholder="Phone Number"
                                                            type="number"
-                                                           value={phoneNumber}
-                                                           onChange={(event) => setPhoneNumber(event.target.value)}/>
+                                                           innerRef={register({
+                                                               required: false,
+                                                           })}/>
                                                 </InputGroup>
                                             </FormGroup>
                                             <FormGroup>
@@ -131,13 +158,27 @@ const Register = (props) => {
                                                         </InputGroupText>
                                                     </InputGroupAddon>
                                                     <Input
+                                                        name="passwordInput"
                                                         placeholder="Password"
                                                         type="password"
                                                         autoComplete="off"
-                                                        value={password}
-                                                        onChange={(event) => setPassword(event.target.value)}
+                                                        innerRef={register({
+                                                            required: true,
+                                                            minLength: 7
+                                                        })}
                                                     />
                                                 </InputGroup>
+                                                {
+                                                    errors.passwordInput &&
+                                                    errors.passwordInput?.type === "required" &&
+                                                    <span
+                                                        className="text-danger font-weight-500">Please enter password!</span>
+                                                }
+                                                {
+                                                    errors.passwordInput &&
+                                                    errors.passwordInput?.type === "minLength" &&
+                                                    <span className="text-danger font-weight-500">Password should be at least 7 characters long!</span>
+                                                }
                                             </FormGroup>
                                             <FormGroup>
                                                 <InputGroup className="input-group-alternative">
@@ -147,21 +188,39 @@ const Register = (props) => {
                                                         </InputGroupText>
                                                     </InputGroupAddon>
                                                     <Input
+                                                        name="repeatPasswordInput"
                                                         placeholder="Repeat Password"
                                                         type="password"
                                                         autoComplete="off"
-                                                        value={repeatPassword}
-                                                        onChange={(event) => setRepeatPassword(event.target.value)}
+                                                        innerRef={register({
+                                                            required: true,
+                                                            minLength: 7,
+                                                            validate: (value) => value === watch("passwordInput")
+                                                        })}
                                                     />
                                                 </InputGroup>
+                                                {
+                                                    errors.repeatPasswordInput &&
+                                                    errors.repeatPasswordInput?.type === "required" &&
+                                                    <span
+                                                        className="text-danger font-weight-500">Please enter password!</span>
+                                                }
+                                                {
+                                                    errors.repeatPasswordInput &&
+                                                    errors.repeatPasswordInput?.type === "minLength" &&
+                                                    <span className="text-danger font-weight-500">Password should be at least 7 characters long!</span>
+                                                }
+                                                {
+                                                    errors.repeatPasswordInput &&
+                                                    errors.repeatPasswordInput?.type === "validate" &&
+                                                    <span className="text-danger font-weight-500">Passwords do not match!</span>
+                                                }
                                             </FormGroup>
                                             <div className="text-center">
                                                 <Button
                                                     className="mt-4"
                                                     color="primary"
-                                                    type="button"
-                                                    disabled={!isFormValid}
-                                                    onClick={handleRegister}
+                                                    type="submit"
                                                 >
                                                     Create account
                                                 </Button>
@@ -189,7 +248,7 @@ const Register = (props) => {
 }
 
 const mapStateToProps = (state) => {
-    return { }
+    return {}
 }
 
 const mapDispatchToProps = (dispatch) => {

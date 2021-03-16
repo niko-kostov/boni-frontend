@@ -7,9 +7,11 @@ const authStart = () => {
     }
 }
 
-const authFail = () => {
+const authFail = (error) => {
+    debugger;
     return {
-        type: actionTypes.AUTH_FAIL
+        type: actionTypes.AUTH_FAIL,
+        errorMessage: error.message
     }
 }
 
@@ -47,15 +49,14 @@ export const login = (email, password, rememberMe) => {
 
                 dispatch(authSuccess(token, email, fullName, role));
             })
-            .catch(() => {
-                dispatch(authFail());
+            .catch(error => {
+                dispatch(authFail(error));
             })
     }
 }
 
 export const register = (email, firstName, lastName, phoneNumber, password) => {
     return dispatch => {
-        debugger;
         const registerData = {
             email: email,
             firstName: firstName,
@@ -68,7 +69,7 @@ export const register = (email, firstName, lastName, phoneNumber, password) => {
                 dispatch({type: actionTypes.AUTH_REGISTER})
             })
             .catch(error => {
-                dispatch(authFail())
+                dispatch(authFail(error))
             })
     }
 }

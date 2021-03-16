@@ -14,7 +14,9 @@ import * as actions from '../../store/actions/index';
 
 
 const Layout = (props) => {
-
+    useEffect(() => {
+        props.onTryAutoSignIn()
+    }, []);
 
     let routes = (
         <Switch>
