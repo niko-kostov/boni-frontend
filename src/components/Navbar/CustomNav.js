@@ -100,7 +100,7 @@ const CustomNav = (props) => {
                             <UncontrolledDropdown nav inNavbar>
                                 <DropdownToggle nav style={{padding: 8}}>
                                     <img src={restaurantImage} style={{width: 60, height: 60, padding: 0}} className="rounded-circle"/>
-                                    <span className="nav-link-inner--text d-lg-none"/>
+                                    <span className="nav-link-inner--text d-lg-none">{props.fullName}</span>
                                 </DropdownToggle>
                                 <DropdownMenu
                                     aria-labelledby="nav-inner-primary_dropdown_1"

@@ -1,11 +1,10 @@
 import * as actionTypes from '../actionTypes';
 import {updateObject} from "../../shared/utility";
-import {act} from "@testing-library/react";
 
 const initialState = {
     shoppingCartHistory: [],
     error: false,
-    activeShoppingCart: null,
+    activeShoppingCart: {},
 };
 
 const getShoppingCartHistory = (state, action) => {
@@ -52,7 +51,7 @@ const getActiveShoppingCartError = (state, action) => {
 }
 
 const payShoppingCart = (state, action) => {
-    return updateObject(state, {error: false});
+    return updateObject(state, {error: false, activeShoppingCart: action.newActiveShoppingCart});
 }
 
 const payShoppingCartError = (state, action) => {

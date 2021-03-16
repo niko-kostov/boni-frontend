@@ -12,6 +12,7 @@ const ItemDetails = (props) => {
     let [itemSize, setItemSize] = useState("SIZE");
     let [numberOfItems, setNumberOfItems] = useState(1);
     let [shouldShowError, setShouldShowError] = useState(false);
+    let [itemPriceId, setItemPriceId] = useState(null);
 
     const isItemPriceValid = itemPrice > 0 && true;
 
@@ -29,12 +30,19 @@ const ItemDetails = (props) => {
 
     const handleSubmitItemPrice = () => {
         const hasItemPriceWithSize = props.item.itemPrices.find(itemPrice => itemPrice.size === itemSize);
-        if(!hasItemPriceWithSize && itemSize !== "SIZE"){
+        if (!hasItemPriceWithSize && itemSize !== "SIZE") {
             setShouldShowError(false);
             props.addItemPriceInsideItemWithId(itemPrice, itemSize, props.currentItem.id, props.currentCategory.id);
-        }else{
+        } else {
             setShouldShowError(true);
         }
+    }
+
+    const handleAddToCart = (event) => {
+        if (itemPriceId != null) {
+            props.addToCart(props.shoppingCartId, props.currentItem.id, itemPriceId, numberOfItems);
+        }
+        props.click(event);
     }
 
     return (
@@ -63,9 +71,10 @@ const ItemDetails = (props) => {
                 </p>
                 {props.item.itemPrices.sort((p1, p2) => p1.price - p2.price).map(itemPrice => {
                     return <ItemPrice
-                        key={itemPrice.id}
-                        itemPrice={itemPrice}
-                    />
+                                key={itemPrice.id}
+                                itemPrice={itemPrice}
+                                handleChange={() => setItemPriceId(itemPrice.id)}
+                            />
                 })}
                 <div className="item-price-add-form">
                     <div style={{display: "flex"}}>
@@ -102,7 +111,7 @@ const ItemDetails = (props) => {
                 <Alert title="Warning!" message={`There is already item size ${itemSize}`} color="danger"/> : null
             }
             <div className="modal-footer d-inline-block">
-                <Button className="btn btn-outline-info add-to-cart-button">
+                <Button className="btn btn-outline-info add-to-cart-button" onClick={(event) => handleAddToCart(event)}>
                     <span className="fa fa-shopping-cart"/>
                     Add to cart
                 </Button>
@@ -132,13 +141,15 @@ const ItemDetails = (props) => {
 const mapStateToProps = (state) => {
     return {
         currentCategory: state.menuReducer.currentCategory,
-        currentItem: state.menuReducer.currentItem
+        currentItem: state.menuReducer.currentItem,
+        shoppingCartId: state.authReducer.activeShoppingCartId
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         addItemPriceInsideItemWithId: (itemPrice, itemSize, itemId, categoryId) => dispatch(actions.addItemPriceInsideItemWithId(itemPrice, itemSize, itemId, categoryId)),
+        addToCart: (shoppingCartId, itemId, itemPriceId, quantity) => dispatch(actions.addItemToCart(shoppingCartId, itemId, itemPriceId, quantity)),
     }
 }
 

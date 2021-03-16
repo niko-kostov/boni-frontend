@@ -9,7 +9,7 @@ import Moment from "react-moment";
 
 const ShoppingCartHistory = (props) => {
     useEffect(() => {
-        props.getShoppingCartHistory();
+        props.getShoppingCartHistory(props.email);
     }, []);
 
     return (
@@ -23,7 +23,7 @@ const ShoppingCartHistory = (props) => {
                 <Table striped bordered hover>
                     <thead>
                     <tr>
-                        <th></th>
+                        <th>#</th>
                         <th>Date paid</th>
                         <th>Total price</th>
                     </tr>
@@ -37,7 +37,7 @@ const ShoppingCartHistory = (props) => {
                                     {shoppingCart.datePayed}
                                 </Moment>
                                 <div className="float-right">
-                                    <Button onClick={e => e.preventDefault()}>
+                                    <Button onClick={e => e.preventDefault()} className="shadow-none border-light">
                                         Details
                                     </Button>
                                 </div>
@@ -55,13 +55,14 @@ const ShoppingCartHistory = (props) => {
 const mapStateToProps = (state) => {
     return {
         shoppingCartHistory: state.shoppingCartReducer.shoppingCartHistory,
-        error: state.shoppingCartReducer.error
+        error: state.shoppingCartReducer.error,
+        email: state.authReducer.email,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getShoppingCartHistory: () => dispatch(actions.getShoppingCartHistory("nik"))
+        getShoppingCartHistory: (email) => dispatch(actions.getShoppingCartHistory(email))
     }
 }
 

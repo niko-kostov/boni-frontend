@@ -8,20 +8,20 @@ const authStart = () => {
 }
 
 const authFail = (error) => {
-    debugger;
     return {
         type: actionTypes.AUTH_FAIL,
         errorMessage: error.message
     }
 }
 
-const authSuccess = (token, email, fullName, role) => {
+const authSuccess = (token, email, fullName, role, activeShoppingCartId) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
         token: token,
         email: email,
         fullName: fullName,
-        role: role
+        role: role,
+        activeShoppingCartId: activeShoppingCartId
     }
 }
 
@@ -37,6 +37,7 @@ export const login = (email, password, rememberMe) => {
                 const token = response.data.accessToken;
                 const fullName = response.data.fullName;
                 const role = response.data.roles;
+                const activeShoppingCartId = response.data.activeShoppingCartId;
 
                 let storage = sessionStorage;
                 if (rememberMe) {
@@ -45,9 +46,10 @@ export const login = (email, password, rememberMe) => {
                 storage.setItem('token', token);
                 storage.setItem('email', email);
                 storage.setItem('role', role);
-                storage.setItem('fullName', fullName)
+                storage.setItem('fullName', fullName);
+                storage.setItem('activeShoppingCartId', activeShoppingCartId);
 
-                dispatch(authSuccess(token, email, fullName, role));
+                dispatch(authSuccess(token, email, fullName, role, activeShoppingCartId));
             })
             .catch(error => {
                 dispatch(authFail(error));
@@ -83,6 +85,7 @@ export const logout = () => {
     storage.removeItem('email');
     storage.removeItem('role');
     storage.removeItem('fullName');
+    storage.removeItem('activeShoppingCartId');
 
     return {
         type: actionTypes.AUTH_LOGOUT
@@ -97,16 +100,18 @@ export const authCheckState = () => {
                 const email = localStorage.getItem('email');
                 const fullName = localStorage.getItem('fullName');
                 const role = localStorage.getItem('role');
+                const activeShoppingCartId = localStorage.getItem('activeShoppingCartId');
 
-                dispatch(authSuccess(token, email, fullName, role));
+                dispatch(authSuccess(token, email, fullName, role, activeShoppingCartId));
             }
         } else {
             const token = sessionStorage.getItem('token');
             const email = sessionStorage.getItem('email');
             const fullName = sessionStorage.getItem('fullName');
             const role = sessionStorage.getItem('role');
+            const activeShoppingCartId = sessionStorage.getItem('activeShoppingCartId');
 
-            dispatch(authSuccess(token, email, fullName, role));
+            dispatch(authSuccess(token, email, fullName, role, activeShoppingCartId));
         }
     }
 }

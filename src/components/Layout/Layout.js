@@ -43,7 +43,7 @@ const Layout = (props) => {
 
     return (
         <React.Fragment>
-            <CustomNav isAuthenticated={props.isAuthenticated} logout={props.logoutUser}/>
+            <CustomNav isAuthenticated={props.isAuthenticated} fullName={props.fullName} logout={props.logoutUser}/>
             {routes}
             <Footer/>
         </React.Fragment>

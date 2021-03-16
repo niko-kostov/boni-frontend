@@ -11,7 +11,12 @@ export {
 } from './menuActions';
 
 export {
-    getShoppingCartHistory
+    getShoppingCartHistory,
+    addItemToCart,
+    deleteItemFromCart,
+    getActiveShoppingCart,
+    payShoppingCart,
+    changeQuantityForItem
 } from './shoppingCartActions';
 
 export {

@@ -1,6 +1,5 @@
 import {API_DRIVER} from "../../config";
 import * as actionTypes from '../actionTypes'
-import {act} from "@testing-library/react";
 
 export const getShoppingCartHistory = (email) => {
     return dispatch => {
@@ -64,7 +63,7 @@ export const changeQuantityForItem = (shoppingCartId, itemPriceId, quantity) => 
 
 export const getActiveShoppingCart = (email) => {
     return dispatch => {
-        API_DRIVER.get("api/shoppingCart/" + email)
+        API_DRIVER.get("api/shoppingCart/user/" + email)
             .then(response => {
                 dispatch({type: actionTypes.GET_SHOPPING_CART, activeShoppingCart: response.data})
             })
@@ -78,7 +77,13 @@ export const payShoppingCart = (shoppingCartId) => {
     return dispatch => {
         API_DRIVER.patch("api/shoppingCart/user/pay", {shoppingCartId: shoppingCartId})
             .then(response => {
-                dispatch({type: actionTypes.PAY_SHOPPING_CART})
+                let storage = sessionStorage;
+                if (localStorage.getItem('token')) {
+                    storage = localStorage;
+                }
+                dispatch({type: actionTypes.PAY_SHOPPING_CART, newActiveShoppingCart: response.data})
+                dispatch({type: actionTypes.CHANGE_ACTIVE_SHOPPING_CART, newActiveShoppingCartId: response.data.shoppingCartId})
+                storage.setItem('activeShoppingCartId', response.data.shoppingCartId);
             })
             .catch(error => {
                 dispatch({type: actionTypes.PAY_SHOPPING_CART_ERROR})

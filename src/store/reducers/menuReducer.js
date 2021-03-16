@@ -6,6 +6,7 @@ const initialState = {
     menu: {},
     currentCategory: {},
     currentItem: {},
+    currentItemPrice: {},
     error: false
 };
 
@@ -27,6 +28,10 @@ const setCurrentCategory = (state, action) => {
 
 const setCurrentItem = (state, action) => {
     return updateObject(state, {currentItem: action.item});
+}
+
+const setCurrentItemPrice = (state, action) => {
+    return updateObject(state, {currentItemPrice: action.itemPrice});
 }
 
 const createCategory = (state, action) => {
@@ -107,6 +112,8 @@ const menuReducer = ( state = initialState, action ) => {
             return deleteCategory(state, action);
         case actionTypes.SET_CURRENT_ITEM:
             return setCurrentItem(state, action);
+        case actionTypes.SET_CURRENT_ITEM_PRICE:
+            return setCurrentItemPrice(state, action);
         case actionTypes.ADD_ITEM_IN_CATEGORY:
             return addItemInsideCategoryWithId(state, action);
         case actionTypes.EDIT_ITEM_IN_CATEGORY:

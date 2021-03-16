@@ -6,6 +6,7 @@ const initialState = {
     email: null,
     role: null,
     fullName: null,
+    activeShoppingCartId: null,
     loading: false,
     error: false,
     errorMessage: ""
@@ -41,10 +42,16 @@ const authSuccess = (state, action) => {
         email: action.email,
         role: action.role,
         fullName: action.fullName,
+        activeShoppingCartId: action.activeShoppingCartId,
         loading: false,
         error: false
     });
 }
+
+const changeActiveShoppingCart = (state, action) => {
+    return updateObject(state, {activeShoppingCartId: action.newActiveShoppingCartId})
+}
+
 
 const authReducer = (state = initialState, action) =>{
     switch(action.type) {
@@ -58,6 +65,8 @@ const authReducer = (state = initialState, action) =>{
             return authLogout(state, action);
         case actionTypes.AUTH_REGISTER:
             return authRegister(state, action);
+        case actionTypes.CHANGE_ACTIVE_SHOPPING_CART:
+            return changeActiveShoppingCart(state, action);
         default: return state;
     }
 }
