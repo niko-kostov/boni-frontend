@@ -6,55 +6,29 @@ import * as actions from "../../store/actions";
 import {connect} from "react-redux";
 
 const ShoppingCart = (props) => {
-    /*let [shoppingCart, setShoppingCart] = useState({
-        shoppingCartId: 1,
-        shoppingCartItems: [
-            {itemId: 5, itemName: "Cheeseburger", itemPriceId: 3, itemPrice: 200, itemPriceSize: "MEDIUM", quantity: 2},
-            {itemId: 4, itemName: "Opasen Burger", itemPriceId: 2, itemPrice: 300, itemPriceSize: "LARGE", quantity: 4}
-        ]
-    })*/
 
     useEffect(() => {
         props.getActiveShoppingCart(props.email);
     }, []);
 
-    /*let increaseNumber = (itemId) => {
-        let tempShoppingCartItems = [...shoppingCart.shoppingCartItems];
-        for (let i = 0; i < tempShoppingCartItems.length; i++){
-            if(tempShoppingCartItems[i].itemId === itemId){
-                tempShoppingCartItems[i].quantity = tempShoppingCartItems[i].quantity + 1;
-                break;
-            }
-        }
-        let tmpShoppingCart = {...shoppingCart}
-        tmpShoppingCart.shoppingCartItems = tempShoppingCartItems;
-        setShoppingCart(tmpShoppingCart);
-    }
-
-    let decreaseNumber = (itemId) => {
-        let tempShoppingCartItems = [...shoppingCart.shoppingCartItems];
-        for (let i = 0; i < tempShoppingCartItems.length; i++){
-            if(tempShoppingCartItems[i].itemId === itemId){
-                if(tempShoppingCartItems[i].quantity !== 1){
-                    tempShoppingCartItems[i].quantity = tempShoppingCartItems[i].quantity - 1;
-                }
-                break;
-            }
-        }
-        let tmpShoppingCart = {...shoppingCart}
-        tmpShoppingCart.shoppingCartItems = tempShoppingCartItems;
-        setShoppingCart(tmpShoppingCart);
-    }
-
-    let deleteItem = (itemId) => {
-        let tempShoppingCartItems = [...shoppingCart.shoppingCartItems.filter(item => item.itemId !== itemId)];
-        let tmpShoppingCart = {...shoppingCart}
-        tmpShoppingCart.shoppingCartItems = tempShoppingCartItems;
-        setShoppingCart(tmpShoppingCart);
-    }*/
-
     const handlePayment = () => {
         props.payShoppingCart(props.shoppingCart.shoppingCartId)
+    }
+
+    const handleDeleteItemFromCart = (shoppingCartItem) => {
+        props.deleteItemFromCart(props.shoppingCart.shoppingCartId, shoppingCartItem);
+    }
+
+    const increaseQuantity = (shoppingCartItem) => {
+        props.increaseQuantity(props.shoppingCart.shoppingCartId, shoppingCartItem);
+    }
+
+    const decreaseQuantity = (shoppingCartItem, quantity) => {
+        if(quantity >= 2){
+            props.decreaseQuantity(props.shoppingCart.shoppingCartId, shoppingCartItem);
+        }else{
+            console.log("Cannot be 0")
+        }
     }
 
     return (
@@ -84,12 +58,17 @@ const ShoppingCart = (props) => {
                                 <span>{shoppingCartItem.itemName} ({shoppingCartItem.itemPriceSize})</span>
                                 <div className="float-right">
                                     <Button size="sm"
-                                            className="fa fa-minus"/>
-                                    <Button size="sm"
-                                            className="fa fa-plus"
+                                            className="fa fa-minus"
+                                            onClick={() => decreaseQuantity(shoppingCartItem, shoppingCartItem.quantity)}
                                     />
                                     <Button size="sm"
-                                            className="fa fa-trash bg-danger text-white"/>
+                                            className="fa fa-plus"
+                                            onClick={() => increaseQuantity(shoppingCartItem)}
+                                    />
+                                    <Button size="sm"
+                                            className="fa fa-trash bg-danger text-white"
+                                            onClick={() => handleDeleteItemFromCart(shoppingCartItem)}
+                                    />
                                 </div>
                             </td>
                             <td>{shoppingCartItem.quantity * shoppingCartItem.itemPrice}</td>
@@ -127,7 +106,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getActiveShoppingCart: (email) => dispatch(actions.getActiveShoppingCart(email)),
-        payShoppingCart: (shoppingCartId) => dispatch(actions.payShoppingCart(shoppingCartId))
+        payShoppingCart: (shoppingCartId) => dispatch(actions.payShoppingCart(shoppingCartId)),
+        deleteItemFromCart: (shoppingCartId, shoppingCartItem) => dispatch(actions.deleteItemFromCart(shoppingCartId, shoppingCartItem)),
+        increaseQuantity: (shoppingCartId, shoppingCartItem) => dispatch(actions.increaseQuantityForItem(shoppingCartId, shoppingCartItem)),
+        decreaseQuantity: (shoppingCartId, shoppingCartItem) => dispatch(actions.decreaseQuantityForItem(shoppingCartId, shoppingCartItem))
     }
 }
 

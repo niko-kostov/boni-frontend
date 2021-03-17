@@ -16,7 +16,9 @@ export {
     deleteItemFromCart,
     getActiveShoppingCart,
     payShoppingCart,
-    changeQuantityForItem
+    increaseQuantityForItem,
+    decreaseQuantityForItem,
+    getShoppingCartHistoryDetails
 } from './shoppingCartActions';
 
 export {

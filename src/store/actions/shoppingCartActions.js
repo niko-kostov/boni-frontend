@@ -1,7 +1,8 @@
-import {API_DRIVER} from "../../config";
+import {API_DRIVER, setAuthToken} from "../../config";
 import * as actionTypes from '../actionTypes'
 
 export const getShoppingCartHistory = (email) => {
+    setAuthToken();
     return dispatch => {
         API_DRIVER.get("api/shoppingCart/user/getOrderHistory/" + email)
             .then(response => {
@@ -13,7 +14,21 @@ export const getShoppingCartHistory = (email) => {
     }
 };
 
+export const getShoppingCartHistoryDetails = (cartId) => {
+    setAuthToken();
+    return dispatch => {
+        API_DRIVER.get("api/shoppingCart/user/getOrderHistoryDetails/" + cartId)
+            .then(response => {
+                dispatch({type: actionTypes.GET_SHOPPING_CART_HISTORY_DETAILS, currentCartDetails: response.data})
+            })
+            .catch(error => {
+                dispatch({type: actionTypes.GET_SHOPPING_CART_HISTORY_DETAILS_ERROR})
+            })
+    }
+};
+
 export const addItemToCart = (shoppingCartId, itemId, itemPriceId, quantity) => {
+    setAuthToken();
     const itemToCartData = {
         shoppingCartId: shoppingCartId,
         itemId: itemId,
@@ -32,11 +47,12 @@ export const addItemToCart = (shoppingCartId, itemId, itemPriceId, quantity) => 
     }
 };
 
-export const deleteItemFromCart = (shoppingCartId, itemPriceId) => {
+export const deleteItemFromCart = (shoppingCartId, shoppingCartItem) => {
+    setAuthToken();
     return dispatch => {
-        API_DRIVER.delete("api/shoppingCartItem/user/shoppingCart/" + shoppingCartId + "/itemPrice/" + itemPriceId)
+        API_DRIVER.delete("api/shoppingCartItem/user/shoppingCart/" + shoppingCartId + "/itemPrice/" + shoppingCartItem.itemPriceId)
             .then(response => {
-                dispatch({type: actionTypes.DELETE_ITEM_FROM_CART})
+                dispatch({type: actionTypes.DELETE_ITEM_FROM_CART, shoppingCartItem: shoppingCartItem})
             })
             .catch(error => {
                 dispatch({type: actionTypes.DELETE_ITEM_FROM_CART_ERROR})
@@ -44,16 +60,35 @@ export const deleteItemFromCart = (shoppingCartId, itemPriceId) => {
     }
 }
 
-export const changeQuantityForItem = (shoppingCartId, itemPriceId, quantity) => {
+export const increaseQuantityForItem = (shoppingCartId, shoppingCartItem) => {
+    setAuthToken();
     const changeItemQuantityData = {
         shoppingCartId: shoppingCartId,
-        itemPriceId: itemPriceId,
-        quantity: quantity,
+        itemPriceId: shoppingCartItem.itemPriceId,
+        quantity: shoppingCartItem.quantity + 1,
     }
     return dispatch => {
         API_DRIVER.patch("api/shoppingCartItem/user/changeQuantity", changeItemQuantityData)
             .then(response => {
-                dispatch({type: actionTypes.CHANGE_ITEM_QUANTITY})
+                dispatch({type: actionTypes.INCREASE, shoppingCartItem: shoppingCartItem});
+            })
+            .catch(error => {
+                dispatch({type: actionTypes.CHANGE_ITEM_QUANTITY_ERROR})
+            })
+    }
+}
+
+export const decreaseQuantityForItem = (shoppingCartId, shoppingCartItem) => {
+    setAuthToken();
+    const changeItemQuantityData = {
+        shoppingCartId: shoppingCartId,
+        itemPriceId: shoppingCartItem.itemPriceId,
+        quantity: shoppingCartItem.quantity - 1,
+    };
+    return dispatch => {
+        API_DRIVER.patch("api/shoppingCartItem/user/changeQuantity", changeItemQuantityData)
+            .then(response => {
+                dispatch({type: actionTypes.DECREASE, shoppingCartItem: shoppingCartItem});
             })
             .catch(error => {
                 dispatch({type: actionTypes.CHANGE_ITEM_QUANTITY_ERROR})
@@ -62,6 +97,7 @@ export const changeQuantityForItem = (shoppingCartId, itemPriceId, quantity) => 
 }
 
 export const getActiveShoppingCart = (email) => {
+    setAuthToken();
     return dispatch => {
         API_DRIVER.get("api/shoppingCart/user/" + email)
             .then(response => {
@@ -74,6 +110,7 @@ export const getActiveShoppingCart = (email) => {
 };
 
 export const payShoppingCart = (shoppingCartId) => {
+    setAuthToken();
     return dispatch => {
         API_DRIVER.patch("api/shoppingCart/user/pay", {shoppingCartId: shoppingCartId})
             .then(response => {
@@ -82,7 +119,10 @@ export const payShoppingCart = (shoppingCartId) => {
                     storage = localStorage;
                 }
                 dispatch({type: actionTypes.PAY_SHOPPING_CART, newActiveShoppingCart: response.data})
-                dispatch({type: actionTypes.CHANGE_ACTIVE_SHOPPING_CART, newActiveShoppingCartId: response.data.shoppingCartId})
+                dispatch({
+                    type: actionTypes.CHANGE_ACTIVE_SHOPPING_CART,
+                    newActiveShoppingCartId: response.data.shoppingCartId
+                })
                 storage.setItem('activeShoppingCartId', response.data.shoppingCartId);
             })
             .catch(error => {
