@@ -1,0 +1,52 @@
+.imageCarousel{
+    margin-bottom: 2rem;
+    width: min(300px, 70%);
+    align-self: center;
+}
+
+.textToCarousel{
+    text-align: center;
+}
+
+.containerToCarousel{
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 55em) {
+    .containerToCarousel{
+        flex-direction: row;
+    }
+
+    .containerToCarousel > *{
+        flex-basis: 100%;
+    }
+
+    .containerToCarousel > * + *{
+        margin-left: 2em;
+    }
+
+    .textToCarousel{
+        text-align: right;
+    }
+
+    .imageCarousel{
+        margin-bottom: 2rem;
+        width: min(300px, 70%);
+        align-self: normal;
+    }
+}
+
+.textToCarousel h2{
+    font-size: 2rem;
+}
+
+section {
+    padding: 4rem 0;
+}
+
+@media (min-width: 50em) {
+    section {
+        padding: 2em 0;
+    }
+}

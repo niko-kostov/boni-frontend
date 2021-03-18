@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Headroom from "headroom.js";
 import './CustomNav.css';
 import logo from '../../assets/img/boni-logo.png';
+import new_logo from '../../assets/img/boni-new-logo.svg';
 import restaurantImage from '../../assets/img/restaurantImage.jpg'
 
 
@@ -38,7 +39,7 @@ const CustomNav = () => {
                 id="navbar-main">
             <Container>
                 <NavbarBrand href="/">
-                    <Image id="brandImage" src={logo} style={{ width: "80px", height: "80px" }}/>
+                    <Image id="brandImage" src={new_logo} style={{ width: "80px", height: "80px" }}/>
                 </NavbarBrand>
                 <button className="navbar-toggler" id="navbar-default">
                     <span className="navbar-toggler-icon" />
