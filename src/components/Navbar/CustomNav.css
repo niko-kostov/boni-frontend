@@ -15,3 +15,7 @@
         left: auto !important;
     }
 }
+
+#navbar-main{
+    z-index: 1500;
+}

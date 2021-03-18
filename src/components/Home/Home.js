@@ -3,8 +3,10 @@ import {Button, Container, Row, Col, UncontrolledCarousel} from "reactstrap";
 import restaurantImage from '../../assets/img/restaurantImage.jpg'
 import deliveryImage from '../../assets/img/delivery-service-with-masks-illustration_23-2148501978.jpg'
 import orderImage from '../../assets/img/ONLINE FOOD ORDER.jpg'
-import {withRouter} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import "./Home.css"
+import HomeMap from "../Maps/HomeMap/HomeMap";
+import 'leaflet/dist/leaflet.css';
 
 const Home = () => {
     return (
@@ -46,15 +48,15 @@ const Home = () => {
                     <div className="imageCarousel">
                         <UncontrolledCarousel items={[{
                             src: deliveryImage
-                        }, {
+                        }/*, {
                             src: deliveryImage
                         }, {
                             src: deliveryImage
-                        }]}/>
+                        }*/]}/>
                     </div>
 
                     <div>
-                        <p className="textToCarousel">
+                        <div className="textToCarousel">
                             <h2 className="display-3 text-primary">
                                 Food at your door!
                             </h2>
@@ -71,20 +73,20 @@ const Home = () => {
                                 Enjoy!
                             </h4>
 
-                            <button className="btn btn-icon btn-primary" type="button">
-                                <span className="btn-inner--icon"><i className="ni ni-bag-17"></i></span>
-                                <span className="btn-inner--text">Get Started!</span>
-                            </button>
-                        </p>
+                            <Link to="/menu">
+                                <button className="btn btn-icon btn-primary" type="button">
+                                    <span className="btn-inner--icon"><i className="ni ni-bag-17"/></span>
+                                    <span className="btn-inner--text">Get Started!</span>
+                                </button>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <section>
-                <p>
-                    Test
-                </p>
-            </section>
+            <div className="container">
+                <HomeMap/>
+            </div>
 
         </div>
     );
