@@ -18,6 +18,7 @@ const ItemPrice = (props) => {
                         id={props.itemPrice.id}
                         name="itemPrices"
                         value={props.itemPrice.price}
+                        onChange={props.handleChange}
                         type="radio"
                     />
                     <label className="custom-control-label font-weight-600" htmlFor={props.itemPrice.id}>

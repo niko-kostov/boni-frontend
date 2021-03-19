@@ -73,21 +73,21 @@ const Category = (props) => {
                                 <h5 style={{paddingTop: 5}}>{props.category.name}</h5>
                             </div>
                             <div className="float-right">
-                                <Button className="btn btn-info"
+                                <Button className="btn btn-info shadow-none"
                                         onClick={(event) => toggleItemForm(event)}>
                                     <span className="fa fa-plus"/>
                                 </Button>
                                 <ItemForm type={false}
                                           click={(event) => toggleItemForm(event)}
                                           itemFormModal={itemFormModal}/>
-                                <Button className="btn btn-neutral"
+                                <Button className="btn btn-neutral shadow-none"
                                         onClick={(event) => toggleCategoryForm(event)}>
                                     <span className="fa fa-edit"/>
                                 </Button>
                                 <CategoryForm type={true}
                                               click={(event) => toggleCategoryForm(event)}
                                               editCategoryModal={editCategoryModal}/>
-                                <Button className="btn btn-danger"
+                                <Button className="btn btn-danger shadow-none"
                                         onClick={(event) => toggleCategoryDelete(event)}>
                                     <span className="fa fa-trash"/>
                                 </Button>

@@ -70,7 +70,7 @@ const Item = (props) => {
                         {showText(props.item.description, 150)}
                     </Card.Text>
                     <Button
-                        className="text-default float-right"
+                        className="text-default float-right shadow--hover"
                         color="link"
                         onClick={(event) => toggleModalDetails(event)}
                     >

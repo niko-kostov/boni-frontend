@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     Button,
     Card,
@@ -15,11 +15,24 @@ import {
     Col
 } from "reactstrap";
 import {Link, withRouter} from "react-router-dom";
+import * as actions from "../../../store/actions";
+import {connect} from "react-redux";
+import {useForm} from "react-hook-form";
 
 
-const Login = () => {
+const Login = (props) => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [rememberMe, setRememberMe] = useState(false);
+
+    const {register, watch, errors, handleSubmit} = useForm();
+
+    const handleLogin = (data) => {
+        props.login(data.emailInput, data.passwordInput, rememberMe);
+    }
+
     return (
-        <>
+        <React.Fragment>
             <main>
                 <section className="section section-shaped section-lg">
                     <div className="shape shape-style-1 bg-gradient-default">
@@ -56,7 +69,7 @@ const Login = () => {
                                         <div className="text-center text-muted mb-4">
                                             <small>Or sign in with credentials</small>
                                         </div>
-                                        <Form role="form">
+                                        <Form role="form" onSubmit={handleSubmit(handleLogin)}>
                                             <FormGroup className="mb-3">
                                                 <InputGroup className="input-group-alternative">
                                                     <InputGroupAddon addonType="prepend">
@@ -64,8 +77,26 @@ const Login = () => {
                                                             <i className="ni ni-email-83"/>
                                                         </InputGroupText>
                                                     </InputGroupAddon>
-                                                    <Input placeholder="Email" type="email"/>
+                                                    <Input placeholder="Email"
+                                                           name="emailInput"
+                                                           innerRef={register({
+                                                               required: true,
+                                                               pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
+                                                           })}
+                                                   />
                                                 </InputGroup>
+                                                {
+                                                    errors.emailInput &&
+                                                    errors.emailInput?.type === "required" &&
+                                                    <span
+                                                        className="text-danger font-weight-500">Please enter email!</span>
+                                                }
+                                                {
+                                                    errors.emailInput &&
+                                                    errors.emailInput?.type === "pattern" &&
+                                                    <span
+                                                        className="text-danger font-weight-500">Enter valid email!</span>
+                                                }
                                             </FormGroup>
                                             <FormGroup>
                                                 <InputGroup className="input-group-alternative">
@@ -78,14 +109,26 @@ const Login = () => {
                                                         placeholder="Password"
                                                         type="password"
                                                         autoComplete="off"
+                                                        name="passwordInput"
+                                                        innerRef={register({
+                                                            required: true
+                                                        })}
                                                     />
                                                 </InputGroup>
+                                                {
+                                                    errors.passwordInput &&
+                                                    errors.passwordInput?.type === "required" &&
+                                                    <span
+                                                        className="text-danger font-weight-500">Please enter password!</span>
+                                                }
                                             </FormGroup>
                                             <div className="custom-control custom-control-alternative custom-checkbox">
                                                 <input
                                                     className="custom-control-input"
                                                     id=" customCheckLogin"
                                                     type="checkbox"
+                                                    value={rememberMe}
+                                                    onChange={() => setRememberMe(!rememberMe)}
                                                 />
                                                 <label
                                                     className="custom-control-label"
@@ -98,7 +141,7 @@ const Login = () => {
                                                 <Button
                                                     className="my-4"
                                                     color="primary"
-                                                    type="button"
+                                                    type="submit"
                                                 >
                                                     Sign in
                                                 </Button>
@@ -121,8 +164,14 @@ const Login = () => {
                     </Container>
                 </section>
             </main>
-        </>
+        </React.Fragment>
     );
 }
 
-export default withRouter(Login);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        login: (email, password, rememberMe) => dispatch(actions.login(email, password, rememberMe)),
+    }
+}
+
+export default withRouter(connect(null, mapDispatchToProps)(Login));

@@ -1,5 +1,5 @@
 import React, {useReducer, useEffect, useState} from 'react';
-import { Link } from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import Headroom from "headroom.js";
 import './CustomNav.css';
 import logo from '../../assets/img/boni-logo.png';
@@ -23,15 +23,16 @@ import {
     Col
 } from "reactstrap";
 import {Image} from "react-bootstrap";
+import * as actions from "../../store/actions";
+import {connect} from "react-redux";
 
 
-const CustomNav = () => {
-    let [isAuthenticated, setIsAuthenticated] = useState(true);
-
+const CustomNav = (props) => {
     useEffect(() => {
         let headroom = new Headroom(document.getElementById("navbar-main"));
         headroom.init();
     }, []);
+
 
     return(
         <Navbar className="navbar-dark bg-info navbar-transparent navbar-light headroom"
@@ -96,11 +97,11 @@ const CustomNav = () => {
                                 <span className="nav-link-inner--text d-lg-none"/>
                             </NavLink>
                         </NavItem>
-                        {isAuthenticated ?
+                        {props.isAuthenticated ?
                             <UncontrolledDropdown nav inNavbar>
                                 <DropdownToggle nav style={{padding: 8}}>
                                     <img src={restaurantImage} style={{width: 60, height: 60, padding: 0}} className="rounded-circle"/>
-                                    <span className="nav-link-inner--text d-lg-none"/>
+                                    <span className="nav-link-inner--text d-lg-none">{props.fullName}</span>
                                 </DropdownToggle>
                                 <DropdownMenu
                                     aria-labelledby="nav-inner-primary_dropdown_1"
@@ -116,7 +117,7 @@ const CustomNav = () => {
                                         Cart history
                                     </DropdownItem>
                                     <div className="dropdown-divider"/>
-                                    <DropdownItem to="">
+                                    <DropdownItem onClick={props.logout}>
                                         Logout
                                     </DropdownItem>
                                 </DropdownMenu>
@@ -140,4 +141,5 @@ const CustomNav = () => {
     );
 }
 
-export default CustomNav;
+
+export default withRouter(CustomNav);

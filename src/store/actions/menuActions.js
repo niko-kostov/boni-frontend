@@ -1,4 +1,4 @@
-import {API_DRIVER} from "../../config";
+import {API_DRIVER, setAuthToken} from "../../config";
 import * as actionTypes from '../actionTypes'
 
 const getMenuSuccess = (menu) => {
@@ -21,6 +21,7 @@ export const getMenu = () => {
 };
 
 export const createCategory = (categoryName) => {
+    setAuthToken();
     return dispatch => {
         API_DRIVER.post("api/category/admin", {name: categoryName})
             .then(response => {
@@ -33,6 +34,7 @@ export const createCategory = (categoryName) => {
 };
 
 export const editCategory = (categoryName, categoryId) => {
+    setAuthToken();
     return dispatch => {
         API_DRIVER.patch("api/category/admin", {name: categoryName, id: categoryId})
             .then(response => {
@@ -45,6 +47,7 @@ export const editCategory = (categoryName, categoryId) => {
 };
 
 export const deleteCategory = (categoryId) => {
+    setAuthToken();
     return dispatch => {
         API_DRIVER.delete("api/category/admin/" + categoryId)
             .then(response => {
@@ -57,6 +60,7 @@ export const deleteCategory = (categoryId) => {
 };
 
 export const addItemInsideCategoryWithId = (itemName, itemDescription, itemImage, categoryId) => {
+    setAuthToken();
     return dispatch => {
         API_DRIVER.post("api/item/admin", {
             name: itemName,
@@ -80,6 +84,7 @@ export const addItemInsideCategoryWithId = (itemName, itemDescription, itemImage
 };
 
 export const editItemInsideCategoryWithId = (itemName, itemDescription, itemImage, categoryId, itemId) => {
+    setAuthToken();
     return dispatch => {
         API_DRIVER.patch("api/item/admin", {
             id: itemId,
@@ -104,6 +109,7 @@ export const editItemInsideCategoryWithId = (itemName, itemDescription, itemImag
 };
 
 export const deleteItemInsideCategoryWithId = (itemId, categoryId) => {
+    setAuthToken();
     return dispatch => {
         API_DRIVER.delete("api/item/admin/" + itemId)
             .then(response => {
@@ -121,6 +127,7 @@ export const deleteItemInsideCategoryWithId = (itemId, categoryId) => {
 };
 
 export const addItemPriceInsideItemWithId = (itemPrice, itemSize, itemId, categoryId) => {
+    setAuthToken();
     return dispatch => {
         API_DRIVER.post("api/itemPrice/admin",
             {
@@ -144,6 +151,7 @@ export const addItemPriceInsideItemWithId = (itemPrice, itemSize, itemId, catego
 };
 
 export const deleteItemPriceInsideItemWithId = (itemPriceId, itemId, categoryId) => {
+    setAuthToken();
     return dispatch => {
         API_DRIVER.delete("api/itemPrice/admin/" + itemPriceId)
             .then(response => {

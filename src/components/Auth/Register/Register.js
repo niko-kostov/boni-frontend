@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link, withRouter} from "react-router-dom";
 import './Register.css';
 
@@ -17,11 +17,26 @@ import {
     Row,
     Col
 } from "reactstrap";
+import * as actions from "../../../store/actions";
+import {connect} from "react-redux";
+import {useForm} from "react-hook-form";
 
 
-const Register = () => {
+const Register = (props) => {
+    const {register, watch, errors, handleSubmit} = useForm();
+
+    const handleRegister = (data) => {
+        props.register(
+            data.emailInput,
+            data.firstNameInput,
+            data.lastNameInput,
+            data.phoneNumberInput,
+            data.passwordInput
+        );
+    }
+
     return (
-        <>
+        <React.Fragment>
             <main>
                 <section className="section section-shaped section-lg">
                     <div className="shape shape-style-1 bg-gradient-default">
@@ -58,7 +73,7 @@ const Register = () => {
                                         <div className="text-center text-muted mb-4">
                                             <small>Or sign up with credentials</small>
                                         </div>
-                                        <Form role="form">
+                                        <Form role="form" onSubmit={handleSubmit(handleRegister)}>
                                             <FormGroup>
                                                 <InputGroup className="input-group-alternative mb-3">
                                                     <InputGroupAddon addonType="prepend">
@@ -66,8 +81,24 @@ const Register = () => {
                                                             <i className="ni ni-email-83"/>
                                                         </InputGroupText>
                                                     </InputGroupAddon>
-                                                    <Input placeholder="Email" type="email"/>
+                                                    <Input name="emailInput" placeholder="Email" type="text"
+                                                           innerRef={register({
+                                                               required: true,
+                                                               pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
+                                                           })}/>
                                                 </InputGroup>
+                                                {
+                                                    errors.emailInput &&
+                                                    errors.emailInput?.type === "required" &&
+                                                    <span
+                                                        className="text-danger font-weight-500">Email cannot be empty!</span>
+                                                }
+                                                {
+                                                    errors.emailInput &&
+                                                    errors.emailInput?.type === "pattern" &&
+                                                    <span
+                                                        className="text-danger font-weight-500">Enter valid email!</span>
+                                                }
                                             </FormGroup>
                                             <FormGroup>
                                                 <InputGroup className="input-group-alternative mb-3">
@@ -76,8 +107,16 @@ const Register = () => {
                                                             <i className="ni ni-hat-3"/>
                                                         </InputGroupText>
                                                     </InputGroupAddon>
-                                                    <Input placeholder="First Name" type="text"/>
+                                                    <Input name="firstNameInput" placeholder="First Name" type="text"
+                                                           innerRef={register({
+                                                               required: true
+                                                           })}/>
                                                 </InputGroup>
+                                                {
+                                                    errors.firstNameInput &&
+                                                    errors.firstNameInput?.type === "required" &&
+                                                    <span className="text-danger font-weight-500">First name cannot be empty</span>
+                                                }
                                             </FormGroup>
                                             <FormGroup>
                                                 <InputGroup className="input-group-alternative mb-3">
@@ -86,8 +125,16 @@ const Register = () => {
                                                             <i className="ni ni-hat-3"/>
                                                         </InputGroupText>
                                                     </InputGroupAddon>
-                                                    <Input placeholder="Last Name" type="text"/>
+                                                    <Input name="lastNameInput" placeholder="Last Name" type="text"
+                                                           innerRef={register({
+                                                               required: true
+                                                           })}/>
                                                 </InputGroup>
+                                                {
+                                                    errors.lastNameInput &&
+                                                    errors.lastNameInput?.type === "required" &&
+                                                    <span className="text-danger font-weight-500">Last name cannot be empty</span>
+                                                }
                                             </FormGroup>
                                             <FormGroup>
                                                 <InputGroup className="input-group-alternative mb-3">
@@ -96,8 +143,11 @@ const Register = () => {
                                                             <i className="ni ni-hat-3"/>
                                                         </InputGroupText>
                                                     </InputGroupAddon>
-                                                    <Input placeholder="Phone Number"
-                                                           type="number"/>
+                                                    <Input name="phoneNumberInput" placeholder="Phone Number"
+                                                           type="number"
+                                                           innerRef={register({
+                                                               required: false,
+                                                           })}/>
                                                 </InputGroup>
                                             </FormGroup>
                                             <FormGroup>
@@ -108,11 +158,27 @@ const Register = () => {
                                                         </InputGroupText>
                                                     </InputGroupAddon>
                                                     <Input
+                                                        name="passwordInput"
                                                         placeholder="Password"
                                                         type="password"
                                                         autoComplete="off"
+                                                        innerRef={register({
+                                                            required: true,
+                                                            minLength: 7
+                                                        })}
                                                     />
                                                 </InputGroup>
+                                                {
+                                                    errors.passwordInput &&
+                                                    errors.passwordInput?.type === "required" &&
+                                                    <span
+                                                        className="text-danger font-weight-500">Please enter password!</span>
+                                                }
+                                                {
+                                                    errors.passwordInput &&
+                                                    errors.passwordInput?.type === "minLength" &&
+                                                    <span className="text-danger font-weight-500">Password should be at least 7 characters long!</span>
+                                                }
                                             </FormGroup>
                                             <FormGroup>
                                                 <InputGroup className="input-group-alternative">
@@ -122,17 +188,39 @@ const Register = () => {
                                                         </InputGroupText>
                                                     </InputGroupAddon>
                                                     <Input
+                                                        name="repeatPasswordInput"
                                                         placeholder="Repeat Password"
                                                         type="password"
                                                         autoComplete="off"
+                                                        innerRef={register({
+                                                            required: true,
+                                                            minLength: 7,
+                                                            validate: (value) => value === watch("passwordInput")
+                                                        })}
                                                     />
                                                 </InputGroup>
+                                                {
+                                                    errors.repeatPasswordInput &&
+                                                    errors.repeatPasswordInput?.type === "required" &&
+                                                    <span
+                                                        className="text-danger font-weight-500">Please enter password!</span>
+                                                }
+                                                {
+                                                    errors.repeatPasswordInput &&
+                                                    errors.repeatPasswordInput?.type === "minLength" &&
+                                                    <span className="text-danger font-weight-500">Password should be at least 7 characters long!</span>
+                                                }
+                                                {
+                                                    errors.repeatPasswordInput &&
+                                                    errors.repeatPasswordInput?.type === "validate" &&
+                                                    <span className="text-danger font-weight-500">Passwords do not match!</span>
+                                                }
                                             </FormGroup>
                                             <div className="text-center">
                                                 <Button
                                                     className="mt-4"
                                                     color="primary"
-                                                    type="button"
+                                                    type="submit"
                                                 >
                                                     Create account
                                                 </Button>
@@ -155,8 +243,18 @@ const Register = () => {
                     </Container>
                 </section>
             </main>
-        </>
+        </React.Fragment>
     );
 }
 
-export default withRouter(Register);
+const mapStateToProps = (state) => {
+    return {}
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        register: (email, firstName, lastName, phoneNumber, password) => dispatch(actions.register(email, firstName, lastName, phoneNumber, password)),
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Register));

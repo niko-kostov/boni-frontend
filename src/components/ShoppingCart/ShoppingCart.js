@@ -2,57 +2,33 @@ import React, {useEffect, useState} from 'react';
 import {withRouter} from "react-router-dom";
 import './ShoppingCart.css';
 import {Button, Table} from "reactstrap";
+import * as actions from "../../store/actions";
+import {connect} from "react-redux";
 
-const ShoppingCart = () => {
-    let [shoppingCart, setShoppingCart] = useState({
-        shoppingCartId: 1,
-        shoppingCartItems: [
-            {itemId: 5, itemName: "Cheeseburger", itemPriceId: 3, itemPrice: 200, itemPriceSize: "MEDIUM", quantity: 2},
-            {itemId: 4, itemName: "Opasen Burger", itemPriceId: 2, itemPrice: 300, itemPriceSize: "LARGE", quantity: 4}
-        ]
-    })
+const ShoppingCart = (props) => {
 
-    /*useEffect(() => {
-        if (localStorage.getItem("shoppingCart")){
-            setShoppingCart(JSON.parse(localStorage.getItem("shoppingCart")))
+    useEffect(() => {
+        props.getActiveShoppingCart(props.email);
+    }, []);
+
+    const handlePayment = () => {
+        props.payShoppingCart(props.shoppingCart.shoppingCartId)
+    }
+
+    const handleDeleteItemFromCart = (shoppingCartItem) => {
+        props.deleteItemFromCart(props.shoppingCart.shoppingCartId, shoppingCartItem);
+    }
+
+    const increaseQuantity = (shoppingCartItem) => {
+        props.increaseQuantity(props.shoppingCart.shoppingCartId, shoppingCartItem);
+    }
+
+    const decreaseQuantity = (shoppingCartItem, quantity) => {
+        if(quantity >= 2){
+            props.decreaseQuantity(props.shoppingCart.shoppingCartId, shoppingCartItem);
         }else{
-            setShoppingCart({})
+            console.log("Cannot be 0")
         }
-    }, []);*/
-
-    let increaseNumber = (itemId) => {
-        let tempShoppingCartItems = [...shoppingCart.shoppingCartItems];
-        for (let i = 0; i < tempShoppingCartItems.length; i++){
-            if(tempShoppingCartItems[i].itemId === itemId){
-                tempShoppingCartItems[i].quantity = tempShoppingCartItems[i].quantity + 1;
-                break;
-            }
-        }
-        let tmpShoppingCart = {...shoppingCart}
-        tmpShoppingCart.shoppingCartItems = tempShoppingCartItems;
-        setShoppingCart(tmpShoppingCart);
-    }
-
-    let decreaseNumber = (itemId) => {
-        let tempShoppingCartItems = [...shoppingCart.shoppingCartItems];
-        for (let i = 0; i < tempShoppingCartItems.length; i++){
-            if(tempShoppingCartItems[i].itemId === itemId){
-                if(tempShoppingCartItems[i].quantity !== 1){
-                    tempShoppingCartItems[i].quantity = tempShoppingCartItems[i].quantity - 1;
-                }
-                break;
-            }
-        }
-        let tmpShoppingCart = {...shoppingCart}
-        tmpShoppingCart.shoppingCartItems = tempShoppingCartItems;
-        setShoppingCart(tmpShoppingCart);
-    }
-
-    let deleteItem = (itemId) => {
-        let tempShoppingCartItems = [...shoppingCart.shoppingCartItems.filter(item => item.itemId !== itemId)];
-        let tmpShoppingCart = {...shoppingCart}
-        tmpShoppingCart.shoppingCartItems = tempShoppingCartItems;
-        setShoppingCart(tmpShoppingCart);
     }
 
     return (
@@ -63,7 +39,7 @@ const ShoppingCart = () => {
                 <div className="custom-style"/>
             </section>
             <div className="container shadow pb-1">
-                <h2>Shopping Cart #{shoppingCart.shoppingCartId}</h2>
+                <h2>Shopping Cart #{props.shoppingCart.shoppingCartId}</h2>
                 <Table striped bordered hover>
                     <thead>
                     <tr>
@@ -73,7 +49,7 @@ const ShoppingCart = () => {
                     </tr>
                     </thead>
                     <tbody>
-                    {shoppingCart.shoppingCartItems.map(shoppingCartItem => (
+                    {props.shoppingCart.shoppingCartItemDtoList ? props.shoppingCart.shoppingCartItemDtoList.map(shoppingCartItem => (
                         <tr key={shoppingCartItem.itemId}>
                             <td>{shoppingCartItem.itemId}</td>
                             <td>
@@ -83,30 +59,34 @@ const ShoppingCart = () => {
                                 <div className="float-right">
                                     <Button size="sm"
                                             className="fa fa-minus"
-                                            onClick={() => decreaseNumber(shoppingCartItem.itemId)}/>
+                                            onClick={() => decreaseQuantity(shoppingCartItem, shoppingCartItem.quantity)}
+                                    />
                                     <Button size="sm"
                                             className="fa fa-plus"
-                                            onClick={() => increaseNumber(shoppingCartItem.itemId)}/>
+                                            onClick={() => increaseQuantity(shoppingCartItem)}
+                                    />
                                     <Button size="sm"
                                             className="fa fa-trash bg-danger text-white"
-                                            onClick={() => deleteItem(shoppingCartItem.itemId)}/>
+                                            onClick={() => handleDeleteItemFromCart(shoppingCartItem)}
+                                    />
                                 </div>
                             </td>
                             <td>{shoppingCartItem.quantity * shoppingCartItem.itemPrice}</td>
                         </tr>
-                    ))}
+                    )) : null}
                     <tr>
                         <td colSpan="2">Total</td>
                         <td colSpan="1">{
-                            shoppingCart.shoppingCartItems
-                            .map(item => item.itemPrice * item.quantity)
-                            .reduce((acc, item) => acc + item, 0)
+                            props.shoppingCart.shoppingCartItemDtoList ? props.shoppingCart.shoppingCartItemDtoList
+                                .map(item => item.itemPrice * item.quantity)
+                                .reduce((acc, item) => acc + item, 0) : null
                         }</td>
                     </tr>
                     </tbody>
                 </Table>
                 <Button
                     className="btn btn-outline-success middle-screen-cart"
+                    onClick={handlePayment}
                 >
                     Checkout
                 </Button>
@@ -115,4 +95,22 @@ const ShoppingCart = () => {
     );
 }
 
-export default withRouter(ShoppingCart);
+const mapStateToProps = (state) => {
+    return {
+        shoppingCart: state.shoppingCartReducer.activeShoppingCart,
+        error: state.shoppingCartReducer.error,
+        email: state.authReducer.email
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getActiveShoppingCart: (email) => dispatch(actions.getActiveShoppingCart(email)),
+        payShoppingCart: (shoppingCartId) => dispatch(actions.payShoppingCart(shoppingCartId)),
+        deleteItemFromCart: (shoppingCartId, shoppingCartItem) => dispatch(actions.deleteItemFromCart(shoppingCartId, shoppingCartItem)),
+        increaseQuantity: (shoppingCartId, shoppingCartItem) => dispatch(actions.increaseQuantityForItem(shoppingCartId, shoppingCartItem)),
+        decreaseQuantity: (shoppingCartId, shoppingCartItem) => dispatch(actions.decreaseQuantityForItem(shoppingCartId, shoppingCartItem))
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ShoppingCart));

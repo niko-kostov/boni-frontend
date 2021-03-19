@@ -3,14 +3,29 @@ import './ShoppingCartHistory.css';
 import {Button, Table} from "reactstrap";
 import {withRouter} from "react-router-dom";
 import * as actions from "../../store/actions";
-import {connect} from "react-redux";
+import {connect, useDispatch} from "react-redux";
 import {getDate, getTime} from "../../utils/utils";
 import Moment from "react-moment";
+import DeleteCategory from "../Menu/Category/DeleteCategory/DeleteCategory";
+import ShoppingCartDetails from "./ShoppingCartDetails/ShoppingCartDetails";
+import * as actionTypes from "../../store/actionTypes";
 
 const ShoppingCartHistory = (props) => {
+    let [toggleDetailsModal, setToggleDetailsModal] = useState(false);
+
     useEffect(() => {
-        props.getShoppingCartHistory();
+        props.getShoppingCartHistory(props.email);
     }, []);
+
+    const toggleCartDetailsModal = (cartId) => {
+        if(!toggleDetailsModal){
+            props.geShoppingCartDetails(cartId);
+            dispatch({type: actionTypes.SET_CURRENT_CART_DETAILS, currentCartDetails: props.currentCartDetails, currentCartId: cartId});
+        }
+        setToggleDetailsModal(!toggleDetailsModal);
+    }
+
+    const dispatch = useDispatch()
 
     return (
         <React.Fragment>
@@ -23,13 +38,13 @@ const ShoppingCartHistory = (props) => {
                 <Table striped bordered hover>
                     <thead>
                     <tr>
-                        <th></th>
+                        <th>#</th>
                         <th>Date paid</th>
                         <th>Total price</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {props.shoppingCartHistory.map(shoppingCart => (
+                    {props.shoppingCartHistory ? props.shoppingCartHistory.map(shoppingCart => (
                         <tr key={shoppingCart.id}>
                             <td>{shoppingCart.id}</td>
                             <td>
@@ -37,14 +52,18 @@ const ShoppingCartHistory = (props) => {
                                     {shoppingCart.datePayed}
                                 </Moment>
                                 <div className="float-right">
-                                    <Button onClick={e => e.preventDefault()}>
+                                    <Button onClick={() => toggleCartDetailsModal(shoppingCart.id)} className="shadow-none border-light">
                                         Details
                                     </Button>
+                                    <ShoppingCartDetails click={(event) => toggleCartDetailsModal(event)}
+                                                    toggleDetailsModal={toggleDetailsModal}
+                                                    shoppingCartDetails={props.currentCartDetails}
+                                                    shoppingCartId={props.currentCartId}/>
                                 </div>
                             </td>
                             <td>{shoppingCart.totalPrice}</td>
                         </tr>
-                    ))}
+                    )) : null}
                     </tbody>
                 </Table>
             </div>
@@ -55,13 +74,17 @@ const ShoppingCartHistory = (props) => {
 const mapStateToProps = (state) => {
     return {
         shoppingCartHistory: state.shoppingCartReducer.shoppingCartHistory,
-        error: state.shoppingCartReducer.error
+        currentCartDetails: state.shoppingCartReducer.currentCartDetails,
+        currentCartId: state.shoppingCartReducer.currentCartId,
+        error: state.shoppingCartReducer.error,
+        email: state.authReducer.email,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getShoppingCartHistory: () => dispatch(actions.getShoppingCartHistory("nik"))
+        getShoppingCartHistory: (email) => dispatch(actions.getShoppingCartHistory(email)),
+        geShoppingCartDetails: (cartId) => dispatch(actions.getShoppingCartHistoryDetails(cartId))
     }
 }
 
