@@ -62,7 +62,7 @@ const Home = () => {
                     <div className="imageCarousel"
                          data-aos="fade-up-right"
                          data-aos-duration="600"
-                         data-aos-delay="500">
+                         data-aos-delay="250">
                         <UncontrolledCarousel items={[{
                             src: orderImage
                         }, {
@@ -76,7 +76,7 @@ const Home = () => {
                         <div className="textToCarousel"
                              data-aos="fade-up-left"
                              data-aos-duration="600"
-                             data-aos-delay="500">
+                             data-aos-delay="250">
                             <h2 className="display-3 text-primary">
                                 Food at your door!
                             </h2>
