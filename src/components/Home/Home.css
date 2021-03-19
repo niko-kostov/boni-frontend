@@ -11,11 +11,13 @@
 .containerToCarousel{
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
 }
 
 @media (min-width: 55em) {
     .containerToCarousel{
         flex-direction: row;
+        overflow-y: hidden;
     }
 
     .containerToCarousel > *{
@@ -28,6 +30,7 @@
 
     .textToCarousel{
         text-align: right;
+        padding-top: 1.6em;
     }
 
     .imageCarousel{
@@ -49,4 +52,68 @@ section {
     section {
         padding: 2em 0;
     }
+}
+
+.mapDiv{
+    text-align: center;
+}
+
+.textAboveMap{
+    margin-bottom: 4rem;
+}
+
+.teamTwoColumns{
+    columns: 2;
+    column-gap: 2em;
+}
+
+.teamOneColumn{
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.onePersonInTwoColumns{
+    display: flex;
+    justify-content: center;
+}
+
+.meetOurTeamDiv{
+    text-align: center;
+}
+
+.onePersonInTwoColumns h1{
+    margin-top: 1rem;
+}
+
+.teamOneColumn h1{
+    margin-top: 1rem;
+}
+
+@media (max-width: 30em) {
+    .teamTwoColumns{
+        columns: 1;
+        column-gap: 0;
+    }
+
+    .teamOneColumn{
+        margin-top: 0;
+    }
+}
+
+.carousel-indicators{
+    background-color: rgba(94, 114, 228, 0.8) !important;
+    bottom: -1.75rem !important;
+}
+
+.carousel-control-next-icon{
+    border: 2px solid #5e72e4;
+    background-color: #5e72e4 !important;
+    border-radius: 0.875em;
+}
+
+.carousel-control-prev-icon{
+    border: 2px solid #5e72e4;
+    background-color: #5e72e4 !important;
+    border-radius: 0.875em;
 }

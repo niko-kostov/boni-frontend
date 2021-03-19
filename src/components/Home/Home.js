@@ -1,14 +1,28 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Button, Container, Row, Col, UncontrolledCarousel} from "reactstrap";
 import restaurantImage from '../../assets/img/restaurantImage.jpg'
-import deliveryImage from '../../assets/img/delivery-service-with-masks-illustration_23-2148501978.jpg'
-import orderImage from '../../assets/img/ONLINE FOOD ORDER.jpg'
+import deliveryImage from '../../assets/img/delivery_guy.jpg'
+import locationImage from '../../assets/img/locationIllustration.jpg'
+import orderImage from '../../assets/img/order_food.jpg'
+import nikProfileImage from '../../assets/img/nikProfileImage.png'
+import boroProfileImage from '../../assets/img/boroProfileImage.png'
+import taseProfileImage from '../../assets/img/taseProfileImage.png'
+import AOS from "aos";
+import "aos/dist/aos.css";
+
+
 import {Link, withRouter} from "react-router-dom";
 import "./Home.css"
 import HomeMap from "../Maps/HomeMap/HomeMap";
 import 'leaflet/dist/leaflet.css';
 
 const Home = () => {
+
+    useEffect(() => {
+        AOS.init();
+        AOS.refresh();
+    }, []);
+
     return (
         <div className="position-relative">
             {/* Hero for FREE version */}
@@ -45,18 +59,24 @@ const Home = () => {
 
             <section>
                 <div className="container containerToCarousel">
-                    <div className="imageCarousel">
+                    <div className="imageCarousel"
+                         data-aos="fade-up-right"
+                         data-aos-duration="600"
+                         data-aos-delay="500">
                         <UncontrolledCarousel items={[{
-                            src: deliveryImage
-                        }/*, {
-                            src: deliveryImage
+                            src: orderImage
+                        }, {
+                            src: locationImage
                         }, {
                             src: deliveryImage
-                        }*/]}/>
+                        }]}/>
                     </div>
 
                     <div>
-                        <div className="textToCarousel">
+                        <div className="textToCarousel"
+                             data-aos="fade-up-left"
+                             data-aos-duration="600"
+                             data-aos-delay="500">
                             <h2 className="display-3 text-primary">
                                 Food at your door!
                             </h2>
@@ -84,10 +104,61 @@ const Home = () => {
                 </div>
             </section>
 
-            <div className="container">
-                <HomeMap/>
-            </div>
+            <section>
+                <div className="container mapDiv">
+                    <h2 className="display-3 text-primary textAboveMap">
+                        Where we make delivery?
+                    </h2>
+                    <HomeMap/>
+                </div>
+            </section>
 
+            <section>
+                <div className="container meetOurTeamDiv">
+                    <h2 className="display-3 text-primary textAboveMap">
+                        Meet our team
+                    </h2>
+                    <div className="teamTwoColumns">
+                        <div className="onePersonInTwoColumns"
+                             data-aos="fade-left"
+                             data-aos-duration="1000"
+                             data-aos-delay="600">
+                            <div>
+                                <img className="rounded-circle profileImageCircle" src={nikProfileImage}/>
+                                <h1 className="display-4 text-default textAboveMap">
+                                    Nikola Kostov
+                                </h1>
+                            </div>
+
+                        </div>
+
+                        <div className="onePersonInTwoColumns"
+                             data-aos="fade-right"
+                             data-aos-duration="1000"
+                             data-aos-delay="450">
+                            <div>
+                                <img className="rounded-circle profileImageCircle" src={taseProfileImage}/>
+
+                                <h1 className="display-4 text-default textAboveMap">
+                                    Nikola Tasevski
+                                </h1>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div className="teamOneColumn">
+                        <div data-aos="fade-down"
+                             data-aos-duration="1000"
+                             data-aos-delay="450">
+                            <img className="rounded-circle profileImageCircle" src={boroProfileImage}/>
+                            <h1 className="display-4 text-default textAboveMap">
+                                Boris Popovski
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     );
 }
