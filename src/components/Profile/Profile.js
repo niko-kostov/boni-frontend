@@ -1,13 +1,20 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Link, withRouter} from "react-router-dom";
 import logo from '../../assets/img/boni-logo.png'
 import restaurantImage from '../../assets/img/restaurantImage.jpg'
 
 
-import { Button, Card, Container, Row, Col } from "reactstrap";
+import {Button, Card, Container, Row, Col} from "reactstrap";
+import AddressAccordion from "./AddressAccordion/AddressAccordion";
+import * as actions from "../../store/actions";
+import {connect} from "react-redux";
 
-const Profile = () => {
-    return(
+const Profile = (props) => {
+    useEffect(() => {
+        props.getAddresses("nik");
+    }, [])
+
+    return (
         <div>
             <main className="profile-page">
                 <section className="section-profile-cover section-shaped my-0">
@@ -39,6 +46,7 @@ const Profile = () => {
                         </svg>
                     </div>
                 </section>
+
                 <section className="section">
                     <Container>
                         <Card className="card-profile shadow mt--300">
@@ -62,9 +70,16 @@ const Profile = () => {
                                     >
                                         <div className="card-profile-actions py-4 mt-lg-0">
                                             <Button
-                                                className="float-right"
+                                                className="btn btn-info btn-sm mr-3"
                                                 tag={Link}
-                                                color="default"
+                                                to={"/shoppingCartHistory"}
+                                                size="sm"
+                                            >
+                                                Edit Profile
+                                            </Button>
+                                            <Button
+                                                className="btn btn-sm btn-default float-right"
+                                                tag={Link}
                                                 to={"/shoppingCartHistory"}
                                                 size="sm"
                                             >
@@ -74,15 +89,28 @@ const Profile = () => {
                                     </Col>
                                     <Col className="order-lg-1" lg="4"/>
                                 </Row>
-                                <div className="text-center mt-7">
+
+                                <div className="text-center mt-6">
                                     <h3>
-                                        Jessica Jones
+                                        Nikola Kostov
                                     </h3>
-                                    <div className="h6 font-weight-300">
-                                        jessicajones@gmail.com
-                                    </div>
-                                    <div>
-                                        <h1>ADDRESSES</h1>
+
+                                    <h4>
+                                        078273764
+                                    </h4>
+
+                                    <h6>
+                                        niko_kostov@yahoo.com
+                                    </h6>
+                                </div>
+
+                                <div className="text-center mt-5">
+                                    <div className="col-md-12">
+                                        {props.addresses.map((item, index) => {
+                                            return (
+                                                <AddressAccordion key={"address-for-user-" + index} address={item}/>
+                                            )
+                                        })}
                                     </div>
                                 </div>
                             </div>
@@ -95,4 +123,18 @@ const Profile = () => {
     );
 }
 
-export default withRouter(Profile);
+const mapStateToProps = (state) => {
+    return {
+        addresses: state.addressReducer.addresses,
+        fullname: state.authReducer.fullname,
+        email: state.authReducer.email
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getAddresses: (email) => dispatch(actions.getAddressesForUser(email))
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Profile));

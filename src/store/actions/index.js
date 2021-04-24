@@ -27,3 +27,7 @@ export {
     register,
     authCheckState
 } from './authActions';
+
+export {
+    getAddressesForUser
+} from './addressActions'
