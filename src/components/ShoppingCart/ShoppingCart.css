@@ -20,3 +20,14 @@
     margin: 0 0 15px auto !important;
     display:block !important;
 }
+
+.background-image {
+    background-image: url("../../assets/img/background-menu.jpg");
+    background-repeat: repeat;
+    background-blend-mode: overlay;
+}
+
+.background-container {
+    background-color: white;
+}
+

@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Accordion, Card} from "react-bootstrap";
 import './Category.css';
-import { useAccordionToggle } from "react-bootstrap/AccordionToggle";
+import {useAccordionToggle} from "react-bootstrap/AccordionToggle";
 import AccordionContext from "react-bootstrap/AccordionContext";
 // reactstrap components
 import {
@@ -14,7 +14,7 @@ import {connect, useDispatch} from "react-redux";
 import * as actionTypes from '../../../store/actionTypes';
 import DeleteCategory from "./DeleteCategory/DeleteCategory";
 
-function CustomToggle({ children, eventKey, callback }) {
+function CustomToggle({children, eventKey, callback, catName}) {
     const currentEventKey = React.useContext(AccordionContext);
     const decoratedOnClick = useAccordionToggle(
         eventKey,
@@ -23,13 +23,20 @@ function CustomToggle({ children, eventKey, callback }) {
     const isCurrentEventKey = currentEventKey === eventKey;
     return (
         <span
-            className="p-3"
+            className="p-3 card-container"
             style={{
+                borderRadius: "20px",
                 cursor: "pointer",
-                backgroundColor: isCurrentEventKey ?  "#d5d8de" : "#e6e9f0",
-                color: isCurrentEventKey ? "white" : "white"}}
+                display: "inline-flex",
+                alignItems: "center",
+                color: isCurrentEventKey ? "white" : "white",
+                background: isCurrentEventKey ? "linear-gradient(90deg, rgba(89, 89, 89, 0.85), rgba(75,75,75, 0.85) 100%)" : "linear-gradient(90deg, rgb(89, 89, 89), rgba(75,75,75) 100%)"
+            }}
             onClick={decoratedOnClick}
         >
+            <div className="flex-grow-1">
+                <h5 className="category-header">{catName}</h5>
+            </div>
             {children}
         </span>
     );
@@ -60,48 +67,48 @@ const Category = (props) => {
 
     const dispatch = useDispatch()
 
-    return(
+    return (
         <React.Fragment>
-            <Accordion className="container shadow-sm p-0 mb-2 bg-white rounded"
+            <Accordion className="container shadow-sm p-0 mb-2 bg-white rounded card-container"
                        key={props.category.id}
                        defaultActiveKey={props.category.id}>
-                <Card>
+                <Card className="card-container">
                     <CustomToggle
-                        eventKey={props.category.id}>
+                        eventKey={props.category.id}
+                        catName={props.category.name}>
                         <div>
-                            <div className="float-left">
-                                <h5 style={{paddingTop: 5}}>{props.category.name}</h5>
-                            </div>
-                            <div className="float-right">
-                                <Button className="btn btn-info shadow-none"
-                                        onClick={(event) => toggleItemForm(event)}>
-                                    <span className="fa fa-plus"/>
-                                </Button>
-                                <ItemForm type={false}
-                                          click={(event) => toggleItemForm(event)}
-                                          itemFormModal={itemFormModal}/>
-                                <Button className="btn btn-neutral shadow-none"
-                                        onClick={(event) => toggleCategoryForm(event)}>
-                                    <span className="fa fa-edit"/>
-                                </Button>
-                                <CategoryForm type={true}
-                                              click={(event) => toggleCategoryForm(event)}
-                                              editCategoryModal={editCategoryModal}/>
-                                <Button className="btn btn-danger shadow-none"
-                                        onClick={(event) => toggleCategoryDelete(event)}>
-                                    <span className="fa fa-trash"/>
-                                </Button>
-                                <DeleteCategory click={(event) => toggleCategoryDelete(event)}
-                                              deleteCategoryModal={deleteCategoryModal}/>
-                            </div>
+                            {props.role ? props.role[0] === "ROLE_ADMIN" ?
+                                <div className="align-items-center">
+                                    <Button className="btn btn-neutral shadow-none btn-sm"
+                                            onClick={(event) => toggleItemForm(event)}>
+                                        <span className="fa fa-plus"/>
+                                    </Button>
+                                    <ItemForm type={false}
+                                              click={(event) => toggleItemForm(event)}
+                                              itemFormModal={itemFormModal}/>
+                                    <Button className="btn btn-neutral shadow-none btn-sm"
+                                            onClick={(event) => toggleCategoryForm(event)}>
+                                        <span className="fa fa-edit"/>
+                                    </Button>
+                                    <CategoryForm type={true}
+                                                  click={(event) => toggleCategoryForm(event)}
+                                                  editCategoryModal={editCategoryModal}/>
+                                    <Button className="btn btn-danger shadow-none btn-sm"
+                                            onClick={(event) => toggleCategoryDelete(event)}>
+                                        <span className="fa fa-trash"/>
+                                    </Button>
+                                    <DeleteCategory click={(event) => toggleCategoryDelete(event)}
+                                                    deleteCategoryModal={deleteCategoryModal}/>
+                                </div> : null : null}
                         </div>
                     </CustomToggle>
                     <Accordion.Collapse eventKey={props.category.id}>
                         <Card.Body className="cards">
                             {props.category.items.map(item => (
                                 <Item key={item.id}
-                                    item={item}
-                                    category={props.category}/>
+                                      role={props.role}
+                                      item={item}
+                                      category={props.category}/>
                             ))}
                         </Card.Body>
                     </Accordion.Collapse>

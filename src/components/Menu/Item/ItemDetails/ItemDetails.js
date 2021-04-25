@@ -72,40 +72,42 @@ const ItemDetails = (props) => {
                 {props.item.itemPrices.sort((p1, p2) => p1.price - p2.price).map(itemPrice => {
                     return <ItemPrice
                                 key={itemPrice.id}
+                                role={props.role}
                                 itemPrice={itemPrice}
                                 handleChange={() => setItemPriceId(itemPrice.id)}
                             />
                 })}
-                <div className="item-price-add-form">
-                    <div style={{display: "flex"}}>
-                        <Input type={"number"} bsSize={"sm"}
-                               className="input-style"
-                               placeholder="Item Price"
-                               value={itemPrice}
-                               invalid={!isItemPriceValid}
-                               onChange={(event) => setItemPrice(event.target.value)}
-                               id="numberOfItems"/>
-                        <div className="btn-group" style={{margin: "0 5px"}}>
-                            <select className="custom-select mr-sm-2"
-                                    style={{height: "auto", padding: "0rem 1.75rem 0rem 0.75rem"}}
-                                    id="inlineFormCustomSelect"
-                                    onChange={(event) => setItemSize(event.target.value)}
-                                    value={itemSize}>
-                                <option value="SIZE">Size</option>
-                                <option value="SMALL">SMALL</option>
-                                <option value="MEDIUM">MEDIUM</option>
-                                <option value="LARGE">LARGE</option>
-                            </select>
+                {props.role ? props.role[0] === "ROLE_ADMIN" ?
+                    <div className="item-price-add-form">
+                        <div style={{display: "flex"}}>
+                            <Input type={"number"} bsSize={"sm"}
+                                   className="input-style"
+                                   placeholder="Item Price"
+                                   value={itemPrice}
+                                   invalid={!isItemPriceValid}
+                                   onChange={(event) => setItemPrice(event.target.value)}
+                                   id="numberOfItems"/>
+                            <div className="btn-group" style={{margin: "0 5px"}}>
+                                <select className="custom-select mr-sm-2"
+                                        style={{height: "auto", padding: "0rem 1.75rem 0rem 0.75rem"}}
+                                        id="inlineFormCustomSelect"
+                                        onChange={(event) => setItemSize(event.target.value)}
+                                        value={itemSize}>
+                                    <option value="SIZE">Size</option>
+                                    <option value="SMALL">SMALL</option>
+                                    <option value="MEDIUM">MEDIUM</option>
+                                    <option value="LARGE">LARGE</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <Button size="sm"
-                            className="btn btn-success add-item-price-button"
-                            onClick={handleSubmitItemPrice}
-                            disabled={!isItemPriceValid}
-                            type="button">
-                        <span className="fa fa-plus"/>
-                    </Button>
-                </div>
+                        <Button size="sm"
+                                className="btn btn-success add-item-price-button"
+                                onClick={handleSubmitItemPrice}
+                                disabled={!isItemPriceValid}
+                                type="button">
+                            <span className="fa fa-plus"/>
+                        </Button>
+                    </div> : null : null}
             </div>
             {shouldShowError ?
                 <Alert title="Warning!" message={`There is already item size ${itemSize}`} color="danger"/> : null

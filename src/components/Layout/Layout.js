@@ -43,7 +43,7 @@ const Layout = (props) => {
 
     return (
         <React.Fragment>
-            <CustomNav isAuthenticated={props.isAuthenticated} fullName={props.fullName} logout={props.logoutUser}/>
+            <CustomNav isAuthenticated={props.isAuthenticated} fullName={props.fullName} profileImage={props.profileImage} logout={props.logoutUser}/>
             {routes}
             <Footer/>
         </React.Fragment>
@@ -53,7 +53,8 @@ const Layout = (props) => {
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.authReducer.token !== null,
-        fullName: state.authReducer.fullName
+        fullName: state.authReducer.fullName,
+        profileImage: state.authReducer.profileImage
     };
 };
 

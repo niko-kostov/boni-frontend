@@ -6,6 +6,8 @@ const initialState = {
     email: null,
     role: null,
     fullName: null,
+    phoneNumber: null,
+    profileImage: null,
     activeShoppingCartId: null,
     loading: false,
     error: false,
@@ -31,6 +33,8 @@ const authLogout = (state, action) => {
         email: null,
         role: null,
         fullName: null,
+        phoneNumber: null,
+        profileImage: null,
         error: false,
         loading: false
     })
@@ -42,6 +46,8 @@ const authSuccess = (state, action) => {
         email: action.email,
         role: action.role,
         fullName: action.fullName,
+        profileImage: action.profileImage,
+        phoneNumber: action.phoneNumber,
         activeShoppingCartId: action.activeShoppingCartId,
         loading: false,
         error: false

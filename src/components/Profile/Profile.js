@@ -1,9 +1,5 @@
 import React, {useEffect} from 'react';
 import {Link, withRouter} from "react-router-dom";
-import logo from '../../assets/img/boni-logo.png'
-import restaurantImage from '../../assets/img/restaurantImage.jpg'
-
-
 import {Button, Card, Container, Row, Col} from "reactstrap";
 import AddressAccordion from "./AddressAccordion/AddressAccordion";
 import * as actions from "../../store/actions";
@@ -56,9 +52,9 @@ const Profile = (props) => {
                                         <div className="card-profile-image">
                                             <a href="#pablo" onClick={e => e.preventDefault()}>
                                                 <img
+                                                    src={props.profileImage}
                                                     alt="..."
                                                     className="rounded-circle"
-                                                    src={restaurantImage}
                                                     style={{width: 180, height: 180}}
                                                 />
                                             </a>
@@ -92,15 +88,15 @@ const Profile = (props) => {
 
                                 <div className="text-center mt-6">
                                     <h3>
-                                        Nikola Kostov
+                                        {props.fullName}
                                     </h3>
 
                                     <h4>
-                                        078273764
+                                        {props.phoneNumber}
                                     </h4>
 
                                     <h6>
-                                        niko_kostov@yahoo.com
+                                        {props.email}
                                     </h6>
                                 </div>
 
@@ -126,8 +122,10 @@ const Profile = (props) => {
 const mapStateToProps = (state) => {
     return {
         addresses: state.addressReducer.addresses,
-        fullname: state.authReducer.fullname,
-        email: state.authReducer.email
+        fullName: state.authReducer.fullName,
+        email: state.authReducer.email,
+        phoneNumber: state.authReducer.phoneNumber,
+        profileImage: state.authReducer.profileImage
     }
 }
 

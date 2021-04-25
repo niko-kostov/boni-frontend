@@ -23,22 +23,27 @@ const Menu = (props) => {
             <section className="section section-shaped">
                 <div className="custom-style"/>
             </section>
-            <div className="w-100">
-                <Button
-                    className="btn btn-outline-info container middle-screen-menu"
-                    onClick={(event) => toggleCategoryForm(event)}
-                >
-                    Add category
-                </Button>
+            <div className="background-image">
+                <div className="background-opacity">
+                    {props.role ? props.role[0] === "ROLE_ADMIN" ? <div className="w-100">
+                        <Button
+                            className="btn btn-outline-info container middle-screen-menu"
+                            onClick={(event) => toggleCategoryForm(event)}
+                        >
+                            Add category
+                        </Button>
+                    </div> : null : null}
+                    {props.role ? props.role[0] === "ROLE_ADMIN" ? <CategoryForm type={false}
+                                                                 click={(event) => toggleCategoryForm(event)}
+                                                                 editCategoryModal={editCategoryModal}/> : null : null}
+                    {props.menu.categories ? props.menu.categories.map(cat => (
+                        <Category
+                            role={props.role}
+                            key={cat.id}
+                            category={cat}/>
+                    )) : null}
+                </div>
             </div>
-            <CategoryForm type={false}
-                          click={(event) => toggleCategoryForm(event)}
-                          editCategoryModal={editCategoryModal}/>
-            {props.menu.categories ? props.menu.categories.map(cat => (
-                <Category
-                    key={cat.id}
-                    category={cat}/>
-            )) : null}
         </div>
     );
 }
@@ -46,7 +51,8 @@ const Menu = (props) => {
 const mapStateToProps = (state) => {
     return {
         menu: state.menuReducer.menu,
-        error: state.menuReducer.error
+        error: state.menuReducer.error,
+        role: state.authReducer.role
     }
 }
 
