@@ -1,14 +1,49 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Link, withRouter} from "react-router-dom";
-import {Button, Card, Container, Row, Col} from "reactstrap";
+import {Button, Card, Container, Row, Col, Input} from "reactstrap";
 import AddressAccordion from "./AddressAccordion/AddressAccordion";
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
+import {storage} from "../../firebase";
 
 const Profile = (props) => {
+    const inputFile = useRef(null);
+    const [imageIsUploading, setImageIsUploading] = useState(false);
+
     useEffect(() => {
         props.getAddresses("nik");
     }, [])
+
+    const changeImage = () => {
+        inputFile.current.click();
+    }
+
+    const handleImageChange = (event) => {
+        if (event.target.files[0]) {
+            setImageIsUploading(true);
+            let uploadTask = storage.ref(`profilePictures/${event.target.files[0].name}`).put(event.target.files[0]);
+            uploadTask.on(
+                "state_changed",
+                snapshot => {
+
+                },
+                error => {
+                    console.log(error);
+                },
+                () => {
+                    storage
+                        .ref("profilePictures")
+                        .child(event.target.files[0].name)
+                        .getDownloadURL()
+                        .then(url => {
+                            // console.log(url);
+                            props.changeImage(url);
+                            setImageIsUploading(false);
+                        });
+                }
+            );
+        }
+    }
 
     return (
         <div>
@@ -52,14 +87,22 @@ const Profile = (props) => {
                                         <div className="card-profile-image">
                                             <a href="#pablo" onClick={e => e.preventDefault()}>
                                                 <img
+                                                    onClick={changeImage}
                                                     src={props.profileImage}
                                                     alt="..."
                                                     className="rounded-circle"
                                                     style={{width: 180, height: 180}}
                                                 />
                                             </a>
+
                                         </div>
                                     </Col>
+                                    <input type="file"
+                                           id="profileImageInput"
+                                           ref={inputFile}
+                                           style={{display: "none"}}
+                                           onChange={handleImageChange}
+                                    />
                                     <Col
                                         className="order-lg-3 text-lg-right align-self-lg-center"
                                         lg="4"
@@ -131,7 +174,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getAddresses: (email) => dispatch(actions.getAddressesForUser(email))
+        getAddresses: (email) => dispatch(actions.getAddressesForUser(email)),
+        changeImage: (imageUrl) => dispatch(actions.changeImage(imageUrl))
     }
 }
 

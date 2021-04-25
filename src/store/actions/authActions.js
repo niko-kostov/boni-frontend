@@ -1,5 +1,5 @@
 import * as actionTypes from '../actionTypes';
-import {API_DRIVER} from "../../config";
+import {API_DRIVER, setAuthToken} from "../../config";
 
 const authStart = () => {
     return {
@@ -126,6 +126,19 @@ export const authCheckState = () => {
 
             dispatch(authSuccess(token, email, fullName, role, phoneNumber, profileImage, activeShoppingCartId));
         }
+    }
+}
+
+export const changeImage = (profileImage) => {
+    setAuthToken();
+    return dispatch => {
+        const changeImageUrlDto = {
+            profileImage: profileImage
+        };
+        API_DRIVER.patch("api/auth/user/changeProfilePicture", changeImageUrlDto)
+            .then(response => {
+                dispatch({type: actionTypes.CHANGE_IMAGE_FOR_USER, profileImage: profileImage})
+            })
     }
 }
 

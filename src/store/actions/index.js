@@ -25,7 +25,8 @@ export {
     login,
     logout,
     register,
-    authCheckState
+    authCheckState,
+    changeImage
 } from './authActions';
 
 export {

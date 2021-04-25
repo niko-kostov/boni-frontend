@@ -58,6 +58,10 @@ const changeActiveShoppingCart = (state, action) => {
     return updateObject(state, {activeShoppingCartId: action.newActiveShoppingCartId})
 }
 
+const changeImageForUser = (state, action) => {
+    return updateObject(state, {profileImage: action.profileImage})
+}
+
 
 const authReducer = (state = initialState, action) =>{
     switch(action.type) {
@@ -73,6 +77,8 @@ const authReducer = (state = initialState, action) =>{
             return authRegister(state, action);
         case actionTypes.CHANGE_ACTIVE_SHOPPING_CART:
             return changeActiveShoppingCart(state, action);
+        case actionTypes.CHANGE_IMAGE_FOR_USER:
+            return changeImageForUser(state, action);
         default: return state;
     }
 }
