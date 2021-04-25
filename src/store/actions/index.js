@@ -29,5 +29,8 @@ export {
 } from './authActions';
 
 export {
-    getAddressesForUser
+    getAddressesForUser,
+    addNewAddressForUser,
+    deleteAddressForUser,
+    setSelectedAddress
 } from './addressActions'

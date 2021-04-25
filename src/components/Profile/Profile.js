@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link, withRouter} from "react-router-dom";
 import logo from '../../assets/img/boni-logo.png'
 import restaurantImage from '../../assets/img/restaurantImage.jpg'
@@ -8,8 +8,11 @@ import {Button, Card, Container, Row, Col} from "reactstrap";
 import AddressAccordion from "./AddressAccordion/AddressAccordion";
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
+import AddressForm from "./AddressForm/AddressForm";
 
 const Profile = (props) => {
+    const [openAddressForm, setOpenAddressForm] = useState(false);
+
     useEffect(() => {
         props.getAddresses("nik");
     }, [])
@@ -108,18 +111,32 @@ const Profile = (props) => {
                                     <div className="col-md-12">
                                         {props.addresses.map((item, index) => {
                                             return (
-                                                <AddressAccordion key={"address-for-user-" + index} address={item}/>
+                                                <AddressAccordion key={"address-for-user-" + index}
+                                                                  deleteAddress={() => {
+                                                                  }}
+                                                                  address={item}/>
                                             )
                                         })}
                                     </div>
                                 </div>
+
+                                {props.addresses.length < 3 ? <Button
+                                    className="btn btn-outline-info container middle-screen-menu"
+                                    onClick={(event) => setOpenAddressForm(true)}
+                                >
+                                    Add Address
+                                </Button> : null}
+
                             </div>
                         </Card>
                     </Container>
                 </section>
             </main>
-        </div>
 
+            <AddressForm open={openAddressForm}
+                         email={props.email}
+                         handleCloseClick={() => setOpenAddressForm(false)}/>
+        </div>
     );
 }
 

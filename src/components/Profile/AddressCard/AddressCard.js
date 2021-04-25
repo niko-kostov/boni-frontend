@@ -42,6 +42,7 @@ const AddressCard = (props) => {
                                    value={address.number} placeholder="Number" type="text"/>
                         </div>
                     </div>
+
                     <div>
                         <select className="custom-select"
                                 onChange={(event) => setAddress({...address, municipality: event.target.value})}

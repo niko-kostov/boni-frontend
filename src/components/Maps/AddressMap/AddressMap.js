@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
-import {useEffect, useMemo, useRef, useState} from "react";
+import {useMemo, useRef, useState} from "react";
 
 let DefaultIcon = L.icon({
     iconSize: [25, 41],
@@ -34,7 +34,7 @@ const AddressMap = (props) => {
         <div id="map">
             {props.location ? <MapContainer
                 center={position}
-                zoom={16}
+                zoom={15}
                 style={{height: "100%"}}
                 scrollWheelZoom={false}>
                 <TileLayer
