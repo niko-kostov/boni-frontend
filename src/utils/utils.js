@@ -10,6 +10,10 @@ export const getDate = (fullDate) => {
     return fullDate;
 }
 
-export const getTime = (fullDate) => {
+export const firstName = (fullName) => {
+    return fullName.split(" ")[0];
+}
 
+export const lastName = (fullName) => {
+    return fullName.split(" ")[1];
 }

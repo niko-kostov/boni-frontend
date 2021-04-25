@@ -62,6 +62,13 @@ const changeImageForUser = (state, action) => {
     return updateObject(state, {profileImage: action.profileImage})
 }
 
+const editProfileForUser = (state, action) => {
+    return updateObject(state, {
+        fullName: action.fullName,
+        phoneNumber: action.phoneNumber,
+    })
+}
+
 
 const authReducer = (state = initialState, action) =>{
     switch(action.type) {
@@ -79,6 +86,8 @@ const authReducer = (state = initialState, action) =>{
             return changeActiveShoppingCart(state, action);
         case actionTypes.CHANGE_IMAGE_FOR_USER:
             return changeImageForUser(state, action);
+        case actionTypes.EDIT_PROFILE_FOR_USER:
+            return editProfileForUser(state, action);
         default: return state;
     }
 }

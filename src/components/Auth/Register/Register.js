@@ -33,6 +33,7 @@ const Register = (props) => {
             data.phoneNumberInput,
             data.passwordInput
         );
+        props.history.push("/login");
     }
 
     return (

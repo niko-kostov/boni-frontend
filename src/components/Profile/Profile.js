@@ -5,10 +5,13 @@ import AddressAccordion from "./AddressAccordion/AddressAccordion";
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
 import {storage} from "../../firebase";
+import EditProfileForm from "./EditProfileForm/EditProfileForm";
+import {firstName, lastName} from "../../utils/utils";
 
 const Profile = (props) => {
     const inputFile = useRef(null);
     const [imageIsUploading, setImageIsUploading] = useState(false);
+    const [openEditProfileDialog, setOpenEditProfileDialog] = useState(false);
 
     useEffect(() => {
         props.getAddresses("nik");
@@ -110,12 +113,19 @@ const Profile = (props) => {
                                         <div className="card-profile-actions py-4 mt-lg-0">
                                             <Button
                                                 className="btn btn-info btn-sm mr-3"
-                                                tag={Link}
-                                                to={"/shoppingCartHistory"}
+                                                onClick={() => setOpenEditProfileDialog(true)}
                                                 size="sm"
                                             >
                                                 Edit Profile
                                             </Button>
+                                            {openEditProfileDialog ?
+                                                <EditProfileForm
+                                                    click={() => setOpenEditProfileDialog(false)}
+                                                    isOpen={openEditProfileDialog}
+                                                    phoneNumber={props.phoneNumber}
+                                                    firstName={firstName(props.fullName)}
+                                                    lastName={lastName(props.fullName)}
+                                                /> : null}
                                             <Button
                                                 className="btn btn-sm btn-default float-right"
                                                 tag={Link}
@@ -157,6 +167,7 @@ const Profile = (props) => {
                     </Container>
                 </section>
             </main>
+
         </div>
 
     );

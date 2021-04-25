@@ -142,3 +142,29 @@ export const changeImage = (profileImage) => {
     }
 }
 
+export const editProfile = (firstName, lastName, phoneNumber) => {
+    setAuthToken();
+    return dispatch => {
+        const editProfileDto = {
+            firstName: firstName,
+            lastName: lastName,
+            phoneNumber: phoneNumber
+        }
+        API_DRIVER.patch("api/auth/user/editProfile", editProfileDto)
+            .then(response => {
+                const fullName = response.data.fullName;
+                const phoneNumber = response.data.phoneNumber;
+
+                let storage = sessionStorage;
+                if (localStorage.getItem('token')) {
+                    storage = localStorage;
+                }
+
+                storage.setItem('fullName', fullName);
+                storage.setItem('phoneNumber', phoneNumber);
+
+                dispatch({type: actionTypes.EDIT_PROFILE_FOR_USER, fullName: fullName, phoneNumber: phoneNumber})
+            })
+    }
+}
+
