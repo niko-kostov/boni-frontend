@@ -1,6 +1,5 @@
 import * as actionTypes from '../actionTypes';
 import {updateObject} from "../../shared/utility";
-import {act} from "@testing-library/react";
 
 const initialState = {
     addresses: [],
@@ -14,15 +13,14 @@ const getAddressesForUser = (state, action) => {
 }
 
 const addAddressForUser = (state, action) => {
-    const newAddresses = initialState.addresses;
-    newAddresses.push(action.address)
+    const newAddresses = [...state.addresses, action.address];
     return updateObject(state, {
         addresses: newAddresses
-    })
+    });
 }
 
 const removeAddressForUser = (state, action) => {
-    const newAddresses = initialState.addresses.filter(item => item.addressId !== action.deletedAddress.id)
+    const newAddresses = state.addresses.filter(item => item.addressId !== action.deletedAddress.id)
     return updateObject(state, {
         addresses: newAddresses
     })

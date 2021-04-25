@@ -38,10 +38,10 @@ function CustomToggle({children, eventKey, callback}) {
 const AddressAccordion = (props) => {
     const [openDeleteAddressForm, setOpenDeleteAddressForm] = useState(false);
 
-    const handleDeleteAddressClick = (event, address) => {
+    const handleDeleteAddressClick = (event) => {
         event.stopPropagation();
-        props.setAddress(address);
-        setOpenDeleteAddressForm(true);
+        props.setAddress(props.address);
+        setOpenDeleteAddressForm(!openDeleteAddressForm);
     }
 
     return (
@@ -59,7 +59,7 @@ const AddressAccordion = (props) => {
 
                             <div className="float-right">
                                 <Button className="btn btn-danger shadow-none"
-                                        onClick={(event) => handleDeleteAddressClick(event, props.address)}>
+                                        onClick={handleDeleteAddressClick}>
                                     <span className="fa fa-trash"/>
                                 </Button>
                             </div>
@@ -74,7 +74,7 @@ const AddressAccordion = (props) => {
             </Accordion>
 
             <DeleteAddressForm open={openDeleteAddressForm}
-                               handleClose={setOpenDeleteAddressForm(false)}/>
+                               handleClose={() => setOpenDeleteAddressForm(false)}/>
         </React.Fragment>
     )
 }

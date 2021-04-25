@@ -109,18 +109,14 @@ const Profile = (props) => {
 
                                 <div className="text-center mt-5">
                                     <div className="col-md-12">
-                                        {props.addresses.map((item, index) => {
-                                            return (
+                                        {props.addresses ? props.addresses.map((item, index) => (
                                                 <AddressAccordion key={"address-for-user-" + index}
-                                                                  deleteAddress={() => {
-                                                                  }}
                                                                   address={item}/>
-                                            )
-                                        })}
+                                        )) : null}
                                     </div>
                                 </div>
 
-                                {props.addresses.length < 3 ? <Button
+                                {props.addresses && props.addresses.length < 3 ? <Button
                                     className="btn btn-outline-info container middle-screen-menu"
                                     onClick={(event) => setOpenAddressForm(true)}
                                 >

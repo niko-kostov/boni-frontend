@@ -3,7 +3,7 @@ import {Button, Modal} from "reactstrap";
 import * as actions from "../../../store/actions";
 import {connect} from "react-redux";
 
-const DeleteItem = (props) => {
+const DeleteAddressForm = (props) => {
 
     const deleteAddress = (addressId) => {
         props.deleteAddress(addressId);
@@ -16,7 +16,7 @@ const DeleteItem = (props) => {
                toggle={props.handleClose}>
             <div className="modal-header">
                 <h4 className="modal-title" id="modal-title-default">
-                    Delete Item
+                    Delete Address
                 </h4>
                 <button
                     aria-label="Close"
@@ -29,15 +29,15 @@ const DeleteItem = (props) => {
                 </button>
             </div>
             <div className="modal-body">
-                <p>Are you sure you want to delete {props.currentItem.name}?</p>
+                <p>Are you sure you want to delete address with name: {props.currentAddressSelected.street}?</p>
             </div>
             <div className="modal-footer d-inline-block">
                 <Button
                     color="danger"
                     type="button"
-                    onClick={() => deleteAddress(props.id)}
+                    onClick={() => deleteAddress(props.currentAddressSelected.addressId)}
                 >
-                    Delete Address
+                    Delete
                 </Button>
                 <Button
                     className="ml-auto"
@@ -52,6 +52,11 @@ const DeleteItem = (props) => {
         </Modal>
     );
 }
+const mapStateToProps = (state) => {
+    return {
+        currentAddressSelected: state.addressReducer.currentAddressSelected
+    }
+}
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -59,4 +64,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(DeleteItem);
+export default connect(mapStateToProps, mapDispatchToProps)(DeleteAddressForm);

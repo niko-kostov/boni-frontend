@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import AddressMap from "../../Maps/AddressMap/AddressMap";
 import "./AddressCard.css"
+import {Button} from "reactstrap";
 
 
 const AddressCard = (props) => {
@@ -56,6 +57,16 @@ const AddressCard = (props) => {
                             <option value="KARPOSH">Karpos</option>
                             <option value="CHENTO">Chento</option>
                         </select>
+                    </div>
+
+                    <div>
+                        <Button className="buttonFloatBottom"
+                            color="primary"
+                            type="button"
+                            onClick={() => {}}
+                        >
+                            Save
+                        </Button>
                     </div>
                 </div>
             </div>

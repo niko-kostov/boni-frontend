@@ -1,3 +1,17 @@
 .addressInput{
     padding-right: 5px !important;
 }
+
+.buttonFloatBottom{
+    position: absolute !important;
+    bottom: 0;
+    right: 2em;
+}
+
+@media (max-width: 767px) {
+    .buttonFloatBottom{
+        position: relative;
+        bottom: auto;
+        margin-top: 0.5em;
+    }
+}
