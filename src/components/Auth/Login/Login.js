@@ -49,7 +49,7 @@ const Login = (props) => {
                         <Row className="justify-content-center">
                             <Col lg="5">
                                 <Card className="bg-secondary shadow border-0">
-                                    <CardHeader className="bg-white pb-5">
+                                    {/*<CardHeader className="bg-white pb-5">
                                         <div className="text-muted text-center mb-3">
                                             <small>Sign in with</small>
                                         </div>
@@ -64,10 +64,10 @@ const Login = (props) => {
                                                 <span className="btn-inner--text">Facebook</span>
                                             </Button>
                                         </div>
-                                    </CardHeader>
+                                    </CardHeader>*/}
                                     <CardBody className="px-lg-5 py-lg-5">
                                         <div className="text-center text-muted mb-4">
-                                            <small>Or sign in with credentials</small>
+                                            <small>Sign in with credentials</small>
                                         </div>
                                         <Form role="form" onSubmit={handleSubmit(handleLogin)}>
                                             <FormGroup className="mb-3">

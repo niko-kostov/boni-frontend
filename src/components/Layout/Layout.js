@@ -11,6 +11,8 @@ import Profile from "../Profile/Profile";
 import ShoppingCartHistory from "../ShoppingCartHistory/ShoppingCartHistory";
 import {connect} from "react-redux";
 import * as actions from '../../store/actions/index';
+import 'react-toastify/dist/ReactToastify.css';
+import {ToastContainer} from "react-toastify";
 
 
 const Layout = (props) => {
@@ -46,6 +48,7 @@ const Layout = (props) => {
             <CustomNav isAuthenticated={props.isAuthenticated} fullName={props.fullName} profileImage={props.profileImage} logout={props.logoutUser}/>
             {routes}
             <Footer/>
+            <ToastContainer autoClose={2000} position={"bottom-center"} hideProgressBar={true} closeButton={null}/>
         </React.Fragment>
     );
 }
@@ -54,7 +57,7 @@ const mapStateToProps = state => {
     return {
         isAuthenticated: state.authReducer.token !== null,
         fullName: state.authReducer.fullName,
-        profileImage: state.authReducer.profileImage
+        profileImage: state.authReducer.profileImage,
     };
 };
 

@@ -1,5 +1,6 @@
 import {API_DRIVER, setAuthToken} from "../../config";
 import * as actionTypes from '../actionTypes'
+import {toast} from "react-toastify";
 
 const getMenuSuccess = (menu) => {
     return {
@@ -16,6 +17,7 @@ export const getMenu = () => {
             })
             .catch(error => {
                 dispatch({type: actionTypes.GET_MENU_ERROR})
+                toast.error(error.message);
             });
     }
 };
@@ -25,10 +27,12 @@ export const createCategory = (categoryName) => {
     return dispatch => {
         API_DRIVER.post("api/category/admin", {name: categoryName})
             .then(response => {
-                dispatch({type: actionTypes.CREATE_CATEGORY, category: response.data})
+                dispatch({type: actionTypes.CREATE_CATEGORY, category: response.data});
+                toast.success("Category " + categoryName + " created!");
             })
             .catch(error => {
                 dispatch({type: actionTypes.GET_MENU_ERROR})
+                toast.error(error.message);
             });
     }
 };
@@ -39,9 +43,11 @@ export const editCategory = (categoryName, categoryId) => {
         API_DRIVER.patch("api/category/admin", {name: categoryName, id: categoryId})
             .then(response => {
                 dispatch({type: actionTypes.EDIT_CATEGORY, category: response.data})
+                toast.success("Category edited!");
             })
             .catch(error => {
                 dispatch({type: actionTypes.GET_MENU_ERROR})
+                toast.error(error.message);
             });
     }
 };
@@ -52,9 +58,11 @@ export const deleteCategory = (categoryId) => {
         API_DRIVER.delete("api/category/admin/" + categoryId)
             .then(response => {
                 dispatch({type: actionTypes.DELETE_CATEGORY, category: response.data})
+                toast.success("Category " + response.data.name +" deleted!");
             })
             .catch(error => {
                 dispatch({type: actionTypes.GET_MENU_ERROR})
+                toast.error(error.message);
             });
     }
 };
@@ -76,9 +84,11 @@ export const addItemInsideCategoryWithId = (itemName, itemDescription, itemImage
                         categoryId: categoryId
                     }
                 )
+                toast.success("Item " + response.data.name + " added!");
             })
             .catch(error => {
                 dispatch({type: actionTypes.GET_MENU_ERROR})
+                toast.error(error.message);
             });
     }
 };
@@ -101,9 +111,11 @@ export const editItemInsideCategoryWithId = (itemName, itemDescription, itemImag
                         categoryId: categoryId
                     }
                 )
+                toast.success("Item edited!");
             })
             .catch(error => {
                 dispatch({type: actionTypes.GET_MENU_ERROR})
+                toast.error(error.message);
             });
     }
 };
@@ -119,9 +131,11 @@ export const deleteItemInsideCategoryWithId = (itemId, categoryId) => {
                         item: response.data,
                         categoryId: categoryId
                     })
+                toast.success("Item " + response.data.name + " deleted!");
             })
             .catch(error => {
                 dispatch({type: actionTypes.GET_MENU_ERROR})
+                toast.error(error.message);
             });
     }
 };
@@ -144,8 +158,10 @@ export const addItemPriceInsideItemWithId = (itemPrice, itemSize, itemId, catego
                     categoryId: categoryId
                 }
             )
+            toast.success("Item price added!");
         }).catch(error => {
             dispatch({type: actionTypes.GET_MENU_ERROR})
+            toast.error(error.message);
         });
     }
 };
@@ -163,8 +179,11 @@ export const deleteItemPriceInsideItemWithId = (itemPriceId, itemId, categoryId)
                         categoryId: categoryId
                     }
                 )
-            }).catch(error => {
+                toast.success("Item price deleted!");
+            })
+            .catch(error => {
                 dispatch({type: actionTypes.GET_MENU_ERROR})
-        });
+                toast.error(error.message);
+            });
     }
 };

@@ -1,5 +1,6 @@
 import * as actionTypes from '../actionTypes';
 import {API_DRIVER, setAuthToken} from "../../config";
+import {toast} from "react-toastify";
 
 const authStart = () => {
     return {
@@ -59,6 +60,7 @@ export const login = (email, password, rememberMe) => {
             })
             .catch(error => {
                 dispatch(authFail(error));
+                toast.error(error.message);
             })
     }
 }
@@ -78,7 +80,8 @@ export const register = (email, firstName, lastName, phoneNumber, password) => {
                 dispatch({type: actionTypes.AUTH_REGISTER})
             })
             .catch(error => {
-                dispatch(authFail(error))
+                dispatch(authFail(error));
+                toast.error(error.message);
             })
     }
 }
@@ -113,7 +116,10 @@ export const authCheckState = () => {
                 const profileImage = localStorage.getItem('profileImage');
                 const activeShoppingCartId = localStorage.getItem('activeShoppingCartId');
 
-                dispatch(authSuccess(token, email, fullName, role, phoneNumber, profileImage, activeShoppingCartId));
+                const roles = []
+                roles.push(role);
+
+                dispatch(authSuccess(token, email, fullName, roles, phoneNumber, profileImage, activeShoppingCartId));
             }
         } else {
             const token = sessionStorage.getItem('token');
@@ -124,7 +130,10 @@ export const authCheckState = () => {
             const profileImage = sessionStorage.getItem('profileImage');
             const activeShoppingCartId = sessionStorage.getItem('activeShoppingCartId');
 
-            dispatch(authSuccess(token, email, fullName, role, phoneNumber, profileImage, activeShoppingCartId));
+            const roles = []
+            roles.push(role);
+
+            dispatch(authSuccess(token, email, fullName, roles, phoneNumber, profileImage, activeShoppingCartId));
         }
     }
 }
@@ -138,6 +147,10 @@ export const changeImage = (profileImage) => {
         API_DRIVER.patch("api/auth/user/changeProfilePicture", changeImageUrlDto)
             .then(response => {
                 dispatch({type: actionTypes.CHANGE_IMAGE_FOR_USER, profileImage: profileImage})
+                toast.success("Profile picture edited!");
+            })
+            .catch(error => {
+                toast.error(error.message);
             })
     }
 }
@@ -164,7 +177,12 @@ export const editProfile = (firstName, lastName, phoneNumber) => {
                 storage.setItem('phoneNumber', phoneNumber);
 
                 dispatch({type: actionTypes.EDIT_PROFILE_FOR_USER, fullName: fullName, phoneNumber: phoneNumber})
+                toast.success("Profile edited!");
             })
+            .catch(error => {
+                toast.error(error.message);
+            })
+
     }
 }
 
