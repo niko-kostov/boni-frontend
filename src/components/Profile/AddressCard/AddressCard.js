@@ -2,6 +2,9 @@ import React, {useEffect, useState} from 'react';
 import AddressMap from "../../Maps/AddressMap/AddressMap";
 import "./AddressCard.css"
 import {Button} from "reactstrap";
+import * as actions from "../../../store/actions";
+import {withRouter} from "react-router-dom";
+import {connect} from "react-redux";
 
 
 const AddressCard = (props) => {
@@ -20,13 +23,18 @@ const AddressCard = (props) => {
                 municipality: props.address.municipality
             })
         }
-    }, [props])
+    }, [props]);
+
+    const handleSaveAddress = () => {
+        props.editAddress(props.address.addressId, props.address.locationDto.locationId, address.name, address.number, address.municipality, props.address.locationDto.locationLatitude, props.address.locationDto.locationLongitude)
+    };
 
     return (
         <React.Fragment>
             <div className="row mb-5">
                 <div className="col-md-6 col-sm-12">
-                    <AddressMap location={props.address.locationDto}/>
+                    <AddressMap addressId={props.address.addressId}
+                        location={props.address.locationDto}/>
                 </div>
 
                 <div className="col-md-6 col-sm-12">
@@ -63,7 +71,7 @@ const AddressCard = (props) => {
                         <Button className="buttonFloatBottom"
                             color="primary"
                             type="button"
-                            onClick={() => {}}
+                            onClick={() => handleSaveAddress(props.address)}
                         >
                             Save
                         </Button>
@@ -74,4 +82,11 @@ const AddressCard = (props) => {
     )
 }
 
-export default AddressCard
+const mapDispatchToProps = (dispatch) => {
+    return {
+        editAddress: (addressId, locationId, street, number, municipality, lat, lng) =>
+            dispatch(actions.editAddressForUser(addressId, locationId, street, number, municipality, lat, lng))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(AddressCard);

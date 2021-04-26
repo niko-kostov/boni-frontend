@@ -5,6 +5,8 @@ import L from 'leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import {useMemo, useRef, useState} from "react";
+import * as actions from "../../../store/actions";
+import {connect} from "react-redux";
 
 let DefaultIcon = L.icon({
     iconSize: [25, 41],
@@ -18,14 +20,22 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 const AddressMap = (props) => {
 
-    const [position, setPosition] = useState({lat: props.location.locationLatitude, lng: props.location.locationLongitude});
+    const [position, setPosition] = useState({
+        lat: props.location.locationLatitude,
+        lng: props.location.locationLongitude
+    });
     const markerRef = useRef(null);
 
     const eventHandlers = useMemo(() => ({
         dragend() {
             const marker = markerRef.current
             if (marker != null) {
-                setPosition(marker.getLatLng())
+                setPosition(marker.getLatLng());
+                debugger;
+                props.updateCoordinates(props.addressId, {
+                    latitude: marker.getLatLng().lat,
+                    longitude: marker.getLatLng().lng
+                })
             }
         }
     }), []);
@@ -58,4 +68,10 @@ const AddressMap = (props) => {
     )
 }
 
-export default AddressMap
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateCoordinates: (addressId, location) => dispatch(actions.updateCoordinates(addressId, location))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(AddressMap);

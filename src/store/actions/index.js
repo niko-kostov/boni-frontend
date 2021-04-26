@@ -32,5 +32,7 @@ export {
     getAddressesForUser,
     addNewAddressForUser,
     deleteAddressForUser,
-    setSelectedAddress
+    setSelectedAddress,
+    editAddressForUser,
+    updateCoordinates
 } from './addressActions'
