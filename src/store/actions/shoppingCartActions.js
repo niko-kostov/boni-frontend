@@ -1,5 +1,6 @@
 import {API_DRIVER, setAuthToken} from "../../config";
 import * as actionTypes from '../actionTypes'
+import {toast} from "react-toastify";
 
 export const getShoppingCartHistory = (email) => {
     setAuthToken();
@@ -10,6 +11,7 @@ export const getShoppingCartHistory = (email) => {
             })
             .catch(error => {
                 dispatch({type: actionTypes.GET_SHOPPING_CART_HISTORY_ERROR})
+                toast.error(error.message);
             });
     }
 };
@@ -23,6 +25,7 @@ export const getShoppingCartHistoryDetails = (cartId) => {
             })
             .catch(error => {
                 dispatch({type: actionTypes.GET_SHOPPING_CART_HISTORY_DETAILS_ERROR})
+                toast.error(error.message);
             })
     }
 };
@@ -39,11 +42,12 @@ export const addItemToCart = (shoppingCartId, itemId, itemPriceId, quantity) => 
         API_DRIVER.post("api/shoppingCartItem/user", itemToCartData)
             .then(response => {
                 dispatch({type: actionTypes.ADD_ITEM_IN_CART})
+                toast.success("Item added to cart!");
             })
             .catch(error => {
-                    dispatch({type: actionTypes.ADD_ITEM_IN_CART_ERROR})
-                }
-            )
+                dispatch({type: actionTypes.ADD_ITEM_IN_CART_ERROR})
+                toast.error(error.message);
+            })
     }
 };
 
@@ -53,9 +57,11 @@ export const deleteItemFromCart = (shoppingCartId, shoppingCartItem) => {
         API_DRIVER.delete("api/shoppingCartItem/user/shoppingCart/" + shoppingCartId + "/itemPrice/" + shoppingCartItem.itemPriceId)
             .then(response => {
                 dispatch({type: actionTypes.DELETE_ITEM_FROM_CART, shoppingCartItem: shoppingCartItem})
+                toast.success("Item deleted from cart!");
             })
             .catch(error => {
                 dispatch({type: actionTypes.DELETE_ITEM_FROM_CART_ERROR})
+                toast.error(error.message);
             })
     }
 }
@@ -74,6 +80,7 @@ export const increaseQuantityForItem = (shoppingCartId, shoppingCartItem) => {
             })
             .catch(error => {
                 dispatch({type: actionTypes.CHANGE_ITEM_QUANTITY_ERROR})
+                toast.error(error.message);
             })
     }
 }
@@ -92,6 +99,7 @@ export const decreaseQuantityForItem = (shoppingCartId, shoppingCartItem) => {
             })
             .catch(error => {
                 dispatch({type: actionTypes.CHANGE_ITEM_QUANTITY_ERROR})
+                toast.error(error.message);
             })
     }
 }
@@ -105,6 +113,7 @@ export const getActiveShoppingCart = (email) => {
             })
             .catch(error => {
                 dispatch({type: actionTypes.GET_SHOPPING_CART_ERROR})
+                toast.error(error.message);
             })
     }
 };
@@ -124,9 +133,11 @@ export const payShoppingCart = (shoppingCartId) => {
                     newActiveShoppingCartId: response.data.shoppingCartId
                 })
                 storage.setItem('activeShoppingCartId', response.data.shoppingCartId);
+                toast.success("Purchase successful!");
             })
             .catch(error => {
                 dispatch({type: actionTypes.PAY_SHOPPING_CART_ERROR})
+                toast.error(error.message);
             })
     }
 }

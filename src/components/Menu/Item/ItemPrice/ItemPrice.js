@@ -25,12 +25,12 @@ const ItemPrice = (props) => {
                         <span>{props.itemPrice.size} {props.itemPrice.price} ден</span>
                     </label>
                 </div>
-                <Button size="sm"
-                        className="btn btn-danger delete-item-price-button"
-                        onClick={handleDeleteItemPrice}
-                        type="button">
+                {props.role ? props.role[0] === "ROLE_ADMIN" ? <Button size="sm"
+                                                       className="btn btn-danger delete-item-price-button"
+                                                       onClick={handleDeleteItemPrice}
+                                                       type="button">
                     <span className="fa fa-trash"/>
-                </Button>
+                </Button> : null : null}
             </div>
         </React.Fragment>
     );

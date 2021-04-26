@@ -48,22 +48,24 @@ const Item = (props) => {
                 <Image className="card-image"
                        variant="top"
                        src={props.item.itemImage}/>
-                <div id="itemButtons">
-                    <Button id="editItemButton"
-                            onClick={(event) => toggleItemForm(event)}>
-                        <span className="fa fa-edit"/>
-                    </Button>
-                    <ItemForm type={true}
-                              click={(event) => toggleItemForm(event)}
-                              itemFormModal={itemFormModal}/>
-                    <Button className="btn btn-danger" id="deleteItemButton"
-                            onClick={(event) => toggleDeleteItem(event)}
-                    >
-                        <span className="fa fa-trash"/>
-                    </Button>
-                    <DeleteItem click={(event) => toggleDeleteItem(event)}
+                {props.role ? props.role[0] === "ROLE_ADMIN" ?
+                    <div id="itemButtons">
+                        <Button id="editItemButton"
+                                className="btn btn-sm"
+                                onClick={(event) => toggleItemForm(event)}>
+                            <span className="fa fa-edit"/>
+                        </Button>
+                        <ItemForm type={true}
+                                  click={(event) => toggleItemForm(event)}
+                                  itemFormModal={itemFormModal}/>
+                        <Button className="btn btn-danger btn-sm" id="deleteItemButton"
+                                onClick={(event) => toggleDeleteItem(event)}
+                        >
+                            <span className="fa fa-trash"/>
+                        </Button>
+                        <DeleteItem click={(event) => toggleDeleteItem(event)}
                                     itemDeleteModal={itemDeleteModal}/>
-                </div>
+                    </div> : null : null}
                 <Card.Body>
                     <Card.Title>{props.item.name}</Card.Title>
                     <Card.Text>
@@ -77,6 +79,7 @@ const Item = (props) => {
                         Details
                     </Button>
                     <ItemDetails click={(event) => toggleModalDetails(event)}
+                                 role={props.role}
                                  defaultModal={defaultModal}
                                  item={props.item}
                     />

@@ -4,7 +4,6 @@ import Headroom from "headroom.js";
 import './CustomNav.css';
 import logo from '../../assets/img/boni-logo.png';
 import new_logo from '../../assets/img/boni-new-logo.svg';
-import restaurantImage from '../../assets/img/restaurantImage.jpg'
 
 
 import {
@@ -86,7 +85,7 @@ const CustomNav = (props) => {
                                 <span className="nav-link-inner--text d-lg-none"/>
                             </NavLink>
                         </NavItem>
-                        <NavItem>
+                        {props.isAuthenticated ?  <NavItem>
                             <NavLink
                                 tag={Link}
                                 className="nav-link-icon"
@@ -96,11 +95,11 @@ const CustomNav = (props) => {
                                 <p className="m-0">Cart</p>
                                 <span className="nav-link-inner--text d-lg-none"/>
                             </NavLink>
-                        </NavItem>
+                        </NavItem> : null}
                         {props.isAuthenticated ?
                             <UncontrolledDropdown nav inNavbar>
                                 <DropdownToggle nav style={{padding: 8}}>
-                                    <img src={restaurantImage} style={{width: 60, height: 60, padding: 0}} className="rounded-circle"/>
+                                    <img src={props.profileImage} style={{width: 60, height: 60, padding: 0}} className="rounded-circle"/>
                                     <span className="nav-link-inner--text d-lg-none">{props.fullName}</span>
                                 </DropdownToggle>
                                 <DropdownMenu

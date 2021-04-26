@@ -1,21 +1,55 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Link, withRouter} from "react-router-dom";
-import logo from '../../assets/img/boni-logo.png'
-import restaurantImage from '../../assets/img/restaurantImage.jpg'
-
-
-import {Button, Card, Container, Row, Col} from "reactstrap";
+import {Button, Card, Container, Row, Col, Input} from "reactstrap";
 import AddressAccordion from "./AddressAccordion/AddressAccordion";
 import * as actions from "../../store/actions";
 import {connect} from "react-redux";
 import AddressForm from "./AddressForm/AddressForm";
+import {storage} from "../../firebase";
+import EditProfileForm from "./EditProfileForm/EditProfileForm";
+import {firstName, lastName} from "../../utils/utils";
 
 const Profile = (props) => {
     const [openAddressForm, setOpenAddressForm] = useState(false);
 
+    const inputFile = useRef(null);
+    const [imageIsUploading, setImageIsUploading] = useState(false);
+    const [openEditProfileDialog, setOpenEditProfileDialog] = useState(false);
+
     useEffect(() => {
         props.getAddresses("nik");
     }, [])
+
+    const changeImage = () => {
+        inputFile.current.click();
+    }
+
+    const handleImageChange = (event) => {
+        if (event.target.files[0]) {
+            setImageIsUploading(true);
+            let uploadTask = storage.ref(`profilePictures/${event.target.files[0].name}`).put(event.target.files[0]);
+            uploadTask.on(
+                "state_changed",
+                snapshot => {
+
+                },
+                error => {
+                    console.log(error);
+                },
+                () => {
+                    storage
+                        .ref("profilePictures")
+                        .child(event.target.files[0].name)
+                        .getDownloadURL()
+                        .then(url => {
+                            // console.log(url);
+                            props.changeImage(url);
+                            setImageIsUploading(false);
+                        });
+                }
+            );
+        }
+    }
 
     return (
         <div>
@@ -59,14 +93,23 @@ const Profile = (props) => {
                                         <div className="card-profile-image">
                                             <a href="#pablo" onClick={e => e.preventDefault()}>
                                                 <img
+                                                    onClick={changeImage}
+                                                    src={props.profileImage}
                                                     alt="..."
                                                     className="rounded-circle"
                                                     src={restaurantImage}
                                                     style={{width: 180, height: 180}}
                                                 />
                                             </a>
+
                                         </div>
                                     </Col>
+                                    <input type="file"
+                                           id="profileImageInput"
+                                           ref={inputFile}
+                                           style={{display: "none"}}
+                                           onChange={handleImageChange}
+                                    />
                                     <Col
                                         className="order-lg-3 text-lg-right align-self-lg-center"
                                         lg="4"
@@ -74,12 +117,19 @@ const Profile = (props) => {
                                         <div className="card-profile-actions py-4 mt-lg-0">
                                             <Button
                                                 className="btn btn-info btn-sm mr-3"
-                                                tag={Link}
-                                                to={"/shoppingCartHistory"}
+                                                onClick={() => setOpenEditProfileDialog(true)}
                                                 size="sm"
                                             >
                                                 Edit Profile
                                             </Button>
+                                            {openEditProfileDialog ?
+                                                <EditProfileForm
+                                                    click={() => setOpenEditProfileDialog(false)}
+                                                    isOpen={openEditProfileDialog}
+                                                    phoneNumber={props.phoneNumber}
+                                                    firstName={firstName(props.fullName)}
+                                                    lastName={lastName(props.fullName)}
+                                                /> : null}
                                             <Button
                                                 className="btn btn-sm btn-default float-right"
                                                 tag={Link}
@@ -95,15 +145,15 @@ const Profile = (props) => {
 
                                 <div className="text-center mt-6">
                                     <h3>
-                                        Nikola Kostov
+                                        {props.fullName}
                                     </h3>
 
                                     <h4>
-                                        078273764
+                                        {props.phoneNumber}
                                     </h4>
 
                                     <h6>
-                                        niko_kostov@yahoo.com
+                                        {props.email}
                                     </h6>
                                 </div>
 
@@ -133,20 +183,24 @@ const Profile = (props) => {
                          email={props.email}
                          handleCloseClick={() => setOpenAddressForm(false)}/>
         </div>
+
     );
 }
 
 const mapStateToProps = (state) => {
     return {
         addresses: state.addressReducer.addresses,
-        fullname: state.authReducer.fullname,
-        email: state.authReducer.email
+        fullName: state.authReducer.fullName,
+        email: state.authReducer.email,
+        phoneNumber: state.authReducer.phoneNumber,
+        profileImage: state.authReducer.profileImage
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getAddresses: (email) => dispatch(actions.getAddressesForUser(email))
+        getAddresses: (email) => dispatch(actions.getAddressesForUser(email)),
+        changeImage: (imageUrl) => dispatch(actions.changeImage(imageUrl))
     }
 }
 

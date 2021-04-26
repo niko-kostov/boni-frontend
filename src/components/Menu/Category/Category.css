@@ -14,3 +14,12 @@
     display: grid;
     justify-items: center;
 }
+
+.category-header {
+    padding-top: 5px;
+    color: antiquewhite;
+}
+
+.card-container {
+    background-color: whitesmoke;
+}
