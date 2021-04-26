@@ -2,8 +2,8 @@ import React, {useReducer, useEffect, useState} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import Headroom from "headroom.js";
 import './CustomNav.css';
-import logo from '../../assets/img/boni-logo.png';
-import new_logo from '../../assets/img/boni-new-logo.svg';
+import boni_logo_purple from '../../assets/img/boni-new-logo-purple.svg';
+import boni_logo from '../../assets/img/boni-new-logo.svg';
 
 
 import {
@@ -39,7 +39,7 @@ const CustomNav = (props) => {
                 id="navbar-main">
             <Container>
                 <NavbarBrand href="/">
-                    <Image id="brandImage" src={new_logo} style={{ width: "80px", height: "80px" }}/>
+                    <Image id="brandImage" src={boni_logo} style={{ width: "80px", height: "80px" }}/>
                 </NavbarBrand>
                 <button className="navbar-toggler" id="navbar-default">
                     <span className="navbar-toggler-icon" />
@@ -51,7 +51,7 @@ const CustomNav = (props) => {
                         <Row>
                             <Col className="collapse-brand" xs="6">
                                 <Link to="/">
-                                    <Image src={logo} style={{ width: "50px", height: "50px" }}/>
+                                    <Image src={boni_logo_purple} style={{ width: "50px", height: "50px" }}/>
                                 </Link>
                             </Col>
                             <Col className="collapse-close" xs="6">
