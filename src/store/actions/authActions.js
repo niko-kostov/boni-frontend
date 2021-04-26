@@ -146,6 +146,12 @@ export const changeImage = (profileImage) => {
         };
         API_DRIVER.patch("api/auth/user/changeProfilePicture", changeImageUrlDto)
             .then(response => {
+                let storage = sessionStorage;
+                if (localStorage.getItem('token')) {
+                    storage = localStorage;
+                }
+                storage.setItem('profileImage', profileImage);
+
                 dispatch({type: actionTypes.CHANGE_IMAGE_FOR_USER, profileImage: profileImage})
                 toast.success("Profile picture edited!");
             })

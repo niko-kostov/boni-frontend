@@ -17,7 +17,7 @@ const Profile = (props) => {
     const [openEditProfileDialog, setOpenEditProfileDialog] = useState(false);
 
     useEffect(() => {
-        props.getAddresses("nik");
+        props.getAddresses(props.email);
     }, [])
 
     const changeImage = () => {
@@ -97,7 +97,6 @@ const Profile = (props) => {
                                                     src={props.profileImage}
                                                     alt="..."
                                                     className="rounded-circle"
-                                                    src={restaurantImage}
                                                     style={{width: 180, height: 180}}
                                                 />
                                             </a>

@@ -1,6 +1,6 @@
 import * as actionTypes from '../actionTypes';
 import {API_DRIVER, setAuthToken} from "../../config";
-import {act} from "@testing-library/react";
+import {toast} from "react-toastify";
 
 export const getAddressesForUser = (email) => {
     setAuthToken();
@@ -13,7 +13,7 @@ export const getAddressesForUser = (email) => {
                 })
             })
             .catch(e => {
-                console.log(e);
+                toast.error(e.message);
             })
     }
 };
@@ -36,9 +36,10 @@ export const addNewAddressForUser = (email, latitude, longitude, municipality, n
                     type: actionTypes.ADD_NEW_ADDRESS_FOR_USER,
                     address: res.data
                 })
+                toast.success("Address successfully added!");
             })
             .catch(e => {
-                console.log(e);
+                toast.error(e.message);
             })
     }
 };
@@ -52,9 +53,10 @@ export const deleteAddressForUser = (addressId) => {
                     type: actionTypes.DELETE_ADDRESS_FOR_USER,
                     deletedAddress: res.data
                 })
+                toast.success("Address successfully deleted!");
             })
             .catch(e => {
-                console.log(e);
+                toast.error(e.message);
             })
     }
 };
@@ -77,9 +79,10 @@ export const editAddressForUser = (addressId, locationId, street, number, munici
                     type: actionTypes.EDIT_ADDRESS_FOR_USER,
                     editedAddress: res.data
                 })
+                toast.success("Address successfully edited!");
             })
             .catch(e => {
-                console.log(e);
+                toast.error(e.message);
             })
     }
 }

@@ -10,7 +10,7 @@ const AddressForm = (props) => {
     const [municipality, setMunicipality] = useState("CENTAR");
 
     const handleAddAddressClick = () => {
-        props.addAddress("nik", 41.99646, 21.43141, municipality, number, street);
+        props.addAddress(props.email, 41.99646, 21.43141, municipality, number, street);
         props.handleCloseClick();
         setStreet("");
         setNumber("");

@@ -64,12 +64,18 @@ const Home = () => {
                          data-aos-duration="600"
                          data-aos-delay="250">
                         <UncontrolledCarousel items={[{
-                            src: orderImage
+                            src: orderImage,
+                            caption: '',
+                            key: '1'
                         }, {
-                            src: locationImage
+                            src: locationImage,
+                            caption: '',
+                            key: '2'
                         }, {
-                            src: deliveryImage
-                        }]}/>
+                            src: deliveryImage,
+                            caption: '',
+                            key: '3'
+                        }]} />
                     </div>
 
                     <div>

@@ -31,7 +31,6 @@ const AddressMap = (props) => {
             const marker = markerRef.current
             if (marker != null) {
                 setPosition(marker.getLatLng());
-                debugger;
                 props.updateCoordinates(props.addressId, {
                     latitude: marker.getLatLng().lat,
                     longitude: marker.getLatLng().lng
